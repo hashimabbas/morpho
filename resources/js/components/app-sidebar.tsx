@@ -6,7 +6,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Contact, LayoutGrid, Mail } from 'lucide-react'; // 1. Import the new icons
+import { Contact, LayoutGrid, Mail, Presentation } from 'lucide-react'; // 1. Import the new icons
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -19,6 +19,11 @@ const mainNavItems: NavItem[] = [
         title: 'Messages',
         href: route('dashboard.messages'),
         icon: Mail, // 2. Use the Mail icon for Messages
+    },
+    {
+        title: 'Demo Request',
+        href: route('dashboard.demo-requests.index'),
+        icon: Presentation, // 2. Use the Presentation  icon for Messages
     },
     {
         title: 'Contacts',
