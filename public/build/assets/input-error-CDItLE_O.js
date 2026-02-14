@@ -1,0 +1,1 @@
+import{j as e}from"./app-eR22eJJR.js";import{t as o}from"./bundle-mjs-AdmevC4f.js";function n({message:t,className:r=""}){return t?e.jsx("p",{className:o("text-sm text-destructive dark:text-destructive-foreground",r),children:t}):null}export{n as default};
