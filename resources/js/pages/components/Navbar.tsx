@@ -1,7 +1,22 @@
 // resources/js/Components/Navbar.tsx
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LogOut, Menu, Moon, Settings, Sun, User, X } from 'lucide-react';
+import {
+    Activity,
+    ChevronDown,
+    Cpu,
+    LogOut,
+    Menu,
+    Moon,
+    Settings,
+    Sprout,
+    Sun,
+    ThermometerSnowflake,
+    User,
+    Warehouse,
+    Waves,
+    X,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import {
@@ -12,11 +27,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 import { NavLink } from './NavLink';
 
 export default function Navbar() {
     const { auth } = usePage<SharedData>().props;
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isMobileEcosystemOpen, setIsMobileEcosystemOpen] = useState(false);
     // Persist theme with localStorage
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
@@ -36,9 +53,44 @@ export default function Navbar() {
     const navLinks = [
         { href: '/', label: 'Home' },
         { href: '/about', label: 'About' },
+        { href: '/brochures', label: 'Solutions ' },
         { href: '/pricing', label: 'Pricing' },
         { href: '/demo_request', label: 'Demo Request' },
         { href: '/contact', label: 'Contact Us' },
+    ];
+
+    const ecosystemItems = [
+        {
+            label: 'Cold Chain Solutions',
+            href: '/solutions/cold-chain',
+            icon: ThermometerSnowflake,
+            description: 'Temperature-controlled logistics and monitoring.',
+        },
+        {
+            label: 'Livestock IoT',
+            href: '/solutions/livestock',
+            icon: Activity,
+            description: 'Advanced tracking and health monitoring for livestock.',
+        },
+        {
+            label: 'Smart Agriculture',
+            href: '/solutions/agriculture',
+            icon: Sprout,
+            description: 'Optimizing crop yields with precision farming IoT.',
+        },
+        {
+            label: 'Marine & Remote Monitoring',
+            href: '/solutions/marine',
+            icon: Waves,
+            description: 'Reliable monitoring for maritime and remote assets.',
+        },
+        {
+            label: 'Smart Warehousing',
+            href: '/solutions/warehousing',
+            icon: Warehouse,
+            description: 'Automated inventory and warehouse management.',
+        },
+
     ];
 
     return (
@@ -58,11 +110,47 @@ export default function Navbar() {
                             </Link>
                         </div>
 
-
-
                         {/* Desktop Navigation Links */}
                         <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            {navLinks.map((link) => (
+                            <NavLink href="/" active={usePage().url === '/'}>
+                                Home
+                            </NavLink>
+
+                            {/* Ecosystem Dropdown */}
+                            <DropdownMenu>
+                                <DropdownMenuTrigger className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300">
+                                    Morpho Smart Ecosystem
+                                    <ChevronDown className="ml-1 h-4 w-4" />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="start" className="w-[300px] p-2">
+                                    <DropdownMenuLabel className="text-xs uppercase tracking-wider text-gray-500">
+                                        Our Solutions
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    {ecosystemItems.map((item) => (
+                                        <DropdownMenuItem key={item.href} asChild>
+                                            <Link
+                                                href={item.href}
+                                                className="flex items-start gap-3 rounded-md p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                                            >
+                                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-morpho text-white dark:bg-orange-900/20 dark:text-orange-400">
+                                                    <item.icon className="h-5 w-5 text-white" />
+                                                </div>
+                                                <div>
+                                                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                                        {item.label}
+                                                    </div>
+                                                    <p className="line-clamp-1 text-xs text-gray-500 dark:text-gray-400">
+                                                        {item.description}
+                                                    </p>
+                                                </div>
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+
+                            {navLinks.filter(link => link.href !== '/').map((link) => (
                                 <NavLink key={link.href} href={link.href}>
                                     {link.label}
                                 </NavLink>
@@ -119,12 +207,6 @@ export default function Navbar() {
                                 >
                                     Log in
                                 </Link>
-                                {/* <Link
-                                    href={route('register')}
-                                    className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                                >
-                                    Register
-                                </Link> */}
                             </div>
                         )}
                     </div>
@@ -158,7 +240,40 @@ export default function Navbar() {
             {isMobileMenuOpen && (
                 <div className="sm:hidden" id="mobile-menu">
                     <div className="space-y-1 px-2 pb-3 pt-2">
-                        {navLinks.map((link) => (
+                        {/* Mobile Home */}
+                        <NavLink
+                            href="/"
+                            className="block rounded-md px-3 py-2 text-base font-medium"
+                        >
+                            Home
+                        </NavLink>
+
+                        {/* Mobile Ecosystem Accordion-style */}
+                        <div className="space-y-1">
+                            <button
+                                onClick={() => setIsMobileEcosystemOpen(!isMobileEcosystemOpen)}
+                                className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                            >
+                                Morpho Smart Ecosystem
+                                <ChevronDown className={cn("h-4 w-4 transition-transform", isMobileEcosystemOpen && "rotate-180")} />
+                            </button>
+                            {isMobileEcosystemOpen && (
+                                <div className="ml-4 space-y-1">
+                                    {ecosystemItems.map((item) => (
+                                        <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-300"
+                                        >
+                                            <item.icon className="h-4 w-4 text-orange-500" />
+                                            {item.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {navLinks.filter(link => link.href !== '/').map((link) => (
                             <NavLink
                                 key={link.href}
                                 href={link.href}
@@ -220,12 +335,6 @@ export default function Navbar() {
                                     className="block rounded-md px-3 py-2 text-base font-medium"
                                 >
                                     Log In
-                                </NavLink>
-                                <NavLink
-                                    href={route('register')}
-                                    className="block rounded-md px-3 py-2 text-base font-medium"
-                                >
-                                    Register
                                 </NavLink>
                             </div>
                         )}

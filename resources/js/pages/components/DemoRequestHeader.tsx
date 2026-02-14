@@ -53,7 +53,7 @@ export default function DemoRequestHeader(): JSX.Element {
                                     Request a Demo
                                 </a>
                             </div>
-                            <div className="opacity-100 transition-all delay-300 duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
+                            {/* <div className="opacity-100 transition-all delay-300 duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
                                 <a
                                     href="#schedule-info"
                                     className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border-2 border-transparent bg-gray-100 px-6 py-3 text-base font-semibold text-morpho-dark transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 dark:bg-gray-800 dark:text-morpho-light dark:hover:bg-gray-700 dark:focus:ring-offset-gray-900"
@@ -61,7 +61,7 @@ export default function DemoRequestHeader(): JSX.Element {
                                     <CalendarDays className="h-5 w-5" />
                                     How Scheduling Works
                                 </a>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 

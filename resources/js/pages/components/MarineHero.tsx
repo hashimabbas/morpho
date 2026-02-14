@@ -1,0 +1,61 @@
+import { Link } from '@inertiajs/react';
+import { ChevronRight, Waves } from 'lucide-react';
+import React from 'react';
+
+export default function MarineHero() {
+  return (
+    <section className="relative overflow-hidden bg-white py-16 sm:py-24 dark:bg-gray-900">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 -z-10 opacity-20 dark:opacity-10">
+        <div className="absolute inset-0 bg-[radial-gradient(#0ea5e9_1px,transparent_1px)] [background-size:20px_20px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+          <div className="opacity-100 transition-all duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-800 dark:border-blue-900/30 dark:bg-blue-900/20 dark:text-blue-400">
+              <Waves className="h-4 w-4" />
+              <span>Smart Marine Security</span>
+            </div>
+            <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl dark:text-white">
+              <span className="block text-morpho">Marine, Drone & Remote Asset Monitoring</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-gray-600 dark:text-gray-400">
+              National pioneer solution for marine security based on the first fully integrated
+              smart license plates in the region.
+            </p>
+            <div className="mt-10 flex items-center gap-x-6">
+              <Link
+                href="/contact"
+                className="rounded-md bg-morpho px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-morpho/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-morpho transition-colors"
+              >
+                Get Started
+              </Link>
+              <Link
+                href="#details"
+                className="group flex items-center gap-x-2 text-base font-semibold leading-7 text-gray-900 dark:text-white"
+              >
+                Learn more
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+          </div>
+          <div className="mt-16 lg:mt-0 lg:flex-shrink-0 opacity-100 transition-all delay-200 duration-700 ease-in-out starting:scale-95 starting:opacity-0">
+            <div className="relative">
+              <div className="overflow-hidden rounded-2xl bg-gray-100 shadow-2xl dark:bg-gray-800">
+                <img
+                  src="/images/Marine-1.png" // Using available relevant image
+                  alt="Marine Monitoring Visualization"
+                  className="aspect-[4/3] w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/40 to-transparent"></div>
+              </div>
+              <div className="absolute -bottom-6 -right-6 h-32 w-32 rounded-full bg-blue-500/10 blur-3xl"></div>
+              <div className="absolute -top-6 -left-6 h-32 w-32 rounded-full bg-morpho/10 blur-3xl"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

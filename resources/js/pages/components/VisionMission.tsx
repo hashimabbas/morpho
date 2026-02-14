@@ -1,10 +1,8 @@
 // resources/js/components/VisionMission.tsx
 
 export default function VisionMission() {
-    const vision =
-        'To be the leading technical authority in the Gulf region and globally in the field of smart cold chain management, by providing innovative technological solutions that support sustainability, enhance product quality, and protect against environmental risks and spoilage.';
-    const mission =
-        'To revolutionize the cold supply chain by developing integrated, AI-powered cloud systems and IoT devices, empowering businesses to monitor and track their refrigerated products with unparalleled precision and transparency.';
+    const vision = 'To become the leading provider of smart solutions and Internet of Things (IoT) technologies in the Gulf and the Middle East by transforming industries through intelligent monitoring, sustainability, regulatory compliance, asset protection, and strengthening trust for organizations and stakeholders.';
+    const mission = 'Empowering organizations with complete visibility, enabling smart and proactive decision-making, and providing full control over supply chains, livestock, agriculture, warehouses, and maritime assets—transforming traditional operations into intelligent, connected, and sustainable systems.';
 
     return (
         <section className="bg-slate-50 py-16 sm:py-24 dark:bg-gray-950">

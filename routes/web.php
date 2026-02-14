@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Dashboard\ContactManagementController;
 use App\Http\Controllers\DashboardController; // Make sure this is imported
@@ -41,6 +42,31 @@ Route::get('/terms-of-service', function () {
     return Inertia::render('TermsOfService');
 })->name('terms.service');
 
+Route::get('/solutions/agriculture', function () {
+    return Inertia::render('Agriculture');
+})->name('solutions.agriculture');
+
+Route::get('/solutions/cold-chain', function () {
+    return Inertia::render('ColdChain');
+})->name('solutions.cold-chain');
+
+Route::get('/solutions/livestock', function () {
+    return Inertia::render('Livestock');
+})->name('solutions.livestock');
+
+Route::get('/solutions/marine', function () {
+    return Inertia::render('Marine');
+})->name('solutions.marine');
+
+Route::get('/solutions/warehousing', function () {
+    return Inertia::render('Warehousing');
+})->name('solutions.warehousing');
+
+Route::get('/brochures', function () {
+    return Inertia::render('Brochures');
+})->name('brochures');
+
+
 // Group dashboard-related routes under a 'dashboard' prefix and name prefix
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
@@ -60,6 +86,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
     Route::post('/demo-requests/{requestDemo}/mark-as-read', [DemoRequestController::class, 'markAsRead'])
         ->name('demo-requests.markAsRead');
 
+    Route::get('register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+    Route::post('register', [RegisteredUserController::class, 'store']);
 });
 
 
