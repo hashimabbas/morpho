@@ -125,7 +125,7 @@ export default function ColdChainContent() {
             <div className="mt-12 lg:mt-0 lg:w-1/2">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="/images/header5.png"
+                  src="/images/products.png"
                   alt="Solution in Action"
                   className="w-full h-full object-cover"
                 />

@@ -13,6 +13,17 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
+// Temporary route to fix storage:link error on shared hosting
+Route::get('/linkstorage', function () {
+    $target = storage_path('app/public');
+    $link = public_path('storage');
+    if (file_exists($link)) {
+        return 'The "public/storage" directory already exists.';
+    }
+    app('files')->link($target, $link);
+    return 'The [public/storage] directory has been linked.';
+});
+
 Route::get('/about', function () {
     return Inertia::render('About');
 })->name('about');
