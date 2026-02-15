@@ -4,24 +4,24 @@ import { FileText, Download, Eye, ArrowRight } from 'lucide-react';
 const pdfs = [
   {
     id: 1,
-    name: 'Warehouse Monitoring',
-    file: '1.pdf',
-    description: 'Smart solutions for monitoring warehouses and supply chains.',
-    image: '/images/solutions/warehousing.png'
-  },
-  {
-    id: 2,
-    name: 'Maritime Security',
-    file: '4.pdf',
-    description: 'Advanced security and tracking for maritime assets.',
-    image: '/images/Marine-1.png'
-  },
-  {
-    id: 3,
     name: 'Cold Chain Logistics',
     file: '1.pdf',
     description: 'Precision temperature and humidity tracking for sensitive goods.',
     image: '/images/solutions/cold.png'
+  },
+  {
+    id: 2,
+    name: 'Agriculture IoT',
+    file: '2.pdf',
+    description: 'Smart sensors for soil and crop health optimization.',
+    image: '/images/Agriculture-1.png'
+  },
+  {
+    id: 3,
+    name: 'Warehouse Monitoring',
+    file: '5.pdf',
+    description: 'Smart solutions for monitoring warehouses and supply chains.',
+    image: '/images/solutions/warehousing.png'
   },
   {
     id: 4,
@@ -32,10 +32,10 @@ const pdfs = [
   },
   {
     id: 5,
-    name: 'Agriculture IoT',
-    file: '2.pdf',
-    description: 'Smart sensors for soil and crop health optimization.',
-    image: '/images/Agriculture-1.png'
+    name: 'Maritime Security',
+    file: '4.pdf',
+    description: 'Advanced security and tracking for maritime assets.',
+    image: '/images/Marine-1.png'
   },
 ];
 
