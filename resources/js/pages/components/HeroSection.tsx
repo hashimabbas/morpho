@@ -13,10 +13,11 @@ type ImageType = {
 
 // --- Define your images here ---
 const images: ImageType[] = [
-    { src: '/images/header3.png', alt: 'Description for image 3' },
-    { src: '/images/header1.png', alt: 'Description for image 1' },
-    { src: '/images/header2.png', alt: 'Description for image 2' },
-    // { src: '/images/header4.png', alt: 'Description for image 4' },
+    { src: '/images/solutions/cold.png', alt: 'Cold Chain Solutions' },
+    { src: '/images/warehouse-1.png', alt: 'Warehouse Monitoring' },
+    { src: '/images/Agriculture-1.png', alt: 'Smart Agriculture' },
+    { src: '/images/Livestock-2.png', alt: 'Livestock Monitoring' },
+    { src: '/images/Marine-1.png', alt: 'Marine & Fisheries' },
 ];
 
 // TS: Define the component as a React Functional Component.
@@ -83,11 +84,11 @@ export default function HeroSection(): JSX.Element {
                                 </div>
                                 <div>
                                     <h4 className="text-lg font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-1">
-                                        Livestock & Critical Assets
+                                        Real-time tracking
                                     </h4>
-                                    <p className="text-gray-500 dark:text-gray-500 font-medium">
+                                    {/* <p className="text-gray-500 dark:text-gray-500 font-medium">
                                         Real-time tracking and health monitoring.
-                                    </p>
+                                    </p> */}
                                 </div>
                             </div>
 
@@ -140,7 +141,6 @@ export default function HeroSection(): JSX.Element {
                                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                                 loading="lazy"
                                                 decoding="async"
-                                                style={{ objectFit: "contain" }}
                                             />
                                         </div>
                                     </div>
@@ -148,6 +148,7 @@ export default function HeroSection(): JSX.Element {
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
