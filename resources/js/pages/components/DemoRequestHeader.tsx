@@ -12,9 +12,11 @@ type ImageType = {
 
 // --- Demo images (replace these with your real assets) ---
 const images: ImageType[] = [
-    { src: '/images/header3.png', alt: 'Map showing the location of our main office' },
-    { src: '/images/header1.png', alt: 'Our team ready to answer your questions' },
-    { src: '/images/header2.png', alt: 'A customer support specialist on a call' },
+    { src: '/images/solutions/cold.png', alt: 'Cold Chain Solutions' },
+    { src: '/images/warehouse-1.png', alt: 'Warehouse Monitoring' },
+    { src: '/images/Agriculture-1.png', alt: 'Smart Agriculture' },
+    { src: '/images/Livestock-2.png', alt: 'Livestock Monitoring' },
+    { src: '/images/Marine-1.png', alt: 'Marine & Fisheries' },
 ];
 
 export default function DemoRequestHeader(): JSX.Element {

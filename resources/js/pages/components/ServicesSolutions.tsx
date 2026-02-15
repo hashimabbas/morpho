@@ -31,16 +31,16 @@ const sectors = [
         ],
     },
     {
-        title: 'Livestock & Animal IoT Solutions',
-        icon: Beef,
-        image: '/images/Livestock-2.png',
-        href: '/solutions/livestock',
-        description: 'Real-time monitoring and management of livestock in remote environments.',
+        title: 'Smart Warehousing & Supply Chain',
+        icon: Warehouse,
+        image: '/images/warehouse-1.png',
+        href: '/solutions/warehousing',
+        description: 'Smart monitoring for food, pharmaceutical, and cold storage warehouses.',
         features: [
-            'Real-time location tracking & behavior analysis',
-            'Vital indicators (Heart rate, temperature, respiration)',
-            'Harsh environment resistance & long battery life',
-            'Abnormal behavior and health alerts',
+            'Environmental monitoring & instant alerts',
+            'Full inventory visibility & decision-support reports',
+            'Integration with existing management systems',
+            '24/7 operation without manual intervention',
         ],
     },
     {
@@ -57,6 +57,19 @@ const sectors = [
         ],
     },
     {
+        title: 'Livestock & Animal IoT Solutions',
+        icon: Beef,
+        image: '/images/Livestock-2.png',
+        href: '/solutions/livestock',
+        description: 'Real-time monitoring and management of livestock in remote environments.',
+        features: [
+            'Real-time location tracking & behavior analysis',
+            'Vital indicators (Heart rate, temperature, respiration)',
+            'Harsh environment resistance & long battery life',
+            'Abnormal behavior and health alerts',
+        ],
+    },
+    {
         title: 'Marine, Drone & Remote Assets',
         icon: Anchor,
         image: '/images/Marine-1.png',
@@ -69,19 +82,7 @@ const sectors = [
             'Support search & rescue and fishing regulation',
         ],
     },
-    {
-        title: 'Smart Warehousing & Supply Chain',
-        icon: Warehouse,
-        image: '/images/warehouse-1.png',
-        href: '/solutions/warehousing',
-        description: 'Smart monitoring for food, pharmaceutical, and cold storage warehouses.',
-        features: [
-            'Environmental monitoring & instant alerts',
-            'Full inventory visibility & decision-support reports',
-            'Integration with existing management systems',
-            '24/7 operation without manual intervention',
-        ],
-    },
+
 ];
 
 export default function ServicesSolutions() {
