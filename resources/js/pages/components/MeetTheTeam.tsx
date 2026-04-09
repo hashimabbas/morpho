@@ -13,7 +13,7 @@ const teamMembers = [
     {
         name: 'Waleed Aldhaybi',
         role: 'Co-founder & CTO',
-        description: 'Systems Architect | Poineering Satellite-Enabled IoT & Digital Transformation across the GCC | Founder of Intaj Stars . \n Sultan Qaboos University.',
+        description: 'Systems Architect | Poineering Satellite-Enabled IoT & Digital Transformation across the GCC | Founder of Intaj Stars .',
         initials: 'WT',
         // 1. Add the imageUrl property
         imageUrl: '/images/team/waleed-al-thiyabi.jpeg', // Example path
