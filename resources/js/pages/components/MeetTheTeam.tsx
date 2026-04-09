@@ -11,12 +11,12 @@ const teamMembers = [
         imageUrl: '/images/team/manal-al-hatmi.jpg', // Example path
     },
     {
-        name: 'Waleed Nasser Salim Al Thiyabi',
+        name: 'Waleed Aldhaybi',
         role: 'Co-founder & CTO',
-        description: 'Specialist in smart systems development, software manufacturing platforms, and data security.',
+        description: 'Systems Architect | Poineering Satellite-Enabled IoT & Digital Transformation across the GCC | Founder of Intaj Stars . \n Sultan Qaboos University.',
         initials: 'WT',
         // 1. Add the imageUrl property
-        imageUrl: '/images/team/waleed-al-thiyabi.jpg', // Example path
+        imageUrl: '/images/team/waleed-al-thiyabi.jpeg', // Example path
     },
 ];
 
