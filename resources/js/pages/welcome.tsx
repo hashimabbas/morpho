@@ -11,6 +11,7 @@ import CurrentChallenges from './components/CurrentChallenges';
 import Footer from './components/Footer';
 import Achievements from './components/Achievements';
 import OurPartners from './components/OurPartners';
+import MorphoSCTHighlights from './components/MorphoSCTHighlights';
 
 export default function Welcome() {
     return (
@@ -25,6 +26,7 @@ export default function Welcome() {
             <main>
                 <HeroSection />
                 <OurPartners />
+                <MorphoSCTHighlights />
                 <VisionMission />
                 <ServicesSolutions />
                 <TargetMarket />

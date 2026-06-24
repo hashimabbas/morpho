@@ -3,8 +3,13 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Dashboard\ContactManagementController;
+use App\Http\Controllers\Dashboard\CorePurposeController;
+use App\Http\Controllers\Dashboard\EcosystemController;
+use App\Http\Controllers\Dashboard\HighlightController;
+use App\Http\Controllers\Dashboard\PartnerController;
 use App\Http\Controllers\DashboardController; // Make sure this is imported
 use App\Http\Controllers\DemoRequestController;
+use App\Http\Controllers\SolutionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -53,29 +58,28 @@ Route::get('/terms-of-service', function () {
     return Inertia::render('TermsOfService');
 })->name('terms.service');
 
-Route::get('/solutions/agriculture', function () {
-    return Inertia::render('Agriculture');
-})->name('solutions.agriculture');
-
-Route::get('/solutions/cold-chain', function () {
-    return Inertia::render('ColdChain');
-})->name('solutions.cold-chain');
-
-Route::get('/solutions/livestock', function () {
-    return Inertia::render('Livestock');
-})->name('solutions.livestock');
-
-Route::get('/solutions/marine', function () {
-    return Inertia::render('Marine');
-})->name('solutions.marine');
-
-Route::get('/solutions/warehousing', function () {
-    return Inertia::render('Warehousing');
-})->name('solutions.warehousing');
+Route::get('/solutions/{slug}', [SolutionController::class, 'show'])->name('solutions.detail');
 
 Route::get('/brochures', function () {
     return Inertia::render('Brochures');
 })->name('brochures');
+
+// Public API
+Route::get('/api/partners', function () {
+    return \App\Models\Partner::orderBy('sort_order')->orderBy('name')->get(['id', 'name', 'role', 'logo']);
+});
+
+Route::get('/api/highlights', function () {
+    return \App\Models\Highlight::where('is_visible', true)->orderBy('sort_order')->get(['id', 'icon', 'title', 'description']);
+});
+
+Route::get('/api/core-purposes', function () {
+    return \App\Models\CorePurpose::where('is_visible', true)->orderBy('sort_order')->get(['id', 'type', 'icon', 'title', 'description', 'subtitle']);
+});
+
+Route::get('/api/ecosystems', function () {
+    return \App\Models\Ecosystem::where('is_visible', true)->orderBy('sort_order')->get(['id', 'type', 'icon', 'title', 'description', 'image', 'href', 'features', 'subtitle']);
+});
 
 
 // Group dashboard-related routes under a 'dashboard' prefix and name prefix
@@ -86,6 +90,10 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
     // Route::post('/messages/{contactMessage}/mark-as-read', [DashboardController::class, 'markAsRead'])->name('messages.markAsRead');
 
     Route::resource('contacts', ContactManagementController::class)->except(['create', 'show', 'edit']);
+    Route::resource('partners', PartnerController::class)->except(['create', 'show', 'edit']);
+    Route::resource('highlights', HighlightController::class)->except(['create', 'show', 'edit']);
+    Route::resource('core-purposes', CorePurposeController::class)->except(['create', 'show', 'edit']);
+    Route::resource('ecosystems', EcosystemController::class)->except(['create', 'show', 'edit']);
     Route::get('/messages', [ContactController::class, 'index'])->name('messages');
     Route::get('/messages/all', [ContactController::class, 'getAllMessages'])->name('messages.all');
     Route::post('/messages/{contactMessage}/mark-as-read', [ContactController::class, 'markAsRead'])->name('messages.markAsRead');

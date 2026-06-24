@@ -3,21 +3,43 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WarehousingHero from './components/WarehousingHero';
 import WarehousingContent from './components/WarehousingContent';
+import SolutionDetail from './SolutionDetail';
 import React from 'react';
 
-export default function Warehousing() {
-  return (
-    <>
-      <Head title="Smart Warehousing & Supply Chain - Morpho" />
+interface Ecosystem {
+    id: number;
+    type: string;
+    slug: string;
+    icon: string;
+    title: string;
+    description: string;
+    image: string | null;
+    href: string | null;
+    features: string[];
+    content: any;
+    subtitle: string | null;
+    sort_order: number;
+    is_visible: boolean;
+}
 
-      <Navbar />
+interface Props {
+    ecosystem?: Ecosystem;
+}
 
-      <main>
-        <WarehousingHero />
-        <WarehousingContent />
-      </main>
+export default function Warehousing({ ecosystem }: Props) {
+    if (ecosystem) {
+        return <SolutionDetail ecosystem={ecosystem} />;
+    }
 
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Head title="Smart Warehousing & Supply Chain - Morpho" />
+            <Navbar />
+            <main>
+                <WarehousingHero />
+                <WarehousingContent />
+            </main>
+            <Footer />
+        </>
+    );
 }

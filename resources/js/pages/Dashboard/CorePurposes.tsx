@@ -1,0 +1,162 @@
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
+import { Head, router } from '@inertiajs/react';
+import { format } from 'date-fns';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import CorePurposeFormDialog from '../components/dashboard/CorePurposeFormDialog';
+
+interface CorePurpose {
+    id: number;
+    type: string;
+    icon: string;
+    title: string;
+    description: string;
+    subtitle: string | null;
+    sort_order: number;
+    is_visible: boolean;
+    created_at: string;
+}
+
+interface PaginatedCorePurposes {
+    data: CorePurpose[];
+}
+
+interface Props {
+    corePurposes: PaginatedCorePurposes;
+}
+
+const breadcrumbs: BreadcrumbItem[] = [
+    { title: 'Dashboard', href: route('dashboard.index') },
+    { title: 'Core Purposes', href: route('dashboard.core-purposes.index'), isCurrent: true },
+];
+
+export default function CorePurposes({ corePurposes }: Props) {
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [editingItem, setEditingItem] = useState<CorePurpose | null>(null);
+
+    const openCreateForm = () => {
+        setEditingItem(null);
+        setIsFormOpen(true);
+    };
+
+    const openEditForm = (item: CorePurpose) => {
+        setEditingItem(item);
+        setIsFormOpen(true);
+    };
+
+    const handleDelete = (item: CorePurpose) => {
+        if (confirm(`Are you sure you want to delete "${item.title}"?`)) {
+            router.delete(route('dashboard.core-purposes.destroy', item.id), {
+                preserveScroll: true,
+            });
+        }
+    };
+
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Core Purpose Management" />
+
+            <div className="flex h-full flex-1 flex-col gap-4 p-4">
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <div>
+                            <CardTitle>Core Purpose Management</CardTitle>
+                            <CardDescription>Manage the Vision & Mission section displayed on the homepage.</CardDescription>
+                        </div>
+                        <Button onClick={openCreateForm}>
+                            <PlusCircle className="mr-2 h-4 w-4" /> Create Item
+                        </Button>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Icon</TableHead>
+                                    <TableHead>Type</TableHead>
+                                    <TableHead>Title</TableHead>
+                                    <TableHead>Description</TableHead>
+                                    <TableHead>Order</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead>Created At</TableHead>
+                                    <TableHead><span className="sr-only">Actions</span></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {corePurposes.data.length > 0 ? (
+                                    corePurposes.data.map((item) => (
+                                        <TableRow key={item.id}>
+                                            <TableCell>
+                                                {item.icon ? (
+                                                    <img src={item.icon} alt={item.title} className="h-8 w-8 object-contain" />
+                                                ) : (
+                                                    <span className="text-muted-foreground text-sm">—</span>
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant="outline">{item.type}</Badge>
+                                            </TableCell>
+                                            <TableCell className="font-medium">{item.title}</TableCell>
+                                            <TableCell className="max-w-xs truncate">{item.description}</TableCell>
+                                            <TableCell>{item.sort_order}</TableCell>
+                                            <TableCell>
+                                                {item.is_visible ? (
+                                                    <Badge variant="outline" className="text-green-600">Visible</Badge>
+                                                ) : (
+                                                    <Badge variant="outline" className="text-muted-foreground">Hidden</Badge>
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
+                                                {format(new Date(item.created_at), 'MMM dd, yyyy')}
+                                            </TableCell>
+                                            <TableCell>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" className="h-8 w-8 p-0">
+                                                            <span className="sr-only">Open menu</span>
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuItem onClick={() => openEditForm(item)}>
+                                                            <Pencil className="mr-2 h-4 w-4" /> Edit
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleDelete(item)} className="text-destructive">
+                                                            <Trash2 className="mr-2 h-4 w-4" /> Delete
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={8} className="h-24 text-center">
+                                            No core purpose items found.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            </div>
+
+            <CorePurposeFormDialog
+                isOpen={isFormOpen}
+                onClose={() => setIsFormOpen(false)}
+                corePurpose={editingItem}
+            />
+        </AppLayout>
+    );
+}

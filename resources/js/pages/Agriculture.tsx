@@ -3,22 +3,43 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AgricultureHero from './components/AgricultureHero';
 import AgricultureContent from './components/AgricultureContent';
+import SolutionDetail from './SolutionDetail';
 import React from 'react';
-import AgricultureContentCopy from './components/AgricultureContentCopy';
 
-export default function Agriculture() {
-  return (
-    <>
-      <Head title="Smart Agriculture & Agri-IoT - Morpho" />
+interface Ecosystem {
+    id: number;
+    type: string;
+    slug: string;
+    icon: string;
+    title: string;
+    description: string;
+    image: string | null;
+    href: string | null;
+    features: string[];
+    content: any;
+    subtitle: string | null;
+    sort_order: number;
+    is_visible: boolean;
+}
 
-      <Navbar />
+interface Props {
+    ecosystem?: Ecosystem;
+}
 
-      <main>
-        <AgricultureHero />
-        <AgricultureContent />
-      </main>
+export default function Agriculture({ ecosystem }: Props) {
+    if (ecosystem) {
+        return <SolutionDetail ecosystem={ecosystem} />;
+    }
 
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Head title="Smart Agriculture & Agri-IoT - Morpho" />
+            <Navbar />
+            <main>
+                <AgricultureHero />
+                <AgricultureContent />
+            </main>
+            <Footer />
+        </>
+    );
 }

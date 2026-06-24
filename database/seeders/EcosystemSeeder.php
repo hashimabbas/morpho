@@ -1,0 +1,501 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Ecosystem;
+use Illuminate\Database\Seeder;
+
+class EcosystemSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $ecosystems = [
+            [
+                'type' => 'service',
+                'slug' => 'cold-chain',
+                'icon' => 'thermometer',
+                'title' => 'Cold Chain & Refrigerated Transport',
+                'description' => 'Real-time monitoring for sensitive and high-value shipments during transport.',
+                'image' => '/images/products.png',
+                'href' => '/solutions/cold-chain',
+                'features' => [
+                    'High-precision temperature & humidity monitoring',
+                    'Real-time GPS tracking & door opening detection',
+                    'Instant alerts for threshold violations',
+                    'Compliant digital reports for accountability',
+                ],
+                'subtitle' => 'Tailored, scalable, and sovereign IoT ecosystems built for industry-specific challenges and national security.',
+                'sort_order' => 0,
+                'content' => [
+                    'hero' => [
+                        'title' => 'Supply Chain Technologies',
+                        'subtitle' => 'Leadership in Smart Cold Chain Logistics Solutions',
+                        'description' => 'Morpho Supply Chain Technologies The first company in the Gulf and middle East specializing in smart solutions for managing cold supply chains, utilizing Iot and AI Technologies to ensure the highest levels of security and transparency.',
+                        'images' => [
+                            ['src' => '/images/header3.png', 'alt' => 'Cold Chain Solutions'],
+                            ['src' => '/images/header1.png', 'alt' => 'Cold Chain Monitoring'],
+                            ['src' => '/images/header2.png', 'alt' => 'Cold Chain Transport'],
+                        ],
+                    ],
+                    'sections' => [
+                        [
+                            'type' => 'formula',
+                            'title' => 'Real-time Visibility + IoT + Satellites =',
+                            'subtitle' => 'Protecting High-Value Shipments from Dispatch to Delivery',
+                        ],
+                        [
+                            'type' => 'challenges',
+                            'title' => 'The Challenge in Transit',
+                            'description' => 'One of the biggest supply chain challenges is the lack of real-time data during transit and reliance on post-incident inspection.',
+                            'items' => [
+                                ['icon' => 'shield-alert', 'title' => 'Product spoilage', 'description' => 'Loss of quality and safety during transport.'],
+                                ['icon' => 'thermometer', 'title' => 'Temperature fluctuations', 'description' => 'Changes affecting high-value shipment integrity.'],
+                                ['icon' => 'alert-triangle', 'title' => 'No early warning', 'description' => 'Reliance on post-incident inspection instead of prevention.'],
+                                ['icon' => 'shield-check', 'title' => 'Compliance difficulty', 'description' => 'Hard to prove regulatory and safety standards.'],
+                                ['icon' => 'eye', 'title' => 'Low transparency', 'description' => 'Limited visibility into real-time operational status.'],
+                                ['icon' => 'map-pin', 'title' => 'Lack of tracking', 'description' => 'Inability to determine exact causes of spoilage in transit.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'solution',
+                            'title' => 'The Morpho Solution',
+                            'description' => 'A smart satellite-connected IoT device that collects environmental data in real time, sends it to the Morpho cloud platform, and enables immediate intervention.',
+                            'features' => [
+                                'Immediate intervention during transit',
+                                'Cloud-based real-time analysis',
+                                'Threshold violation prevention',
+                                'End-to-end full visibility',
+                            ],
+                            'image' => '/images/products.png',
+                        ],
+                        [
+                            'type' => 'capabilities',
+                            'title' => 'Core Capabilities',
+                            'description' => 'Advanced IoT sensors designed for the most demanding environments.',
+                            'items' => [
+                                ['icon' => 'thermometer', 'title' => 'Temperature & Humidity', 'description' => 'High-precision environmental monitoring.'],
+                                ['icon' => 'droplets', 'title' => 'Pressure & Sensors', 'description' => 'Humidity and pressure tracking for sensitive cargo.'],
+                                ['icon' => 'zap', 'title' => 'Asset Security', 'description' => 'Shock, vibration, and door opening detection.'],
+                                ['icon' => 'map-pin', 'title' => 'Global Positioning', 'description' => 'Real-time GPS tracking across the supply chain.'],
+                                ['icon' => 'shield-alert', 'title' => 'Instant Alerts', 'description' => 'Immediate notifications for any threshold violations.'],
+                                ['icon' => 'chart-line', 'title' => 'Digital Reports', 'description' => 'Legally compliant automated regulatory reporting.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'values',
+                            'title' => 'Business Value',
+                            'bgColor' => 'dark',
+                            'items' => [
+                                ['label' => 'Reduce waste', 'value' => 'Less Spoilage'],
+                                ['label' => 'Operational cost', 'value' => 'Lower Expenses'],
+                                ['label' => 'Compliance', 'value' => 'Full Accountability'],
+                                ['label' => 'Insurance claims', 'value' => 'Significant Reduction'],
+                                ['label' => 'Customer Trust', 'value' => 'Improved Loyalty'],
+                                ['label' => 'Reputation', 'value' => 'Brand Protection'],
+                            ],
+                        ],
+                        [
+                            'type' => 'sectors',
+                            'title' => 'Application Sectors',
+                            'items' => [
+                                ['name' => 'Food & Seafood', 'icon' => 'ship'],
+                                ['name' => 'Pharmaceuticals', 'icon' => 'stethoscope'],
+                                ['name' => 'Cold Chain Logistics', 'icon' => 'truck'],
+                                ['name' => 'Insurance Companies', 'icon' => 'building-2'],
+                                ['name' => 'Oil & Gas (Sensitive)', 'icon' => 'factory'],
+                                ['name' => 'Government Entities', 'icon' => 'shield'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'type' => 'service',
+                'slug' => 'warehousing',
+                'icon' => 'warehouse',
+                'title' => 'Smart Warehousing & Supply Chain',
+                'description' => 'Smart monitoring for food, pharmaceutical, and cold storage warehouses.',
+                'image' => '/images/warehouse-1.png',
+                'href' => '/solutions/warehousing',
+                'features' => [
+                    'Environmental monitoring & instant alerts',
+                    'Full inventory visibility & decision-support reports',
+                    'Integration with existing management systems',
+                    '24/7 operation without manual intervention',
+                ],
+                'subtitle' => null,
+                'sort_order' => 1,
+                'content' => [
+                    'hero' => [
+                        'title' => 'Efficiency & Security for Every Asset',
+                        'subtitle' => null,
+                        'description' => 'Intelligent monitoring solutions for warehouses and supply chains, ensuring quality, compliance, and optimized operations for food, pharmaceuticals, and beyond.',
+                        'badge' => 'Smart Warehousing & Supply Chain',
+                        'badgeIcon' => 'warehouse',
+                        'image' => '/images/warehouse-1.png',
+                    ],
+                    'sections' => [
+                        [
+                            'type' => 'offerings',
+                            'title' => 'Why Choose Morpho?',
+                            'description' => 'Optimizing storage environments and supply chain resilience with data-driven expertise.',
+                            'items' => [
+                                ['icon' => 'zap', 'title' => 'Reduce waste', 'description' => 'Minimizing product damage and expiration through precise environment control.'],
+                                ['icon' => 'shield-alert', 'title' => 'Early Detection', 'description' => 'Spotting storage issues and equipment failures before they become critical.'],
+                                ['icon' => 'settings-2', 'title' => 'Operational Efficiency', 'description' => 'Streamlining flows and reducing manual data entry for faster dispatch.'],
+                                ['icon' => 'clipboard-check', 'title' => 'Quality Compliance', 'description' => 'Automated logging to meet strict national and international standards.'],
+                                ['icon' => 'expand', 'title' => 'Scalable Design', 'description' => 'Easily extendable monitoring from single rooms to national networks.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'capabilities',
+                            'title' => 'What We Offer',
+                            'items' => [
+                                ['icon' => 'thermometer', 'title' => 'Temp & Humidity', 'description' => 'High-precision monitoring for sensitive goods and cold storage.'],
+                                ['icon' => 'bell', 'title' => 'Instant Alerts', 'description' => 'Immediate notifications via SMS, email, or app for any violations.'],
+                                ['icon' => 'package', 'title' => 'Inventory Visibility', 'description' => 'Real-time tracking of stock levels and storage conditions.'],
+                                ['icon' => 'bar-chart', 'title' => 'Decision Support', 'description' => 'In-depth reports that transform raw data into actionable insights.'],
+                                ['icon' => 'cpu', 'title' => 'Seamless Integration', 'description' => 'Plug-and-play compatibility with your existing WMS or ERP systems.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'security',
+                            'title' => 'Privacy & Security as a Core',
+                            'description' => 'Designed for government entities and large corporations that demand total data sovereignty and regulatory compliance.',
+                            'features' => [
+                                'Full control and ownership of your data',
+                                'Strict adherence to national regulatory standards',
+                                'On-premise deployment options for high security',
+                                'Suitable for critical national supply chains',
+                            ],
+                            'subtitle' => 'Sovereign Architecture',
+                            'image' => 'Built for National Scale',
+                        ],
+                        [
+                            'type' => 'workflow',
+                            'title' => 'How It Works',
+                            'items' => [
+                                ['step' => '1', 'title' => 'Deploy Sensors', 'description' => 'Smart IoT sensors are placed throughout the facility.'],
+                                ['step' => '2', 'title' => 'Data Transmission', 'description' => 'Real-time data is sent securely to the Morpho platform.'],
+                                ['step' => '3', 'title' => 'Smart Analysis', 'description' => 'AI algorithms analyze environment and stock status.'],
+                                ['step' => '4', 'title' => '24/7 Monitoring', 'description' => 'Autonomous operation with no manual intervention needed.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'sectors',
+                            'title' => 'Target Sectors',
+                            'items' => [
+                                ['name' => 'Cold Warehousing', 'icon' => 'warehouse'],
+                                ['name' => 'Logistics Providers', 'icon' => 'truck'],
+                                ['name' => 'Food Supply Chain', 'icon' => 'package'],
+                                ['name' => 'Pharmaceutical Depts', 'icon' => 'clipboard-check'],
+                                ['name' => 'Large Enterprise', 'icon' => 'building-2'],
+                                ['name' => 'Government Stores', 'icon' => 'shield-check'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'type' => 'service',
+                'slug' => 'agriculture',
+                'icon' => 'sprout',
+                'title' => 'Smart Agriculture & Agri-IoT Ecosystem',
+                'description' => 'Integrated agricultural system to optimize production and resource efficiency.',
+                'image' => '/images/Agriculture-2.png',
+                'href' => '/solutions/agriculture',
+                'features' => [
+                    'Sensor network for soil health & crop conditions',
+                    'Reduce water waste by up to 30%',
+                    'Early warning for disease spread prevention',
+                    'Satellite connectivity for remote farm coverage',
+                ],
+                'subtitle' => null,
+                'sort_order' => 2,
+                'content' => [
+                    'hero' => [
+                        'title' => 'Agriculture-IoT Ecosystem',
+                        'subtitle' => null,
+                        'description' => 'An integrated agricultural system combining IoT devices, weather & soil stations, remote sensing technologies, and satellite connectivity to optimize agricultural production and resource efficiency.',
+                        'badge' => 'Smart Agri-IoT',
+                        'badgeIcon' => 'sprout',
+                        'image' => '/images/Agriculture-1.png',
+                    ],
+                    'sections' => [
+                        [
+                            'type' => 'formula',
+                            'title' => 'IoT + Satellites + Advanced Analytics =',
+                            'subtitle' => 'More accurate - Smarter - More productive - Lower cost farming',
+                        ],
+                        [
+                            'type' => 'challenges',
+                            'title' => 'The Challenges We Solve',
+                            'description' => 'Traditional farming faces mounting pressures. Our technology bridge the gap.',
+                            'items' => [
+                                ['icon' => 'droplets', 'title' => 'Water waste', 'description' => 'Inefficient irrigation leading to significant water loss.'],
+                                ['icon' => 'shield-check', 'title' => 'Undetected disease spread', 'description' => 'Slow response to crop diseases due to lack of early detection.'],
+                                ['icon' => 'trending-up', 'title' => 'Low productivity', 'description' => 'Suboptimal yields caused by traditional farming methods.'],
+                                ['icon' => 'lightbulb', 'title' => 'Inaccurate decisions', 'description' => 'Agricultural choices made without real-time data support.'],
+                                ['icon' => 'cloud', 'title' => 'Lack of soil & climate data', 'description' => 'Missing critical info on soil health and local weather patterns.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'solution',
+                            'title' => 'Our Solution',
+                            'description' => 'A sensor network and analytics platform providing full visibility into your farm\'s ecosystem:',
+                            'features' => [
+                                'Soil health monitoring',
+                                'Crop conditions tracking',
+                                'Agricultural environment analysis',
+                            ],
+                        ],
+                        [
+                            'type' => 'values',
+                            'title' => 'The Value we Deliver',
+                            'bgColor' => 'dark',
+                            'items' => [
+                                ['label' => 'Reduce water waste', 'value' => 'up to 30%'],
+                                ['label' => 'Early warning', 'value' => 'Cost Reduction'],
+                                ['label' => 'Food safety', 'value' => 'Full Compliance'],
+                                ['label' => 'Quality data', 'value' => 'Farmer & Govt'],
+                                ['label' => 'Monitoring', 'value' => '24/7 Access'],
+                                ['label' => 'Productivity', 'value' => 'Data-Driven'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'type' => 'service',
+                'slug' => 'livestock',
+                'icon' => 'beef',
+                'title' => 'Livestock & Animal IoT Solutions',
+                'description' => 'Real-time monitoring and management of livestock in remote environments.',
+                'image' => '/images/Livestock-2.png',
+                'href' => '/solutions/livestock',
+                'features' => [
+                    'Real-time location tracking & behavior analysis',
+                    'Vital indicators (Heart rate, temperature, respiration)',
+                    'Harsh environment resistance & long battery life',
+                    'Abnormal behavior and health alerts',
+                ],
+                'subtitle' => null,
+                'sort_order' => 3,
+                'content' => [
+                    'hero' => [
+                        'title' => 'Livestock & Animal IoT Solutions',
+                        'subtitle' => null,
+                        'description' => 'A smart system for real-time monitoring and management of livestock, especially designed for open and remote environments.',
+                        'badge' => 'Smart Livestock IoT',
+                        'badgeIcon' => 'activity',
+                        'image' => '/images/Livestock-2.png',
+                    ],
+                    'sections' => [
+                        [
+                            'type' => 'formula',
+                            'title' => 'IoT + Smart Analytics + Real-time Tracking =',
+                            'subtitle' => 'Smarter Management and Safer Environments for Livestock',
+                        ],
+                        [
+                            'type' => 'problems',
+                            'title' => 'The Challenges',
+                            'items' => [
+                                ['icon' => 'alert-triangle', 'title' => 'Traffic Accidents', 'description' => 'Collisions caused by stray animals on major roads.'],
+                                ['icon' => 'shield-alert', 'title' => 'Loss & Theft', 'description' => 'Increased risk of animal theft and uncontrolled wandering.'],
+                                ['icon' => 'map', 'title' => 'Tracking Difficulty', 'description' => 'Challenges in monitoring movement and behavior in open range.'],
+                                ['icon' => 'zap', 'title' => 'Remote response', 'description' => 'Slow response times and weak intervention in far-off regions.'],
+                                ['icon' => 'eye', 'title' => 'Lack of data', 'description' => 'Absence of accurate historical and real-time medical data.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'solution',
+                            'title' => 'The Morpho Solution',
+                            'description' => 'A non-intrusive monitoring ecosystem using smart collars and vests combined with a powerful analytics platform.',
+                            'features' => [
+                                'Smart tracking collars & vests',
+                                'Long-range battery life',
+                                'Behavioral & health analysis platform',
+                                'Real-time data sharing with vets',
+                            ],
+                            'image' => '/images/Livestock-1.png',
+                        ],
+                        [
+                            'type' => 'capabilities',
+                            'title' => 'System Capabilities',
+                            'items' => [
+                                ['icon' => 'map-pin', 'title' => 'Real-time Tracking', 'description' => 'Precise location monitoring for individual animals or herds.'],
+                                ['icon' => 'activity', 'title' => 'Behavior Analysis', 'description' => 'Detailed insights into movement patterns and activity levels.'],
+                                ['icon' => 'heart-pulse', 'title' => 'Vital Indicators', 'description' => 'Monitoring pulse, temperature, respiration, and ECG.'],
+                                ['icon' => 'shield-check', 'title' => 'Abnormal Alerts', 'description' => 'Immediate notifications for health issues or odd behavior.'],
+                                ['icon' => 'shield', 'title' => 'Harsh Resistance', 'description' => 'Devices designed to withstand extreme weather and terrain.'],
+                                ['icon' => 'zap', 'title' => 'Remote Coverage', 'description' => 'Wide-range connectivity solutions for deep rural areas.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'values',
+                            'title' => 'Community & Commercial Value',
+                            'bgColor' => 'dark',
+                            'items' => [
+                                ['label' => 'Reduce accidents', 'value' => 'Saved Lives'],
+                                ['label' => 'Asset Protection', 'value' => 'Secure Investment'],
+                                ['label' => 'Herd Management', 'value' => 'Optimized Tracking'],
+                                ['label' => 'Remote Veterinary', 'value' => 'Better Care'],
+                                ['label' => 'Decision Making', 'value' => 'Data-Driven'],
+                                ['label' => 'Treatment Cost', 'value' => 'Lower Expenses'],
+                            ],
+                        ],
+                        [
+                            'type' => 'sectors',
+                            'title' => 'Target Sectors',
+                            'items' => [
+                                ['name' => 'Security Authorities', 'icon' => 'shield'],
+                                ['name' => 'Livestock Departments', 'icon' => 'beef'],
+                                ['name' => 'Environmental Authorities', 'icon' => 'bird'],
+                                ['name' => 'Herd Owners', 'icon' => 'users'],
+                                ['name' => 'Racing Clubs', 'icon' => 'trending-up'],
+                                ['name' => 'Wildlife Protection', 'icon' => 'dog'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'type' => 'service',
+                'slug' => 'marine',
+                'icon' => 'anchor',
+                'title' => 'Marine, Drone & Remote Assets',
+                'description' => 'Maritime security solution featuring smart marine license plate technologies.',
+                'image' => '/images/Marine-1.png',
+                'href' => '/solutions/marine',
+                'features' => [
+                    'Autonomous, tamper-resistant & satellite connected',
+                    'High-precision GPS & load sensors',
+                    '5-10 year lifespan with IP68 design',
+                    'Support search & rescue and fishing regulation',
+                ],
+                'subtitle' => null,
+                'sort_order' => 4,
+                'content' => [
+                    'hero' => [
+                        'title' => 'Marine, Drone & Remote Asset Monitoring',
+                        'subtitle' => null,
+                        'description' => 'National pioneer solution for marine security based on the first fully integrated smart license plates in the region.',
+                        'badge' => 'Smart Marine Security',
+                        'badgeIcon' => 'waves',
+                        'image' => '/images/Marine-1.png',
+                    ],
+                    'sections' => [
+                        [
+                            'type' => 'formula',
+                            'title' => 'Integrated IoT + Satellite + Smart Plate =',
+                            'subtitle' => 'A New Standard for National Maritime Sovereignty',
+                            'bgColor' => 'blue',
+                        ],
+                        [
+                            'type' => 'overview',
+                            'title' => 'The Future of Marine Security',
+                            'description' => 'Self-operational, tamper-resistant, and satellite-connected. Our smart maritime license plates are a national pioneer in the region.',
+                            'stats' => [
+                                ['label' => 'Battery Life', 'value' => '5-10 Years', 'icon' => 'battery'],
+                                ['label' => 'Connectivity', 'value' => 'Sat-Connected', 'icon' => 'globe'],
+                                ['label' => 'Durability', 'value' => 'IP68 Military', 'icon' => 'shield'],
+                                ['label' => 'Automation', 'value' => 'Self-Operational', 'icon' => 'zap'],
+                            ],
+                            'image' => '/images/Marine-2.png',
+                        ],
+                        [
+                            'type' => 'capabilities',
+                            'title' => 'System Capabilities',
+                            'items' => [
+                                ['icon' => 'map-pin', 'title' => 'Location Tracking', 'description' => 'Continuous real-time GPS positioning via dedicated satellites.'],
+                                ['icon' => 'activity', 'title' => 'Tilt & Movement', 'description' => 'Monitoring boat stability and directional movement triggers.'],
+                                ['icon' => 'shield-alert', 'title' => 'Emergency Alerts', 'description' => 'Instant distress signals for mechanical failure or accidents.'],
+                                ['icon' => 'shield', 'title' => 'Tamper Resistance', 'description' => 'Smart license plates that cannot be removed or altered without detection.'],
+                                ['icon' => 'hard-drive', 'title' => 'Load Sensors', 'description' => 'Monitoring capacity and cargo shifts during maritime transit.'],
+                                ['icon' => 'droplets', 'title' => 'IP68+ Design', 'description' => 'Fully waterproof and salt-resistant for the harshest marine environments.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'decision-support',
+                            'title' => 'Empowering Authorities through Real-time Insights',
+                            'items' => [
+                                ['title' => 'Behavioral Charts', 'description' => 'Detailed maritime charts based on historical movement patterns.'],
+                                ['title' => 'Fishing Regulation', 'description' => 'Automated monitoring of restricted zones and season compliance.'],
+                                ['title' => 'Density Analysis', 'description' => 'Real-time boat density identification for better harbor management.'],
+                                ['title' => 'Stock Preservation', 'description' => 'Data-driven insights to protect fish stocks from overfishing.'],
+                            ],
+                        ],
+                        [
+                            'type' => 'values',
+                            'title' => 'Strategic National Value',
+                            'bgColor' => 'dark',
+                            'items' => [
+                                ['label' => 'Security', 'value' => 'National Defense'],
+                                ['label' => 'Prevention', 'value' => 'Illegal Activities'],
+                                ['label' => 'Search & Rescue', 'value' => 'Fast Response'],
+                                ['label' => 'Protection', 'value' => 'Fisherman Safety'],
+                                ['label' => 'Economy', 'value' => 'Blue Growth'],
+                                ['label' => 'Sustainability', 'value' => 'Marine Life'],
+                            ],
+                        ],
+                        [
+                            'type' => 'sectors',
+                            'title' => 'Target Sectors',
+                            'items' => [
+                                ['name' => 'Fisheries Dept', 'icon' => 'ship'],
+                                ['name' => 'Security Authorities', 'icon' => 'shield'],
+                                ['name' => 'Environmental Agencies', 'icon' => 'waves'],
+                                ['name' => 'Coast Guard', 'icon' => 'anchor'],
+                                ['name' => 'Research Centers', 'icon' => 'microscope'],
+                                ['name' => 'Government Monitoring', 'icon' => 'eye'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'type' => 'project',
+                'slug' => 'smart-port',
+                'icon' => 'clipboard-check',
+                'title' => 'Smart Port & Logistics Hub',
+                'description' => 'End-to-end IoT integration for a major regional port, covering asset tracking, environmental monitoring, and automated compliance.',
+                'image' => '/images/products.png',
+                'href' => '/solutions/marine',
+                'features' => [
+                    'Real-time container & fleet tracking',
+                    'Automated regulatory reporting',
+                    'Integrated security & access control',
+                    'Centralized command center dashboard',
+                ],
+                'subtitle' => null,
+                'sort_order' => 5,
+                'content' => null,
+            ],
+            [
+                'type' => 'project',
+                'slug' => 'pharma-cold-chain',
+                'icon' => 'shield-check',
+                'title' => 'Cold Chain Compliance for Pharma',
+                'description' => 'End-to-end cold chain visibility for pharmaceutical distribution, ensuring regulatory compliance and product integrity.',
+                'image' => '/images/products.png',
+                'href' => '/solutions/cold-chain',
+                'features' => [
+                    'Continuous temperature & humidity logging',
+                    'Instant breach alerts with geolocation',
+                    'GDP & WHO compliance reporting',
+                    'Multi-stakeholder access portal',
+                ],
+                'subtitle' => null,
+                'sort_order' => 6,
+                'content' => null,
+            ],
+        ];
+
+        foreach ($ecosystems as $ecosystem) {
+            Ecosystem::updateOrCreate(
+                ['title' => $ecosystem['title']],
+                $ecosystem
+            );
+        }
+    }
+}

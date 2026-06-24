@@ -1,46 +1,24 @@
 // resources/js/components/OurPartners.tsx
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useEffect, useState } from 'react';
 
-const partners = [
-    {
-        name: 'Telnet Global',
-        role: 'Technology Partner (Tunisia)',
-        logo: '/images/logo/telnet.png', // Replace with actual logo path
-    },
-    {
-        name: 'Onomondo',
-        role: 'IoT Connectivity Solutions Provider (Denmark)',
-        logo: '/images/logo/onomondo.png',
-    },
-    {
-        name: 'INTAJ STARS Technology Services',
-        role: 'Development & Consulting (Oman)',
-        logo: '/images/logo/intaj.png',
-    },
-    {
-        name: 'Shenzhen Fuwit Technology Co.,Ltd',
-        role: 'Shenzhen Fuwit Technology Co.,Ltd',
-        logo: '/images/logo/fuwit.png',
-    },
-    {
-        name: 'ASYAD',
-        role: 'asyad',
-        logo: '/images/logo/asyad.png',
-    },
-    {
-        name: 'AETC',
-        role: 'Business Supply Trading Company "AETC"',
-        logo: '/images/logo/aetc.png',
-    },
-    {
-        name: '(AVOD) S.A.O.C',
-        role: 'Areej Vegetable Oils & Derivatives SAOC',
-        logo: '/images/logo/avod.png'
-    },
-];
+type Partner = {
+    id: number;
+    name: string;
+    role: string | null;
+    logo: string | null;
+};
 
 export default function OurPartners() {
+    const [partners, setPartners] = useState<Partner[]>([]);
+
+    useEffect(() => {
+        fetch('/api/partners')
+            .then(res => res.json())
+            .then(data => setPartners(data))
+            .catch(() => {});
+    }, []);
     return (
         <section className="bg-slate-50 py-16 sm:py-24 dark:bg-gray-950">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -62,14 +40,14 @@ export default function OurPartners() {
                                     >
                                         <img
                                             className="h-40 w-auto object-contain"
-                                            src={partner.logo}
+                                            src={partner.logo ? `/${partner.logo}` : ''}
                                             alt={partner.name}
                                         />
                                     </div>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p className="font-semibold">{partner.name}</p>
-                                    <p className="text-xs text-muted-foreground">{partner.role}</p>
+                                    {partner.role && <p className="text-xs text-muted-foreground">{partner.role}</p>}
                                 </TooltipContent>
                             </Tooltip>
                         ))}
