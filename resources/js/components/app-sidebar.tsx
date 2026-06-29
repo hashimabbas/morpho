@@ -6,7 +6,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Contact, Cpu, Handshake, LayoutGrid, Mail, Presentation, Sparkles, Target, Crosshair, DollarSign, MessageSquare } from 'lucide-react';
+import { Contact, Cpu, Handshake, LayoutGrid, Mail, Presentation, Sparkles, Target, Crosshair, DollarSign, MessageSquare, Settings } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -64,6 +64,11 @@ const mainNavItems: NavItem[] = [
         title: 'Pricing Inquiries',
         href: route('dashboard.pricing-inquiries.index'),
         icon: MessageSquare,
+    },
+    {
+        title: 'Site Settings',
+        href: route('dashboard.settings.index'),
+        icon: Settings,
     },
 ];
 

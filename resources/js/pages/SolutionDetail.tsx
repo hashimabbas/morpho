@@ -2,7 +2,8 @@ import { Head, Link } from '@inertiajs/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { getIcon } from '@/lib/icons';
-import { ChevronRight, CheckCircle2, DatabaseZap } from 'lucide-react';
+import { ChevronRight, ChevronLeft, CheckCircle2, DatabaseZap } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import EmblaCarouselFade from 'embla-carousel-fade';
@@ -414,6 +415,7 @@ function renderSection(section: Section, index: number) {
 }
 
 function SolutionHero({ ecosystem }: { ecosystem: Ecosystem }) {
+    const { __, isRtl } = useTranslation();
     const content = ecosystem.content;
     const hero = content?.hero;
     const images = hero?.images || [
@@ -431,7 +433,7 @@ function SolutionHero({ ecosystem }: { ecosystem: Ecosystem }) {
         <section className="bg-white dark:bg-gray-900">
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
                 <div className="grid grid-cols-1 items-center gap-y-16 lg:grid-cols-2 lg:gap-x-24">
-                    <div className="text-center lg:text-left">
+                    <div className={`text-center ${isRtl ? 'lg:text-right' : 'lg:text-left'}`}>
                         <div className="opacity-100 transition-all duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
                             {hero?.badge && (
                                 <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-300 mb-4">
@@ -458,8 +460,8 @@ function SolutionHero({ ecosystem }: { ecosystem: Ecosystem }) {
                                     href={route('contact')}
                                     className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md bg-morpho px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-morpho-dark focus:outline-none focus:ring-2 focus:ring-morpho focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                                 >
-                                    Contact Us
-                                    <ChevronRight className="h-5 w-5" />
+                                    {__('nav.contact_us')}
+                                    {isRtl ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
                                 </Link>
                             </div>
                             <div className="opacity-100 transition-all delay-300 duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
@@ -468,7 +470,7 @@ function SolutionHero({ ecosystem }: { ecosystem: Ecosystem }) {
                                     className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border-2 border-transparent bg-gray-100 px-6 py-3 text-base font-semibold text-morpho-dark transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 dark:bg-gray-800 dark:text-morpho-light dark:hover:bg-gray-700 dark:focus:ring-offset-gray-900"
                                 >
                                     <DatabaseZap className="h-5 w-5" />
-                                    Discover Our Solutions
+                                    {__('sections.services_solutions.learn_more')}
                                 </Link>
                             </div>
                         </div>
@@ -514,11 +516,12 @@ function SolutionHero({ ecosystem }: { ecosystem: Ecosystem }) {
 }
 
 export default function SolutionDetail({ ecosystem }: Props) {
+    const { __ } = useTranslation();
     const content = ecosystem.content;
 
     return (
         <>
-            <Head title={`${ecosystem.title} - Morpho`} />
+            <Head title={`${ecosystem.title} - ${__('app_name')}`} />
             <Navbar />
             <main>
                 <SolutionHero ecosystem={ecosystem} />
@@ -535,7 +538,7 @@ export default function SolutionDetail({ ecosystem }: Props) {
                     <div id="details" className="bg-gray-50 py-24 dark:bg-gray-800/50">
                         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                             <div className="text-center">
-                                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">Key Features</h2>
+                                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">{__('sections.services_solutions.key_features')}</h2>
                             </div>
                             <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                                 {ecosystem.features.map((feature, index) => (

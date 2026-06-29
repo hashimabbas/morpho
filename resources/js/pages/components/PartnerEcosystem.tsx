@@ -1,4 +1,7 @@
+import { useTranslation } from '@/hooks/useTranslation';
+
 export default function PartnerEcosystem() {
+    const { __ } = useTranslation();
     const partners = [
         "Telnet Global (Tunisia)",
         "Onomondo (Denmark)",
@@ -12,9 +15,9 @@ export default function PartnerEcosystem() {
         <section className="bg-muted py-16 sm:py-24">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight">Our Partner Ecosystem</h2>
+                    <h2 className="text-3xl font-bold tracking-tight">{__('sections.partner_ecosystem.title')}</h2>
                     <p className="mt-2 text-lg text-muted-foreground">
-                        Collaboration is at the heart of our success. We are proud to work with leading global and local partners.
+                        {__('sections.partner_ecosystem.description')}
                     </p>
                 </div>
                 <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8">

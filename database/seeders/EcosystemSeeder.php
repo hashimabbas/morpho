@@ -15,7 +15,9 @@ class EcosystemSeeder extends Seeder
                 'slug' => 'cold-chain',
                 'icon' => 'thermometer',
                 'title' => 'Cold Chain & Refrigerated Transport',
+                'title_ar' => 'سلسلة التبريد والنقل المبرد',
                 'description' => 'Real-time monitoring for sensitive and high-value shipments during transport.',
+                'description_ar' => 'مراقبة فورية للشحنات الحساسة وعالية القيمة أثناء النقل.',
                 'image' => '/images/products.png',
                 'href' => '/solutions/cold-chain',
                 'features' => [
@@ -24,7 +26,14 @@ class EcosystemSeeder extends Seeder
                     'Instant alerts for threshold violations',
                     'Compliant digital reports for accountability',
                 ],
+                'features_ar' => [
+                    'مراقبة عالية الدقة لدرجة الحرارة والرطوبة',
+                    'تتبع GPS فوري وكشف فتح الأبواب',
+                    'تنبيهات فورية لتجاوز الحدود المسموحة',
+                    'تقارير رقمية متوافقة للمساءلة',
+                ],
                 'subtitle' => 'Tailored, scalable, and sovereign IoT ecosystems built for industry-specific challenges and national security.',
+                'subtitle_ar' => 'أنظمة إنترنت أشياء مخصصة وقابلة للتطوير وذات سيادة، مصممة لتحديات صناعية محددة والأمن الوطني.',
                 'sort_order' => 0,
                 'content' => [
                     'hero' => [
@@ -114,7 +123,9 @@ class EcosystemSeeder extends Seeder
                 'slug' => 'warehousing',
                 'icon' => 'warehouse',
                 'title' => 'Smart Warehousing & Supply Chain',
+                'title_ar' => 'التخزين الذكي وسلسلة التوريد',
                 'description' => 'Smart monitoring for food, pharmaceutical, and cold storage warehouses.',
+                'description_ar' => 'مراقبة ذكية لمستودعات الطعام والأدوية والتخزين المبرد.',
                 'image' => '/images/warehouse-1.png',
                 'href' => '/solutions/warehousing',
                 'features' => [
@@ -123,7 +134,14 @@ class EcosystemSeeder extends Seeder
                     'Integration with existing management systems',
                     '24/7 operation without manual intervention',
                 ],
+                'features_ar' => [
+                    'مراقبة بيئية وتنبيهات فورية',
+                    'رؤية كاملة للمخزون وتقارير دعم القرار',
+                    'تكامل مع أنظمة الإدارة الحالية',
+                    'تشغيل 24/7 دون تدخل يدوي',
+                ],
                 'subtitle' => null,
+                'subtitle_ar' => null,
                 'sort_order' => 1,
                 'content' => [
                     'hero' => [
@@ -201,7 +219,9 @@ class EcosystemSeeder extends Seeder
                 'slug' => 'agriculture',
                 'icon' => 'sprout',
                 'title' => 'Smart Agriculture & Agri-IoT Ecosystem',
+                'title_ar' => 'الزراعة الذكية والنظام البيئي لإنترنت الأشياء الزراعي',
                 'description' => 'Integrated agricultural system to optimize production and resource efficiency.',
+                'description_ar' => 'نظام زراعي متكامل لتحسين الإنتاج وكفاءة الموارد.',
                 'image' => '/images/Agriculture-2.png',
                 'href' => '/solutions/agriculture',
                 'features' => [
@@ -210,7 +230,14 @@ class EcosystemSeeder extends Seeder
                     'Early warning for disease spread prevention',
                     'Satellite connectivity for remote farm coverage',
                 ],
+                'features_ar' => [
+                    'شبكة استشعار لصحة التربة وحالة المحاصيل',
+                    'تقليل هدر المياه بنسبة تصل إلى 30%',
+                    'إنذار مبكر لمنع انتشار الأمراض',
+                    'اتصال عبر الأقمار الصناعية للمزارع النائية',
+                ],
                 'subtitle' => null,
+                'subtitle_ar' => null,
                 'sort_order' => 2,
                 'content' => [
                     'hero' => [
@@ -270,7 +297,9 @@ class EcosystemSeeder extends Seeder
                 'slug' => 'livestock',
                 'icon' => 'beef',
                 'title' => 'Livestock & Animal IoT Solutions',
+                'title_ar' => 'حلول إنترنت الأشياء للثروة الحيوانية',
                 'description' => 'Real-time monitoring and management of livestock in remote environments.',
+                'description_ar' => 'مراقبة وإدارة فورية للثروة الحيوانية في البيئات النائية.',
                 'image' => '/images/Livestock-2.png',
                 'href' => '/solutions/livestock',
                 'features' => [
@@ -279,7 +308,14 @@ class EcosystemSeeder extends Seeder
                     'Harsh environment resistance & long battery life',
                     'Abnormal behavior and health alerts',
                 ],
+                'features_ar' => [
+                    'تتبع المواقع الفوري وتحليل السلوك',
+                    'المؤشرات الحيوية (معدل ضربات القلب، درجة الحرارة، التنفس)',
+                    'مقاومة البيئات القاسية وعمر بطارية طويل',
+                    'تنبيهات السلوك غير الطبيعي والصحي',
+                ],
                 'subtitle' => null,
+                'subtitle_ar' => null,
                 'sort_order' => 3,
                 'content' => [
                     'hero' => [
@@ -364,7 +400,9 @@ class EcosystemSeeder extends Seeder
                 'slug' => 'marine',
                 'icon' => 'anchor',
                 'title' => 'Marine, Drone & Remote Assets',
+                'title_ar' => 'الأصول البحرية والطائرات بدون طيار والنائية',
                 'description' => 'Maritime security solution featuring smart marine license plate technologies.',
+                'description_ar' => 'حل أمني بحري يتميز بتقنيات اللوحات البحرية الذكية.',
                 'image' => '/images/Marine-1.png',
                 'href' => '/solutions/marine',
                 'features' => [
@@ -373,7 +411,14 @@ class EcosystemSeeder extends Seeder
                     '5-10 year lifespan with IP68 design',
                     'Support search & rescue and fishing regulation',
                 ],
+                'features_ar' => [
+                    'مستقل، مقاوم للعبث ومتصل بالأقمار الصناعية',
+                    'GPS عالي الدقة وأجهزة استشعار الحمولة',
+                    'عمر افتراضي 5-10 سنوات بتصميم IP68',
+                    'دعم البحث والإنقاذ وتنظيم الصيد',
+                ],
                 'subtitle' => null,
+                'subtitle_ar' => null,
                 'sort_order' => 4,
                 'content' => [
                     'hero' => [
@@ -458,7 +503,9 @@ class EcosystemSeeder extends Seeder
                 'slug' => 'smart-port',
                 'icon' => 'clipboard-check',
                 'title' => 'Smart Port & Logistics Hub',
+                'title_ar' => 'الميناء الذكي ومركز الخدمات اللوجستية',
                 'description' => 'End-to-end IoT integration for a major regional port, covering asset tracking, environmental monitoring, and automated compliance.',
+                'description_ar' => 'تكامل شامل لإنترنت الأشياء لميناء إقليمي رئيسي، يشمل تتبع الأصول والمراقبة البيئية والامتثال الآلي.',
                 'image' => '/images/products.png',
                 'href' => '/solutions/marine',
                 'features' => [
@@ -467,7 +514,14 @@ class EcosystemSeeder extends Seeder
                     'Integrated security & access control',
                     'Centralized command center dashboard',
                 ],
+                'features_ar' => [
+                    'تتبع فوري للحاويات والأسطول',
+                    'إعداد تقارير تنظيمية آلية',
+                    'أمن متكامل والتحكم في الوصول',
+                    'لوحة تحكم مركزية للقيادة',
+                ],
                 'subtitle' => null,
+                'subtitle_ar' => null,
                 'sort_order' => 5,
                 'content' => null,
             ],
@@ -476,7 +530,9 @@ class EcosystemSeeder extends Seeder
                 'slug' => 'pharma-cold-chain',
                 'icon' => 'shield-check',
                 'title' => 'Cold Chain Compliance for Pharma',
+                'title_ar' => 'الامتثال لسلسلة التبريد للأدوية',
                 'description' => 'End-to-end cold chain visibility for pharmaceutical distribution, ensuring regulatory compliance and product integrity.',
+                'description_ar' => 'رؤية شاملة لسلسلة التبريد لتوزيع الأدوية، مما يضمن الامتثال التنظيمي وسلامة المنتج.',
                 'image' => '/images/products.png',
                 'href' => '/solutions/cold-chain',
                 'features' => [
@@ -485,7 +541,14 @@ class EcosystemSeeder extends Seeder
                     'GDP & WHO compliance reporting',
                     'Multi-stakeholder access portal',
                 ],
+                'features_ar' => [
+                    'تسجيل مستمر لدرجة الحرارة والرطوبة',
+                    'تنبيهات فورية للاختراق مع تحديد الموقع الجغرافي',
+                    'تقارير الامتثال لمعايير GDP ومنظمة الصحة العالمية',
+                    'بوابة وصول متعددة الأطراف',
+                ],
                 'subtitle' => null,
+                'subtitle_ar' => null,
                 'sort_order' => 6,
                 'content' => null,
             ],

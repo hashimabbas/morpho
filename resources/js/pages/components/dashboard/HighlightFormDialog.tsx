@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,8 @@ type Highlight = {
     icon: string;
     title: string;
     description: string;
+    title_ar: string | null;
+    description_ar: string | null;
     sort_order: number;
     is_visible: boolean;
 };
@@ -26,11 +28,15 @@ interface Props {
 }
 
 export default function HighlightFormDialog({ isOpen, onClose, highlight }: Props) {
+    const [langTab, setLangTab] = useState<'en' | 'ar'>('en');
+
     const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
         _method: 'POST' as string,
         icon: 'thermometer',
         title: '',
         description: '',
+        title_ar: '',
+        description_ar: '',
         sort_order: 0,
         is_visible: true,
     });
@@ -44,6 +50,8 @@ export default function HighlightFormDialog({ isOpen, onClose, highlight }: Prop
                 icon: highlight.icon || 'thermometer',
                 title: highlight.title || '',
                 description: highlight.description || '',
+                title_ar: highlight.title_ar || '',
+                description_ar: highlight.description_ar || '',
                 sort_order: highlight.sort_order || 0,
                 is_visible: highlight.is_visible,
             });
@@ -53,9 +61,12 @@ export default function HighlightFormDialog({ isOpen, onClose, highlight }: Prop
                 icon: 'thermometer',
                 title: '',
                 description: '',
+                title_ar: '',
+                description_ar: '',
                 sort_order: 0,
                 is_visible: true,
             });
+            setLangTab('en');
         }
     }, [isOpen, highlight, isEditing]);
 
@@ -85,7 +96,7 @@ export default function HighlightFormDialog({ isOpen, onClose, highlight }: Prop
 
     return (
         <Dialog open={isOpen} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Highlight' : 'Create New Highlight'}</DialogTitle>
                     <DialogDescription>
@@ -109,16 +120,71 @@ export default function HighlightFormDialog({ isOpen, onClose, highlight }: Prop
                             </div>
                             <InputError message={errors.icon} className="col-span-4 col-start-2" />
                         </div>
+
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="title" className="text-right">Title</Label>
-                            <Input id="title" value={data.title} onChange={e => setData('title', e.target.value)} className="col-span-3" />
-                            <InputError message={errors.title} className="col-span-4 col-start-2" />
+                            <Label className="text-right">Language</Label>
+                            <div className="col-span-3 flex gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setLangTab('en')}
+                                    className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                                        langTab === 'en'
+                                            ? 'bg-morpho text-white'
+                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                                    }`}
+                                >
+                                    English
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setLangTab('ar')}
+                                    className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                                        langTab === 'ar'
+                                            ? 'bg-morpho text-white'
+                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                                    }`}
+                                >
+                                    العربية
+                                </button>
+                            </div>
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="description" className="text-right">Description</Label>
-                            <Textarea id="description" value={data.description} onChange={e => setData('description', e.target.value)} className="col-span-3" rows={3} />
-                            <InputError message={errors.description} className="col-span-4 col-start-2" />
-                        </div>
+
+                        {langTab === 'en' ? (
+                            <>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="title" className="text-right">
+                                        Title <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input id="title" value={data.title} onChange={e => setData('title', e.target.value)} className="col-span-3" dir="ltr" />
+                                    <InputError message={errors.title} className="col-span-4 col-start-2" />
+                                </div>
+                                <div className="grid grid-cols-4 items-start gap-4">
+                                    <Label htmlFor="description" className="text-right pt-2">
+                                        Description <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Textarea id="description" value={data.description} onChange={e => setData('description', e.target.value)} className="col-span-3" rows={3} dir="ltr" />
+                                    <InputError message={errors.description} className="col-span-4 col-start-2" />
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="title_ar" className="text-right">
+                                        العنوان
+                                    </Label>
+                                    <Input id="title_ar" value={data.title_ar} onChange={e => setData('title_ar', e.target.value)} className="col-span-3" dir="rtl" />
+                                    <InputError message={errors.title_ar} className="col-span-4 col-start-2" />
+                                </div>
+                                <div className="grid grid-cols-4 items-start gap-4">
+                                    <Label htmlFor="description_ar" className="text-right pt-2">
+                                        الوصف
+                                    </Label>
+                                    <Textarea id="description_ar" value={data.description_ar} onChange={e => setData('description_ar', e.target.value)} className="col-span-3" rows={3} dir="rtl" />
+                                    <InputError message={errors.description_ar} className="col-span-4 col-start-2" />
+                                </div>
+                            </>
+                        )}
+
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="sort_order" className="text-right">Order</Label>
                             <Input id="sort_order" type="number" value={data.sort_order} onChange={e => setData('sort_order', Number(e.target.value))} className="col-span-3" />

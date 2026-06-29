@@ -28,6 +28,12 @@ class UpdateEcosystemRequest extends FormRequest
             'subtitle' => ['nullable', 'string'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_visible' => ['nullable', 'boolean'],
+            'title_ar' => ['nullable', 'string', 'max:255'],
+            'description_ar' => ['nullable', 'string'],
+            'subtitle_ar' => ['nullable', 'string', 'max:255'],
+            'features_ar' => ['nullable', 'array'],
+            'features_ar.*' => ['nullable', 'string', 'max:500'],
+            'content_ar' => ['nullable', 'array'],
         ];
     }
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getIcon } from '@/lib/icons';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type Highlight = {
     id: number;
@@ -9,6 +10,7 @@ type Highlight = {
 };
 
 export default function MorphoSCTHighlights() {
+    const { __, locale } = useTranslation();
     const [highlights, setHighlights] = useState<Highlight[]>([]);
 
     useEffect(() => {
@@ -16,16 +18,16 @@ export default function MorphoSCTHighlights() {
             .then(res => res.json())
             .then(data => setHighlights(data))
             .catch(() => {});
-    }, []);
+    }, [locale]);
     return (
         <section className="bg-slate-50 py-16 sm:py-24 dark:bg-gray-950">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                        Morpho SCT Highlights
+                        {__('sections.highlights.title')}
                     </h2>
                     <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-400">
-                        End-to-end visibility and intelligence for cold chain logistics — from origin to final delivery.
+                        {__('sections.highlights.description')}
                     </p>
                 </div>
                 <div className="mx-auto mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

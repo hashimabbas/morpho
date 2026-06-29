@@ -19,13 +19,20 @@ class Ecosystem extends Model
         'subtitle',
         'sort_order',
         'is_visible',
+        'title_ar',
+        'description_ar',
+        'subtitle_ar',
+        'features_ar',
+        'content_ar',
     ];
 
     protected function casts(): array
     {
         return [
             'features' => 'array',
+            'features_ar' => 'array',
             'content' => 'array',
+            'content_ar' => 'array',
             'is_visible' => 'boolean',
         ];
     }

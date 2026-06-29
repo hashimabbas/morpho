@@ -19,6 +19,9 @@ class UpdateCorePurposeRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'subtitle' => ['nullable', 'string'],
+            'title_ar' => ['nullable', 'string', 'max:255'],
+            'description_ar' => ['nullable', 'string'],
+            'subtitle_ar' => ['nullable', 'string'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_visible' => ['nullable', 'boolean'],
         ];

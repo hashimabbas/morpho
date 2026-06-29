@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 import { getIcon } from '@/lib/icons';
 import { Badge } from '@/components/ui/badge';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type Ecosystem = {
     id: number;
@@ -17,6 +18,7 @@ type Ecosystem = {
 };
 
 export default function ServicesSolutions() {
+    const { __, locale, isRtl } = useTranslation();
     const [items, setItems] = useState<Ecosystem[]>([]);
     const subtitle = items.find(i => i.subtitle)?.subtitle || '';
 
@@ -25,7 +27,7 @@ export default function ServicesSolutions() {
             .then(res => res.json())
             .then(data => setItems(data))
             .catch(() => {});
-    }, []);
+    }, [locale]);
 
     const services = items.filter(i => i.type === 'service');
     const projects = items.filter(i => i.type === 'project');
@@ -35,7 +37,7 @@ export default function ServicesSolutions() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl text-center opacity-100 transition-all duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                        Morpho Smart Ecosystems
+                        {__('sections.services_solutions.title')}
                     </h2>
                     <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
                         {subtitle}
@@ -51,7 +53,7 @@ export default function ServicesSolutions() {
                                     <div className="relative opacity-100 transition-all duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
                                         <img className="h-64 w-full object-cover" src={sector.image ?? ''} alt={sector.title} />
                                         <div className="absolute top-4 right-4">
-                                            <Badge className="bg-morpho text-white hover:bg-morpho/90">Service</Badge>
+                                            <Badge className="bg-morpho text-white hover:bg-morpho/90">{__('sections.services_solutions.service_badge')}</Badge>
                                         </div>
                                     </div>
                                     <div className="flex flex-1 flex-col p-8 opacity-100 transition-all delay-200 duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
@@ -68,7 +70,7 @@ export default function ServicesSolutions() {
                                         </ul>
                                         <div className="mt-10 pt-6 border-t border-gray-100 dark:border-gray-800">
                                             <span className="inline-flex items-center gap-2 text-morpho font-bold group-hover:gap-3 transition-all">
-                                                Learn More <ArrowRight className="h-4 w-4" />
+                                                {__('sections.services_solutions.learn_more')} {isRtl ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
                                             </span>
                                         </div>
                                     </div>
@@ -82,10 +84,10 @@ export default function ServicesSolutions() {
                     <div className="mt-20">
                         <div className="mx-auto max-w-3xl text-center opacity-100 transition-all duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
                             <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
-                                Featured Projects
+                                {__('sections.services_solutions.featured_projects_title')}
                             </h3>
                             <p className="mt-2 text-base text-gray-600 dark:text-gray-400">
-                                Real-world deployments showcasing our IoT expertise.
+                                {__('sections.services_solutions.featured_projects_description')}
                             </p>
                         </div>
                         <div className="mx-auto mt-12 grid max-w-2xl grid-cols-1 gap-12 lg:max-w-none lg:grid-cols-2">
@@ -96,7 +98,7 @@ export default function ServicesSolutions() {
                                         <div className="relative opacity-100 transition-all duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
                                             <img className="h-64 w-full object-cover" src={project.image ?? ''} alt={project.title} />
                                             <div className="absolute top-4 right-4">
-                                                <Badge variant="secondary" className="bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-400">Project</Badge>
+                                                <Badge variant="secondary" className="bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-400">{__('sections.services_solutions.project_badge')}</Badge>
                                             </div>
                                         </div>
                                         <div className="flex flex-1 flex-col p-8 opacity-100 transition-all delay-200 duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
@@ -113,7 +115,7 @@ export default function ServicesSolutions() {
                                             </ul>
                                             <div className="mt-10 pt-6 border-t border-gray-100 dark:border-gray-800">
                                                 <span className="inline-flex items-center gap-2 text-morpho font-bold group-hover:gap-3 transition-all">
-                                                    View Project <ArrowRight className="h-4 w-4" />
+                                                    {__('sections.services_solutions.view_project')} {isRtl ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
                                                 </span>
                                             </div>
                                         </div>

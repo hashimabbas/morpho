@@ -19,18 +19,22 @@ interface Props {
 
 export default function RelatedEntities({ groupSlugs, title }: Props) {
     const [entities, setEntities] = useState<TargetEntity[]>([]);
+    const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
-        fetch('/api/target-entities')
-            .then(res => res.json())
-            .then((data: TargetEntity[]) => {
+        Promise.all([
+            fetch('/api/settings').then(res => res.json()),
+            fetch('/api/target-entities').then(res => res.json()),
+        ])
+            .then(([settings, data]: [Record<string, string>, TargetEntity[]]) => {
+                setIsVisible(settings.show_target_entities_section !== '0');
                 const filtered = data.filter(e => groupSlugs.includes(e.group_slug));
                 setEntities(filtered);
             })
             .catch(() => {});
     }, [groupSlugs.join(',')]);
 
-    if (entities.length === 0) return null;
+    if (!isVisible || entities.length === 0) return null;
 
     return (
         <section className="bg-white py-16 sm:py-20 dark:bg-gray-900">

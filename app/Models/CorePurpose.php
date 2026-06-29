@@ -12,6 +12,9 @@ class CorePurpose extends Model
         'title',
         'description',
         'subtitle',
+        'title_ar',
+        'description_ar',
+        'subtitle_ar',
         'sort_order',
         'is_visible',
     ];

@@ -1,7 +1,6 @@
-// resources/js/components/OurPartners.tsx
-
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useEffect, useState } from 'react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type Partner = {
     id: number;
@@ -11,6 +10,7 @@ type Partner = {
 };
 
 export default function OurPartners() {
+    const { __ } = useTranslation();
     const [partners, setPartners] = useState<Partner[]>([]);
 
     useEffect(() => {
@@ -24,10 +24,10 @@ export default function OurPartners() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                        Our Partner Ecosystem
+                        {__('sections.our_partners.title')}
                     </h2>
                     <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-400">
-                        We collaborate with industry leaders to deliver robust, end-to-end solutions.
+                        {__('sections.our_partners.description')}
                     </p>
                 </div>
                 <TooltipProvider>

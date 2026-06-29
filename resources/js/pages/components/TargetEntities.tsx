@@ -26,11 +26,15 @@ const groupMeta: Record<string, { label: string; Icon: any; color: string }> = {
 export default function TargetEntities() {
     const [groups, setGroups] = useState<GroupedEntities>({});
     const [activeGroup, setActiveGroup] = useState<string | null>(null);
+    const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
-        fetch('/api/target-entities')
-            .then(res => res.json())
-            .then((data: TargetEntity[]) => {
+        Promise.all([
+            fetch('/api/settings').then(res => res.json()),
+            fetch('/api/target-entities').then(res => res.json()),
+        ])
+            .then(([settings, data]: [Record<string, string>, TargetEntity[]]) => {
+                setIsVisible(settings.show_target_entities_section !== '0');
                 const grouped: GroupedEntities = {};
                 const order = ['nataj', 'asyad', 'oq', 'mining', 'nama'];
                 for (const slug of order) {
@@ -45,7 +49,7 @@ export default function TargetEntities() {
     }, []);
 
     const groupKeys = Object.keys(groups);
-    if (groupKeys.length === 0) return null;
+    if (!isVisible || groupKeys.length === 0) return null;
 
     return (
         <section className="relative overflow-hidden bg-white py-16 sm:py-24 dark:bg-gray-900">

@@ -23,6 +23,9 @@ interface CorePurpose {
     title: string;
     description: string;
     subtitle: string | null;
+    title_ar: string | null;
+    description_ar: string | null;
+    subtitle_ar: string | null;
     sort_order: number;
     is_visible: boolean;
     created_at: string;
@@ -84,8 +87,8 @@ export default function CorePurposes({ corePurposes }: Props) {
                                 <TableRow>
                                     <TableHead>Icon</TableHead>
                                     <TableHead>Type</TableHead>
-                                    <TableHead>Title</TableHead>
-                                    <TableHead>Description</TableHead>
+                                    <TableHead>Title (EN)</TableHead>
+                                    <TableHead>Title (AR)</TableHead>
                                     <TableHead>Order</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Created At</TableHead>
@@ -106,8 +109,14 @@ export default function CorePurposes({ corePurposes }: Props) {
                                             <TableCell>
                                                 <Badge variant="outline">{item.type}</Badge>
                                             </TableCell>
-                                            <TableCell className="font-medium">{item.title}</TableCell>
-                                            <TableCell className="max-w-xs truncate">{item.description}</TableCell>
+                                            <TableCell className="max-w-xs">
+                                                <div className="font-medium truncate">{item.title}</div>
+                                                <div className="text-xs text-muted-foreground truncate">{item.description}</div>
+                                            </TableCell>
+                                            <TableCell className="max-w-xs font-arabic" dir="rtl">
+                                                <div className="font-medium truncate">{item.title_ar || <span className="text-muted-foreground italic">—</span>}</div>
+                                                <div className="text-xs text-muted-foreground truncate">{item.description_ar || <span className="text-muted-foreground italic">—</span>}</div>
+                                            </TableCell>
                                             <TableCell>{item.sort_order}</TableCell>
                                             <TableCell>
                                                 {item.is_visible ? (

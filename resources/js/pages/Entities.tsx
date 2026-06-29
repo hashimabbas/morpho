@@ -70,11 +70,15 @@ const groupOrder = ['nataj', 'asyad', 'oq', 'mining', 'nama'];
 export default function Entities() {
     const [groups, setGroups] = useState<Record<string, TargetEntity[]>>({});
     const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+    const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
-        fetch('/api/target-entities')
-            .then(res => res.json())
-            .then((data: TargetEntity[]) => {
+        Promise.all([
+            fetch('/api/settings').then(res => res.json()),
+            fetch('/api/target-entities').then(res => res.json()),
+        ])
+            .then(([settings, data]: [Record<string, string>, TargetEntity[]]) => {
+                setIsVisible(settings.show_target_entities_section !== '0');
                 const grouped: Record<string, TargetEntity[]> = {};
                 for (const slug of groupOrder) {
                     const items = data.filter(e => e.group_slug === slug);
@@ -86,6 +90,28 @@ export default function Entities() {
     }, []);
 
     const groupKeys = Object.keys(groups);
+
+    if (!isVisible) {
+        return (
+            <>
+                <Head title="Target Entities - Morpho" />
+                <Navbar />
+                <main>
+                    <section className="relative flex min-h-[60vh] items-center justify-center bg-white dark:bg-gray-900">
+                        <div className="text-center">
+                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                                This page is currently unavailable.
+                            </h1>
+                            <p className="mt-2 text-gray-500">
+                                The Target Entities section has been hidden by the administrator.
+                            </p>
+                        </div>
+                    </section>
+                </main>
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>

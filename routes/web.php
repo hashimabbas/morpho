@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\PricingPlanController;
 use App\Http\Controllers\Dashboard\PricingComparisonFeatureController;
 use App\Http\Controllers\Dashboard\TargetEntityController;
 use App\Http\Controllers\Dashboard\PartnerController;
+use App\Http\Controllers\Dashboard\SiteSettingController;
 use App\Http\Controllers\DashboardController; // Make sure this is imported
 use App\Http\Controllers\DemoRequestController;
 use App\Http\Controllers\PricingInquiryController;
@@ -89,15 +90,42 @@ Route::get('/api/partners', function () {
 });
 
 Route::get('/api/highlights', function () {
-    return \App\Models\Highlight::where('is_visible', true)->orderBy('sort_order')->get(['id', 'icon', 'title', 'description']);
+    $locale = app()->getLocale();
+    return \App\Models\Highlight::where('is_visible', true)->orderBy('sort_order')->get()->map(fn ($h) => [
+        'id' => $h->id,
+        'icon' => $h->icon,
+        'title' => $locale === 'ar' && $h->title_ar ? $h->title_ar : $h->title,
+        'description' => $locale === 'ar' && $h->description_ar ? $h->description_ar : $h->description,
+    ]);
 });
 
 Route::get('/api/core-purposes', function () {
-    return \App\Models\CorePurpose::where('is_visible', true)->orderBy('sort_order')->get(['id', 'type', 'icon', 'title', 'description', 'subtitle']);
+    $locale = app()->getLocale();
+    return \App\Models\CorePurpose::where('is_visible', true)->orderBy('sort_order')->get()->map(fn ($cp) => [
+        'id' => $cp->id,
+        'type' => $cp->type,
+        'icon' => $cp->icon,
+        'title' => $locale === 'ar' && $cp->title_ar ? $cp->title_ar : $cp->title,
+        'description' => $locale === 'ar' && $cp->description_ar ? $cp->description_ar : $cp->description,
+        'subtitle' => $locale === 'ar' && $cp->subtitle_ar ? $cp->subtitle_ar : $cp->subtitle,
+    ]);
 });
 
 Route::get('/api/ecosystems', function () {
-    return \App\Models\Ecosystem::where('is_visible', true)->orderBy('sort_order')->get(['id', 'type', 'icon', 'title', 'description', 'image', 'href', 'features', 'subtitle']);
+    $locale = app()->getLocale();
+    return \App\Models\Ecosystem::where('is_visible', true)->orderBy('sort_order')->get()->map(function ($e) use ($locale) {
+        return [
+            'id' => $e->id,
+            'type' => $e->type,
+            'icon' => $e->icon,
+            'title' => $locale === 'ar' && $e->title_ar ? $e->title_ar : $e->title,
+            'description' => $locale === 'ar' && $e->description_ar ? $e->description_ar : $e->description,
+            'image' => $e->image,
+            'href' => $e->href,
+            'features' => $locale === 'ar' && $e->features_ar ? $e->features_ar : $e->features,
+            'subtitle' => $locale === 'ar' && $e->subtitle_ar ? $e->subtitle_ar : $e->subtitle,
+        ];
+    });
 });
 
 Route::get('/api/target-entities', function () {
@@ -106,6 +134,10 @@ Route::get('/api/target-entities', function () {
 
 Route::get('/api/pricing-plans', function () {
     return \App\Models\PricingPlan::where('is_visible', true)->orderBy('sort_order')->get();
+});
+
+Route::get('/api/settings', function () {
+    return \App\Models\Setting::pluck('value', 'key');
 });
 
 Route::get('/api/pricing-comparison-features', function () {
@@ -151,6 +183,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
     Route::delete('/pricing-inquiries/{pricingInquiry}', [PricingInquiryController::class, 'destroy'])
         ->name('pricing-inquiries.destroy');
+
+    Route::get('/settings', [SiteSettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SiteSettingController::class, 'update'])->name('settings.update');
 
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');

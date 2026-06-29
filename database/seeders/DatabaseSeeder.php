@@ -12,8 +12,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
+            HighlightSeeder::class,
             TargetEntitySeeder::class,
             PricingPlanSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

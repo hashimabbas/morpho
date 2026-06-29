@@ -31,6 +31,11 @@ interface Ecosystem {
     sort_order: number;
     is_visible: boolean;
     created_at: string;
+    title_ar: string | null;
+    description_ar: string | null;
+    subtitle_ar: string | null;
+    features_ar: string[] | null;
+    content_ar?: any;
 }
 
 interface PaginatedEcosystems {
@@ -95,7 +100,8 @@ export default function Ecosystems({ ecosystems }: Props) {
                                 <TableRow>
                                     <TableHead>Type</TableHead>
                                     <TableHead>Icon</TableHead>
-                                    <TableHead>Title</TableHead>
+                                    <TableHead>Title (EN)</TableHead>
+                                    <TableHead>Title (AR)</TableHead>
                                     <TableHead>Slug</TableHead>
                                     <TableHead>Features</TableHead>
                                     <TableHead>Order</TableHead>
@@ -115,6 +121,7 @@ export default function Ecosystems({ ecosystems }: Props) {
                                                 </TableCell>
                                                 <TableCell><Icon className="h-5 w-5 text-morpho" /></TableCell>
                                                 <TableCell className="font-medium">{item.title}</TableCell>
+                                                <TableCell className="text-muted-foreground text-sm">{item.title_ar || '-'}</TableCell>
                                                 <TableCell className="text-muted-foreground text-sm">{item.slug || '-'}</TableCell>
                                                 <TableCell className="max-w-xs truncate">{item.features.length} features</TableCell>
                                                 <TableCell>{item.sort_order}</TableCell>
@@ -154,7 +161,7 @@ export default function Ecosystems({ ecosystems }: Props) {
                                     })
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={9} className="h-24 text-center">No ecosystems found.</TableCell>
+                                        <TableCell colSpan={10} className="h-24 text-center">No ecosystems found.</TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>

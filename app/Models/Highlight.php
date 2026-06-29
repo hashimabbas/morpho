@@ -10,6 +10,8 @@ class Highlight extends Model
         'icon',
         'title',
         'description',
+        'title_ar',
+        'description_ar',
         'sort_order',
         'is_visible',
     ];

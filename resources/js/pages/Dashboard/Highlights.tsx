@@ -22,6 +22,8 @@ interface Highlight {
     icon: string;
     title: string;
     description: string;
+    title_ar: string | null;
+    description_ar: string | null;
     sort_order: number;
     is_visible: boolean;
     created_at: string;
@@ -82,8 +84,8 @@ export default function Highlights({ highlights }: Props) {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Icon</TableHead>
-                                    <TableHead>Title</TableHead>
-                                    <TableHead>Description</TableHead>
+                                    <TableHead>Title (EN)</TableHead>
+                                    <TableHead>Title (AR)</TableHead>
                                     <TableHead>Order</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead>Created At</TableHead>
@@ -99,8 +101,14 @@ export default function Highlights({ highlights }: Props) {
                                                 <TableCell>
                                                     <Icon className="h-5 w-5 text-morpho" />
                                                 </TableCell>
-                                                <TableCell className="font-medium">{highlight.title}</TableCell>
-                                                <TableCell className="max-w-xs truncate">{highlight.description}</TableCell>
+                                                <TableCell className="max-w-xs">
+                                                    <div className="font-medium truncate">{highlight.title}</div>
+                                                    <div className="text-xs text-muted-foreground truncate">{highlight.description}</div>
+                                                </TableCell>
+                                                <TableCell className="max-w-xs font-arabic" dir="rtl">
+                                                    <div className="font-medium truncate">{highlight.title_ar || <span className="text-muted-foreground italic">—</span>}</div>
+                                                    <div className="text-xs text-muted-foreground truncate">{highlight.description_ar || <span className="text-muted-foreground italic">—</span>}</div>
+                                                </TableCell>
                                                 <TableCell>{highlight.sort_order}</TableCell>
                                                 <TableCell>
                                                     {highlight.is_visible ? (
