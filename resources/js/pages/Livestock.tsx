@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LivestockHero from './components/LivestockHero';
 import LivestockContent from './components/LivestockContent';
+import RelatedEntities from './components/RelatedEntities';
 import SolutionDetail from './SolutionDetail';
 import React from 'react';
 
@@ -38,6 +39,7 @@ export default function Livestock({ ecosystem }: Props) {
             <main>
                 <LivestockHero />
                 <LivestockContent />
+                <RelatedEntities groupSlugs={['nataj']} title="Livestock & Meat Entities" />
             </main>
             <Footer />
         </>

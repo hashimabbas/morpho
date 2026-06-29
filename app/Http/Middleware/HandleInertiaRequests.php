@@ -39,6 +39,8 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $locale = app()->getLocale();
+
         return [
             ...parent::share($request),
             'flash' => [
@@ -55,6 +57,21 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'locale' => $locale,
+            'translations' => fn () => $this->loadTranslations($locale),
         ];
+    }
+
+    private function loadTranslations(string $locale): array
+    {
+        $files = glob(lang_path($locale . '/*.php'));
+        $translations = [];
+
+        foreach ($files as $file) {
+            $key = basename($file, '.php');
+            $translations[$key] = require $file;
+        }
+
+        return $translations;
     }
 }

@@ -52,6 +52,30 @@ class HighlightSeeder extends Seeder
                 'description' => 'Regulatory-ready digital reports that demonstrate compliance, accountability, and chain-of-custody for audits and claims.',
                 'sort_order' => 6,
             ],
+            [
+                'icon' => 'eye',
+                'title' => 'Real-Time Visibility',
+                'description' => 'End-to-end visibility across the entire supply chain — from dispatch to delivery — enabling proactive decision-making.',
+                'sort_order' => 7,
+            ],
+            [
+                'icon' => 'navigation',
+                'title' => 'Intelligent Tracking',
+                'description' => 'GPS-enabled satellite tracking with smart sensors providing precise location and condition data, even in remote cross-border routes.',
+                'sort_order' => 8,
+            ],
+            [
+                'icon' => 'chart-line',
+                'title' => 'Data-Driven Decision Making',
+                'description' => 'Advanced analytics and AI-powered insights transform raw sensor data into actionable intelligence for operational excellence.',
+                'sort_order' => 9,
+            ],
+            [
+                'icon' => 'zap',
+                'title' => 'Operational Optimization',
+                'description' => 'Reduce waste, lower costs, and maximize efficiency through automated monitoring, predictive alerts, and streamlined compliance.',
+                'sort_order' => 10,
+            ],
         ];
 
         foreach ($highlights as $highlight) {

@@ -35,7 +35,10 @@ class DemoRequestController extends Controller
 
         return Inertia::render('Dashboard/RequestDemos', [
             'requests' => $demos,
-            'filters' => $request->only(['search', 'filter']),
+            'filters' => [
+                'search' => $request->input('search'),
+                'filter' => $request->input('filter', 'all'),
+            ],
         ]);
     }
 

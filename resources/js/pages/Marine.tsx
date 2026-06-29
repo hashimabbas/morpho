@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import MarineHero from './components/MarineHero';
 import MarineContent from './components/MarineContent';
+import RelatedEntities from './components/RelatedEntities';
 import SolutionDetail from './SolutionDetail';
 import React from 'react';
 
@@ -38,6 +39,7 @@ export default function Marine({ ecosystem }: Props) {
             <main>
                 <MarineHero />
                 <MarineContent />
+                <RelatedEntities groupSlugs={['asyad']} title="Marine & Port Entities" />
             </main>
             <Footer />
         </>

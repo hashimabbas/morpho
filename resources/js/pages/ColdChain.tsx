@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ColdChainHero from './components/ColdChainHero';
 import ColdChainContent from './components/ColdChainContent';
+import RelatedEntities from './components/RelatedEntities';
 import SolutionDetail from './SolutionDetail';
 import React from 'react';
 
@@ -38,6 +39,7 @@ export default function ColdChain({ ecosystem }: Props) {
             <main>
                 <ColdChainHero />
                 <ColdChainContent />
+                <RelatedEntities groupSlugs={['nataj', 'asyad']} title="Cold Chain Entities" />
             </main>
             <Footer />
         </>

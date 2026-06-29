@@ -1,10 +1,8 @@
-// resources/js/Components/Navbar.tsx
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
     Activity,
     ChevronDown,
-    Cpu,
     LogOut,
     Menu,
     Moon,
@@ -29,12 +27,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { NavLink } from './NavLink';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function Navbar() {
     const { auth } = usePage<SharedData>().props;
+    const { __, isRtl } = useTranslation();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMobileEcosystemOpen, setIsMobileEcosystemOpen] = useState(false);
-    // Persist theme with localStorage
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
     useEffect(() => {
@@ -51,55 +51,53 @@ export default function Navbar() {
     };
 
     const navLinks = [
-        { href: '/', label: 'Home' },
-        { href: '/about', label: 'About' },
-        { href: '/brochures', label: 'Solutions ' },
-        { href: '/pricing', label: 'Pricing' },
-        { href: '/demo_request', label: 'Demo Request' },
-        { href: '/contact', label: 'Contact Us' },
+        { href: '/', label: __('nav.home') },
+        { href: '/about', label: __('nav.about') },
+        { href: '/brochures', label: __('nav.solutions') },
+        { href: '/entities', label: __('nav.entities') },
+        { href: '/pricing', label: __('nav.pricing') },
+        { href: '/demo_request', label: __('nav.demo_request') },
+        { href: '/contact', label: __('nav.contact_us') },
     ];
 
     const ecosystemItems = [
         {
-            label: 'Cold Chain Solutions',
+            label: __('ecosystem_items.cold_chain'),
             href: '/solutions/cold-chain',
             icon: ThermometerSnowflake,
-            description: 'Temperature-controlled logistics and monitoring.',
+            description: __('ecosystem_items.cold_chain_desc'),
         },
         {
-            label: 'Livestock IoT',
+            label: __('ecosystem_items.livestock'),
             href: '/solutions/livestock',
             icon: Activity,
-            description: 'Advanced tracking and health monitoring for livestock.',
+            description: __('ecosystem_items.livestock_desc'),
         },
         {
-            label: 'Smart Agriculture',
+            label: __('ecosystem_items.agriculture'),
             href: '/solutions/agriculture',
             icon: Sprout,
-            description: 'Optimizing crop yields with precision farming IoT.',
+            description: __('ecosystem_items.agriculture_desc'),
         },
         {
-            label: 'Marine & Remote Monitoring',
+            label: __('ecosystem_items.marine'),
             href: '/solutions/marine',
             icon: Waves,
-            description: 'Reliable monitoring for maritime and remote assets.',
+            description: __('ecosystem_items.marine_desc'),
         },
         {
-            label: 'Smart Warehousing',
+            label: __('ecosystem_items.warehousing'),
             href: '/solutions/warehousing',
             icon: Warehouse,
-            description: 'Automated inventory and warehouse management.',
+            description: __('ecosystem_items.warehousing_desc'),
         },
-
     ];
 
     return (
         <nav className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-[#161615]">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 justify-between">
-                    {/* Left Section: Logo and Main Nav */}
                     <div className="flex">
-                        {/* Logo */}
                         <div className="flex shrink-0 items-center">
                             <Link href="/" className="flex items-center py-1">
                                 <img
@@ -110,21 +108,19 @@ export default function Navbar() {
                             </Link>
                         </div>
 
-                        {/* Desktop Navigation Links */}
-                        <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <div className="hidden sm:-my-px sm:ms-10 sm:flex sm:space-x-8 rtl:space-x-reverse">
                             <NavLink href="/" active={usePage().url === '/'}>
-                                Home
+                                {__('nav.home')}
                             </NavLink>
 
-                            {/* Ecosystem Dropdown */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:border-gray-300 hover:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300">
-                                    Morpho Smart Ecosystem
-                                    <ChevronDown className="ml-1 h-4 w-4" />
+                                    {__('nav.ecosystem')}
+                                    <ChevronDown className="ms-1 h-4 w-4" />
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="start" className="w-[300px] p-2">
+                                <DropdownMenuContent align={isRtl ? 'end' : 'start'} className="w-[300px] p-2">
                                     <DropdownMenuLabel className="text-xs uppercase tracking-wider text-gray-500">
-                                        Our Solutions
+                                        {__('nav.our_solutions')}
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     {ecosystemItems.map((item) => (
@@ -158,21 +154,21 @@ export default function Navbar() {
                         </div>
                     </div>
 
-                    {/* Right Section: Theme Toggle and Auth */}
-                    <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div className="hidden sm:flex sm:items-center sm:ms-6">
+                        <LanguageSwitcher />
                         <button
                             onClick={toggleTheme}
-                            className="relative mr-4 rounded-full bg-gray-100 p-2 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+                            className="relative me-4 rounded-full bg-gray-100 p-2 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
                         >
                             <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                             <Moon className="absolute inset-0 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                            <span className="sr-only">Toggle theme</span>
+                            <span className="sr-only">{__('nav.toggle_theme')}</span>
                         </button>
 
                         {auth.user ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger className="flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                    <span className="sr-only">Open user menu</span>
+                                    <span className="sr-only">{__('nav.open_user_menu')}</span>
                                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 font-semibold text-gray-600 dark:bg-gray-700 dark:text-gray-300">
                                         {auth.user.name.charAt(0).toUpperCase()}
                                     </div>
@@ -182,50 +178,50 @@ export default function Navbar() {
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild>
                                         <Link href={route('profile.edit')}>
-                                            <User className="mr-2 h-4 w-4" />
-                                            <span>Profile</span>
+                                            <User className="me-2 h-4 w-4" />
+                                            <span>{__('nav.profile')}</span>
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <Settings className="mr-2 h-4 w-4" />
-                                        <span>Settings</span>
+                                        <Settings className="me-2 h-4 w-4" />
+                                        <span>{__('nav.settings')}</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild>
                                         <Link href={route('logout')} method="post" as="button" className="w-full">
-                                            <LogOut className="mr-2 h-4 w-4" />
-                                            <span>Log Out</span>
+                                            <LogOut className="me-2 h-4 w-4" />
+                                            <span>{__('nav.logout')}</span>
                                         </Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <div className="space-x-4">
+                            <div className="flex space-x-4 rtl:space-x-reverse">
                                 <Link
                                     href={route('login')}
                                     className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                                 >
-                                    Log in
+                                    {__('nav.login')}
                                 </Link>
                             </div>
                         )}
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <div className="-mr-2 flex items-center sm:hidden">
+                    <div className="flex items-center sm:hidden -me-2">
+                        <LanguageSwitcher />
                         <button
                             onClick={toggleTheme}
-                            className="relative mr-2 rounded-full bg-gray-100 p-2 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+                            className="relative me-2 rounded-full bg-gray-100 p-2 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
                         >
                             <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                             <Moon className="absolute inset-0 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                            <span className="sr-only">Toggle theme</span>
+                            <span className="sr-only">{__('nav.toggle_theme')}</span>
                         </button>
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none dark:hover:bg-gray-800"
                         >
-                            <span className="sr-only">Open main menu</span>
+                            <span className="sr-only">{__('nav.open_menu')}</span>
                             {isMobileMenuOpen ? (
                                 <X className="block h-6 w-6" />
                             ) : (
@@ -236,29 +232,26 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Menu Panel */}
             {isMobileMenuOpen && (
                 <div className="sm:hidden" id="mobile-menu">
                     <div className="space-y-1 px-2 pb-3 pt-2">
-                        {/* Mobile Home */}
                         <NavLink
                             href="/"
                             className="block rounded-md px-3 py-2 text-base font-medium"
                         >
-                            Home
+                            {__('nav.home')}
                         </NavLink>
 
-                        {/* Mobile Ecosystem Accordion-style */}
                         <div className="space-y-1">
                             <button
                                 onClick={() => setIsMobileEcosystemOpen(!isMobileEcosystemOpen)}
                                 className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
                             >
-                                Morpho Smart Ecosystem
+                                {__('nav.ecosystem')}
                                 <ChevronDown className={cn("h-4 w-4 transition-transform", isMobileEcosystemOpen && "rotate-180")} />
                             </button>
                             {isMobileEcosystemOpen && (
-                                <div className="ml-4 space-y-1">
+                                <div className="ms-4 space-y-1">
                                     {ecosystemItems.map((item) => (
                                         <Link
                                             key={item.href}
@@ -293,7 +286,7 @@ export default function Navbar() {
                                             {auth.user.name.charAt(0).toUpperCase()}
                                         </div>
                                     </div>
-                                    <div className="ml-3">
+                                    <div className="ms-3">
                                         <div className="text-base font-medium text-gray-800 dark:text-white">
                                             {auth.user.name}
                                         </div>
@@ -307,15 +300,15 @@ export default function Navbar() {
                                         href={route('profile.edit')}
                                         className="flex items-center rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
                                     >
-                                        <User className="mr-3 h-5 w-5" />
-                                        Profile
+                                        <User className="me-3 h-5 w-5" />
+                                        {__('nav.profile')}
                                     </Link>
                                     <Link
                                         href="#"
                                         className="flex items-center rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
                                     >
-                                        <Settings className="mr-3 h-5 w-5" />
-                                        Settings
+                                        <Settings className="me-3 h-5 w-5" />
+                                        {__('nav.settings')}
                                     </Link>
                                     <Link
                                         href={route('logout')}
@@ -323,8 +316,8 @@ export default function Navbar() {
                                         as="button"
                                         className="flex w-full items-center rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
                                     >
-                                        <LogOut className="mr-3 h-5 w-5" />
-                                        Log Out
+                                        <LogOut className="me-3 h-5 w-5" />
+                                        {__('nav.logout')}
                                     </Link>
                                 </div>
                             </>
@@ -334,7 +327,7 @@ export default function Navbar() {
                                     href={route('login')}
                                     className="block rounded-md px-3 py-2 text-base font-medium"
                                 >
-                                    Log In
+                                    {__('nav.login')}
                                 </NavLink>
                             </div>
                         )}

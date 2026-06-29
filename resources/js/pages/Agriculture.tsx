@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AgricultureHero from './components/AgricultureHero';
 import AgricultureContent from './components/AgricultureContent';
+import RelatedEntities from './components/RelatedEntities';
 import SolutionDetail from './SolutionDetail';
 import React from 'react';
 
@@ -38,6 +39,7 @@ export default function Agriculture({ ecosystem }: Props) {
             <main>
                 <AgricultureHero />
                 <AgricultureContent />
+                <RelatedEntities groupSlugs={['nataj']} title="Agriculture & Food Entities" />
             </main>
             <Footer />
         </>

@@ -39,6 +39,9 @@ export interface SharedData {
         error?: string;
     };
 
+    locale: string;
+    translations: Record<string, Record<string, unknown>>;
+
     [key: string]: unknown;
 }
 

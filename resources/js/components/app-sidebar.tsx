@@ -6,7 +6,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Contact, Cpu, Handshake, LayoutGrid, Mail, Presentation, Sparkles, Target } from 'lucide-react'; // 1. Import the new icons
+import { Contact, Cpu, Handshake, LayoutGrid, Mail, Presentation, Sparkles, Target, Crosshair, DollarSign, MessageSquare } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -49,6 +49,21 @@ const mainNavItems: NavItem[] = [
         title: 'Ecosystems',
         href: route('dashboard.ecosystems.index'),
         icon: Cpu,
+    },
+    {
+        title: 'Target Entities',
+        href: route('dashboard.target-entities.index'),
+        icon: Crosshair,
+    },
+    {
+        title: 'Pricing Plans',
+        href: route('dashboard.pricing-plans.index'),
+        icon: DollarSign,
+    },
+    {
+        title: 'Pricing Inquiries',
+        href: route('dashboard.pricing-inquiries.index'),
+        icon: MessageSquare,
     },
 ];
 

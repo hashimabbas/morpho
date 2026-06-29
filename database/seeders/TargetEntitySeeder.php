@@ -1,0 +1,281 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\TargetEntity;
+use Illuminate\Database\Seeder;
+
+class TargetEntitySeeder extends Seeder
+{
+    public function run(): void
+    {
+        $entities = [
+            // ==================== NATAJ ====================
+            [
+                'group_name' => 'Nataj — Oman Food Investment Company',
+                'group_slug' => 'nataj',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'Mazoon Dairy',
+                'activity' => 'Integrated dairy farm and processing plant in Barka; targeting 202 million liters annually by 2026, with a logistics fleet of 153 trucks.',
+                'morpho_solution' => 'Refrigerated transport monitoring & refrigerated warehouse management',
+                'icon' => 'truck',
+                'sort_order' => 0,
+            ],
+            [
+                'group_name' => 'Nataj — Oman Food Investment Company',
+                'group_slug' => 'nataj',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'Al Bashayer Meat Company',
+                'activity' => 'Importing, fattening, and slaughtering livestock with a capacity of up to 1.2 million heads annually; exporting to UAE, Qatar, Kuwait, and Bahrain.',
+                'morpho_solution' => 'Refrigerated transport for export shipments & refrigerated warehouse monitoring',
+                'icon' => 'beef',
+                'sort_order' => 1,
+            ],
+            [
+                'group_name' => 'Nataj — Oman Food Investment Company',
+                'group_slug' => 'nataj',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'Al Namaa Poultry',
+                'activity' => 'Producing fresh and frozen white meat with a capacity of 60,000 tons per year — the third largest poultry project in the Gulf.',
+                'morpho_solution' => 'Refrigerated warehouses & refrigerated transport monitoring',
+                'icon' => 'bird',
+                'sort_order' => 2,
+            ],
+            [
+                'group_name' => 'Nataj — Oman Food Investment Company',
+                'group_slug' => 'nataj',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'Al Murooj Dairy',
+                'activity' => 'Collecting camel and cow milk from Dhofar breeders through 3 collection and cooling centers; "Watani" brand — the first camel milk brand in Oman.',
+                'morpho_solution' => 'Refrigerated transport for collection centers & cold warehouse monitoring',
+                'icon' => 'droplets',
+                'sort_order' => 3,
+            ],
+            [
+                'group_name' => 'Nataj — Oman Food Investment Company',
+                'group_slug' => 'nataj',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'Oman Flour Mills',
+                'activity' => 'Grain storage silos at Sohar Industrial Port with a capacity of 160,000 tons; one of the largest egg farms in the Gulf.',
+                'morpho_solution' => 'Dry storage facilities (silos) & asset tracking',
+                'icon' => 'warehouse',
+                'sort_order' => 4,
+            ],
+            [
+                'group_name' => 'Nataj — Oman Food Investment Company',
+                'group_slug' => 'nataj',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'National Veterinary Vaccine Company',
+                'activity' => 'Manufacturing vaccines and vital serums to protect livestock.',
+                'morpho_solution' => 'Refrigerated storage with cold chain monitoring (highly sensitive to temperature deviations)',
+                'icon' => 'stethoscope',
+                'sort_order' => 5,
+            ],
+            [
+                'group_name' => 'Nataj — Oman Food Investment Company',
+                'group_slug' => 'nataj',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'Fisheries Wealth',
+                'activity' => 'Storage and freezing of fish and shrimp destined for export to Europe and Japan.',
+                'morpho_solution' => 'Deep freezing warehouses & refrigerated transport monitoring',
+                'icon' => 'waves',
+                'sort_order' => 6,
+            ],
+            [
+                'group_name' => 'Nataj — Oman Food Investment Company',
+                'group_slug' => 'nataj',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'Oman Palm Development',
+                'activity' => 'Production and marketing of dates and their byproducts.',
+                'morpho_solution' => 'Dry storage & refrigerated warehouses for date preservation',
+                'icon' => 'sprout',
+                'sort_order' => 7,
+            ],
+
+            // ==================== ASYAD ====================
+            [
+                'group_name' => 'ASYAD — Oman Global Logistics Group',
+                'group_slug' => 'asyad',
+                'owner' => 'Oman Investment Authority (est. 2016)',
+                'entity_name' => 'Khazaen Economic City (Silal Oman)',
+                'activity' => 'Integrated logistics zone bringing together logistics, light industry and trade; houses 280 refrigerated warehouses.',
+                'morpho_solution' => 'Refrigerated & dry storage monitoring + asset tracking — opportunity to replicate the Basket model across dozens of tenants',
+                'icon' => 'building-2',
+                'sort_order' => 0,
+            ],
+            [
+                'group_name' => 'ASYAD — Oman Global Logistics Group',
+                'group_slug' => 'asyad',
+                'owner' => 'Oman Investment Authority (est. 2016)',
+                'entity_name' => 'Sohar Port & Freezone',
+                'activity' => 'Port and free zone in partnership with the Netherlands, attracting investments worth $26 billion.',
+                'morpho_solution' => 'Free zone warehouses (refrigerated & dry) + container tracking',
+                'icon' => 'ship',
+                'sort_order' => 1,
+            ],
+            [
+                'group_name' => 'ASYAD — Oman Global Logistics Group',
+                'group_slug' => 'asyad',
+                'owner' => 'Oman Investment Authority (est. 2016)',
+                'entity_name' => 'Port of Salalah',
+                'activity' => 'Pivotal port for re-export and container handling in the Indian Ocean.',
+                'morpho_solution' => 'Tracking container origins & equipment monitoring',
+                'icon' => 'anchor',
+                'sort_order' => 2,
+            ],
+            [
+                'group_name' => 'ASYAD — Oman Global Logistics Group',
+                'group_slug' => 'asyad',
+                'owner' => 'Oman Investment Authority (est. 2016)',
+                'entity_name' => 'Duqm Port',
+                'activity' => 'Within the Duqm Special Economic Zone, a growing industrial and logistics hub.',
+                'morpho_solution' => 'Warehouses & asset tracking for new industrial projects',
+                'icon' => 'map-pin',
+                'sort_order' => 3,
+            ],
+            [
+                'group_name' => 'ASYAD — Oman Global Logistics Group',
+                'group_slug' => 'asyad',
+                'owner' => 'Oman Investment Authority (est. 2016)',
+                'entity_name' => 'Asyad Express',
+                'activity' => 'Last mile delivery services — an Amazon delivery partner in Oman.',
+                'morpho_solution' => 'Delivery fleet tracking + refrigerated delivery boxes for food/medicine',
+                'icon' => 'package',
+                'sort_order' => 4,
+            ],
+            [
+                'group_name' => 'ASYAD — Oman Global Logistics Group',
+                'group_slug' => 'asyad',
+                'owner' => 'Oman Investment Authority (est. 2016)',
+                'entity_name' => 'Masters Logistics',
+                'activity' => 'Integrated fourth-party logistics (4PL) solutions for local and international clients.',
+                'morpho_solution' => 'Refrigerated & dry warehouses managed for Asyad clients',
+                'icon' => 'globe',
+                'sort_order' => 5,
+            ],
+            [
+                'group_name' => 'ASYAD — Oman Global Logistics Group',
+                'group_slug' => 'asyad',
+                'owner' => 'Oman Investment Authority (est. 2016)',
+                'entity_name' => 'Oman Shipping Company / Asyad Shipping',
+                'activity' => 'Operation of oil, gas, chemical, and general cargo tankers.',
+                'morpho_solution' => 'Tracking maritime fleet origins & container traceability',
+                'icon' => 'navigation',
+                'sort_order' => 6,
+            ],
+
+            // ==================== OQ GROUP ====================
+            [
+                'group_name' => 'OQ Group — Energy & Petrochemicals',
+                'group_slug' => 'oq',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'Oman Oil Marketing Company (OOMCO)',
+                'activity' => 'Over 227 fuel stations in Oman (35-40% market share); storage and distribution of diesel, kerosene, jet fuel, oils, and marine fuel.',
+                'morpho_solution' => 'Dry storage facilities (oil depots) + tanker fleet asset tracking',
+                'icon' => 'factory',
+                'sort_order' => 0,
+            ],
+            [
+                'group_name' => 'OQ Group — Energy & Petrochemicals',
+                'group_slug' => 'oq',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'OQ Trading International',
+                'activity' => 'Global handling and storage of dry bulk commodities (sulfur ~60,000 t/yr, urea ~30,000 t/yr, petroleum coke).',
+                'morpho_solution' => 'Dry warehouses + tracking bulk shipment origins',
+                'icon' => 'box',
+                'sort_order' => 1,
+            ],
+            [
+                'group_name' => 'OQ Group — Energy & Petrochemicals',
+                'group_slug' => 'oq',
+                'owner' => 'Oman Investment Authority',
+                'entity_name' => 'OQ Basic Industries',
+                'activity' => 'Petrochemical products manufacturing within the Salalah Free Zone.',
+                'morpho_solution' => 'Chemical & plastic product warehouses + asset tracking',
+                'icon' => 'hard-drive',
+                'sort_order' => 2,
+            ],
+
+            // ==================== MINING ====================
+            [
+                'group_name' => 'Oman Mining Development Company',
+                'group_slug' => 'mining',
+                'owner' => 'Oman Investment Authority (est. 2016, 100M OMR capital)',
+                'entity_name' => 'Mazoon for Copper (Yanqul)',
+                'activity' => 'Largest integrated copper mining project in Oman; estimated reserves of 22.9 million tons; foundation stone laid in 2024.',
+                'morpho_solution' => 'Dry storage (concentrate yards) + asset tracking for heavy trucks & mining equipment',
+                'icon' => 'hard-hat',
+                'sort_order' => 0,
+            ],
+            [
+                'group_name' => 'Oman Mining Development Company',
+                'group_slug' => 'mining',
+                'owner' => 'Oman Investment Authority (est. 2016, 100M OMR capital)',
+                'entity_name' => 'Minerals Development Oman (MDO)',
+                'activity' => 'Exploration and prospecting for gold and copper in northern Oman.',
+                'morpho_solution' => 'Tracking exploration & drilling equipment assets',
+                'icon' => 'search',
+                'sort_order' => 1,
+            ],
+            [
+                'group_name' => 'Oman Mining Development Company',
+                'group_slug' => 'mining',
+                'owner' => 'Oman Investment Authority (est. 2016, 100M OMR capital)',
+                'entity_name' => 'Oman Chromite Company',
+                'activity' => 'Mining and exporting of chromium ore.',
+                'morpho_solution' => 'Dry warehouses (raw material yards) + export logistics asset tracking',
+                'icon' => 'truck',
+                'sort_order' => 2,
+            ],
+            [
+                'group_name' => 'Oman Mining Development Company',
+                'group_slug' => 'mining',
+                'owner' => 'Oman Investment Authority (est. 2016, 100M OMR capital)',
+                'entity_name' => 'Shalim Industrial Minerals',
+                'activity' => 'Mining complex covering 1,500 km²; gypsum reserves of ~960M tons, limestone reserves of 1.9B tons; includes a specialized mining port.',
+                'morpho_solution' => 'Dry warehouses (gypsum & limestone yards) + tracking transport assets from mine to port',
+                'icon' => 'map',
+                'sort_order' => 3,
+            ],
+
+            // ==================== NAMA ====================
+            [
+                'group_name' => 'Nama Holding — Water & Wastewater',
+                'group_slug' => 'nama',
+                'owner' => 'Oman Investment Authority (est. 2005)',
+                'entity_name' => 'Nama Water Services (NWS)',
+                'activity' => 'Water distribution and sanitation across all governorates except Dhofar; ~938,000 subscribers; 27+ projects worth over 700M OMR.',
+                'morpho_solution' => 'Spare parts warehouses (pipes, valves, pumps, meters) + fleet tracking for maintenance vehicles, leak detection & meter reading',
+                'icon' => 'droplets',
+                'sort_order' => 0,
+            ],
+            [
+                'group_name' => 'Nama Holding — Water & Wastewater',
+                'group_slug' => 'nama',
+                'owner' => 'Oman Investment Authority (est. 2005)',
+                'entity_name' => 'Dhofar Water Services',
+                'activity' => 'Operation of water and sewage networks in the Dhofar Governorate specifically.',
+                'morpho_solution' => 'Regional spare parts warehouses + dedicated field maintenance fleets for Dhofar',
+                'icon' => 'map-pin',
+                'sort_order' => 1,
+            ],
+            [
+                'group_name' => 'Nama Holding — Water & Wastewater',
+                'group_slug' => 'nama',
+                'owner' => 'Oman Investment Authority (est. 2005)',
+                'entity_name' => 'Nama PWP (Power & Water Procurement)',
+                'activity' => 'The arm responsible for purchasing desalinated water in bulk from desalination plants.',
+                'morpho_solution' => 'Desalination plant spare parts warehouses + tracking maintenance equipment assets',
+                'icon' => 'settings-2',
+                'sort_order' => 2,
+            ],
+        ];
+
+        foreach ($entities as $entity) {
+            TargetEntity::firstOrCreate(
+                ['entity_name' => $entity['entity_name'], 'group_slug' => $entity['group_slug']],
+                $entity
+            );
+        }
+    }
+}

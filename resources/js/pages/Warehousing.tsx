@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WarehousingHero from './components/WarehousingHero';
 import WarehousingContent from './components/WarehousingContent';
+import RelatedEntities from './components/RelatedEntities';
 import SolutionDetail from './SolutionDetail';
 import React from 'react';
 
@@ -38,6 +39,7 @@ export default function Warehousing({ ecosystem }: Props) {
             <main>
                 <WarehousingHero />
                 <WarehousingContent />
+                <RelatedEntities groupSlugs={['asyad', 'oq']} title="Warehousing & Logistics Entities" />
             </main>
             <Footer />
         </>
