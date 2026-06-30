@@ -8,6 +8,7 @@ class PricingComparisonFeature extends Model
 {
     protected $fillable = [
         'feature_name',
+        'feature_name_ar',
         'plan_mappings',
         'sort_order',
     ];

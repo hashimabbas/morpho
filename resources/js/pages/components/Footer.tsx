@@ -43,47 +43,46 @@ export default function Footer() {
                 {__('footer.heading')}
             </h2>
             <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
-                <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-                    <div className="space-y-8">
-                        <Link href="/" className="flex items-center m-0 py-1">
-                            <img
-                                src="/new_logo_transp.png"
-                                alt="Morpho Logo"
-                                className="h-20 w-auto sm:h-25"
-                            />
-                        </Link>
-                        <p className="text-sm leading-6 text-gray-600 dark:text-gray-300">
-                            {__('footer.description')}
-                        </p>
-                        <div className="space-y-4 text-sm">
-                            <a
-                                href="tel:+96879976223"
-                                className="flex items-center gap-3 text-gray-600 transition hover:text-morpho dark:text-gray-300 dark:hover:text-morpho"
-                            >
-                                <Phone className="h-5 w-5 shrink-0" />
-                                <span>+968 7997 6223</span>
-                            </a>
-                            <a
-                                href="mailto:info@morphosct.com"
-                                className="flex items-center gap-3 text-gray-600 transition hover:text-morpho dark:text-gray-300 dark:hover:text-morpho"
-                            >
-                                <Mail className="h-5 w-5 shrink-0" />
-                                <span>info@morphosct.com</span>
-                            </a>
-                            <a
-                                href="https://www.morphosct.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-3 text-gray-600 transition hover:text-morpho dark:text-gray-300 dark:hover:text-morpho"
-                            >
-                                <Globe className="h-5 w-5 shrink-0" />
-                                <span>www.morphosct.com</span>
-                            </a>
+                    <div className="xl:grid xl:grid-cols-3 xl:gap-12">
+                        <div className="space-y-6">
+                            <Link href="/" className="flex items-center m-0 py-1">
+                                <img
+                                    src="/new_logo_transp.png"
+                                    alt="Morpho Logo"
+                                    className="h-20 w-auto sm:h-25"
+                                />
+                            </Link>
+                            <p className="text-sm leading-6 text-gray-600 dark:text-gray-300">
+                                {__('footer.description')}
+                            </p>
+                            <div className="space-y-3 text-sm">
+                                <a
+                                    href="tel:+96879976223"
+                                    className="flex items-center gap-3 text-gray-600 transition hover:text-morpho dark:text-gray-300 dark:hover:text-morpho"
+                                >
+                                    <Phone className="h-5 w-5 shrink-0" />
+                                    <span>+968 7997 6223</span>
+                                </a>
+                                <a
+                                    href="mailto:info@morphosct.com"
+                                    className="flex items-center gap-3 text-gray-600 transition hover:text-morpho dark:text-gray-300 dark:hover:text-morpho"
+                                >
+                                    <Mail className="h-5 w-5 shrink-0" />
+                                    <span>info@morphosct.com</span>
+                                </a>
+                                <a
+                                    href="https://www.morphosct.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-3 text-gray-600 transition hover:text-morpho dark:text-gray-300 dark:hover:text-morpho"
+                                >
+                                    <Globe className="h-5 w-5 shrink-0" />
+                                    <span>www.morphosct.com</span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-                        <div className="md:grid md:grid-cols-2 md:gap-8">
+                        <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
                             <div>
                                 <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                                     {__('footer.quick_links')}
@@ -101,7 +100,7 @@ export default function Footer() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="mt-10 md:mt-0">
+                            <div>
                                 <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                                     {__('footer.legal')}
                                 </h3>
@@ -115,8 +114,6 @@ export default function Footer() {
                                 </ul>
                             </div>
                         </div>
-                        <div className="md:grid md:grid-cols-1 md:gap-8" />
-                    </div>
                 </div>
 
                 <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between dark:border-white/10">

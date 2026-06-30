@@ -58,7 +58,7 @@ class DemoRequestController extends Controller
 
         // Or send notification / email if needed
 
-        return back()->with('success', 'Your demo request has been submitted successfully.');
+        return back()->with('success', __('demo_request.flash'));
     }
 
     public function markAsRead(RequestDemo $requestDemo)

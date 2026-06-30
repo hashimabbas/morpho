@@ -17,6 +17,7 @@ class StorePricingComparisonFeatureRequest extends FormRequest
             'feature_name' => ['required', 'string', 'max:255'],
             'plan_mappings' => ['required', 'json'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
+            'feature_name_ar' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

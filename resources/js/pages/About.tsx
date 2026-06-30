@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import { useTranslation } from '@/hooks/useTranslation';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AboutHero from './components/AboutHero';
@@ -9,18 +10,39 @@ import CoreValues from './components/CoreValues';
 import MeetTheTeam from './components/MeetTheTeam';
 import PartnerEcosystem from './components/PartnerEcosystem';
 
+interface CoreValueData {
+    id: number;
+    icon: string;
+    title: string;
+    description: string;
+}
 
-export default function About() {
+interface TeamMemberData {
+    id: number;
+    name: string;
+    role: string;
+    description: string;
+    image_url: string | null;
+}
+
+interface Props {
+    coreValues: CoreValueData[];
+    teamMembers: TeamMemberData[];
+}
+
+export default function About({ coreValues, teamMembers }: Props) {
+    const { __ } = useTranslation();
+
     return (
         <>
-            <Head title="About Us - Morpho" />
+            <Head title={__('about.head_title')} />
             <Navbar />
             <main>
                 <AboutHero />
                 <OurStory />
                 <VisionMission />
-                <CoreValues />
-                <MeetTheTeam />
+                <CoreValues coreValues={coreValues} />
+                <MeetTheTeam teamMembers={teamMembers} />
                 <Achievements />
                 <PartnerEcosystem />
             </main>

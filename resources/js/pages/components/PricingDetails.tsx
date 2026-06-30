@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from '@/hooks/useTranslation';
 import PricingInquiryDialog from './PricingInquiryDialog';
 
 interface PricingPlan {
@@ -34,6 +35,7 @@ const FeatureCheck = ({ enabled }: { enabled: boolean }) => {
 };
 
 export default function PricingDetails() {
+    const { __, locale } = useTranslation();
     const [plans, setPlans] = useState<PricingPlan[]>([]);
     const [comparisonFeatures, setComparisonFeatures] = useState<ComparisonFeature[]>([]);
     const [loading, setLoading] = useState(true);
@@ -42,6 +44,7 @@ export default function PricingDetails() {
     const [selectedPlan, setSelectedPlan] = useState<{ name: string; handle: string }>({ name: '', handle: '' });
 
     useEffect(() => {
+        setLoading(true);
         async function fetchData() {
             try {
                 const [plansRes, featuresRes] = await Promise.all([
@@ -59,7 +62,7 @@ export default function PricingDetails() {
             }
         }
         fetchData();
-    }, []);
+    }, [locale]);
 
     const openInquiry = (plan: PricingPlan) => {
         setSelectedPlan({ name: plan.name, handle: plan.handle });
@@ -89,10 +92,10 @@ export default function PricingDetails() {
             <div className="container mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:py-20 lg:px-8">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
-                        Find the Perfect Plan for Your Business
+                        {__('pricing.hero.heading')}
                     </h1>
                     <p className="mt-4 text-xl text-muted-foreground">
-                        Simple, transparent pricing. Choose the plan that fits your needs.
+                        {__('pricing.hero.subheading')}
                     </p>
                 </div>
 
@@ -102,7 +105,7 @@ export default function PricingDetails() {
                             {plan.is_popular && (
                                 <div className="absolute top-0 -translate-y-1/2 w-full flex justify-center">
                                     <span className="bg-[#0097b2] text-white px-4 py-1 rounded-full text-sm font-semibold">
-                                        Most Popular
+                                        {__('pricing.badge.most_popular')}
                                     </span>
                                 </div>
                             )}
@@ -145,13 +148,13 @@ export default function PricingDetails() {
                 {comparisonFeatures.length > 0 && plans.length > 0 && (
                     <div className="mt-24">
                         <h2 className="text-3xl font-bold text-center mb-12">
-                            Detailed Feature Comparison
+                            {__('pricing.comparison.heading')}
                         </h2>
                         <div className="overflow-x-auto rounded-lg border">
                             <table className="min-w-full divide-y divide-border text-sm">
                                 <thead className="bg-[#e6f5f8]">
                                     <tr>
-                                        <th scope="col" className="px-6 py-4 text-left font-semibold text-[#007c92]">Feature</th>
+                                        <th scope="col" className="px-6 py-4 text-left font-semibold text-[#007c92]">{__('pricing.comparison.feature_header')}</th>
                                         {plans.map((plan, idx) => (
                                             <th
                                                 key={plan.handle}

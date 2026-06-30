@@ -7,10 +7,14 @@ import {
     Building2, HardHat, Factory, Lightbulb, Smartphone, Cloud,
     HeartPulse, Navigation, Users, Bird, Dog, Map, Scale,
     Microscope, Battery, CloudLightning, HardDrive, Package,
-    Settings2, BarChart, Expand, type LucideIcon,
+    Settings2, BarChart, Expand, Leaf, Target, Handshake,
+    Phone, Mail, Linkedin, Instagram, Twitter, type LucideIcon,
 } from 'lucide-react';
 
 const iconMap: Record<string, LucideIcon> = {
+    leaf: Leaf,
+    target: Target,
+    handshake: Handshake,
     thermometer: Thermometer,
     droplets: Droplets,
     activity: Activity,
@@ -66,6 +70,11 @@ const iconMap: Record<string, LucideIcon> = {
     'settings-2': Settings2,
     'bar-chart': BarChart,
     expand: Expand,
+    phone: Phone,
+    mail: Mail,
+    linkedin: Linkedin,
+    instagram: Instagram,
+    twitter: Twitter,
 };
 
 export function getIcon(name: string): LucideIcon {

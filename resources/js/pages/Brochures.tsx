@@ -6,20 +6,34 @@ import PdfHero from './components/PdfHero';
 import PdfInstructions from './components/PdfInstructions';
 import PdfList from './components/PdfList';
 import { X } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
-export default function Brochures() {
+interface BrochureItem {
+  id: number;
+  name: string;
+  file: string;
+  description: string;
+  image_url: string | null;
+}
+
+interface Props {
+  brochures: BrochureItem[];
+}
+
+export default function Brochures({ brochures }: Props) {
+  const { __ } = useTranslation();
   const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#030712] transition-colors duration-300">
-      <Head title="Our Brochures - Morpho Smart Technologies" />
+      <Head title={__('brochures.head_title')} />
 
       <Navbar />
 
       <main>
         <PdfHero />
         <PdfInstructions />
-        <PdfList onSelect={setSelectedPdf} />
+        <PdfList onSelect={setSelectedPdf} brochures={brochures} />
       </main>
 
       {/* PDF Viewer Overlay */}
@@ -27,7 +41,7 @@ export default function Brochures() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
           <div className="relative w-full max-w-6xl h-[90vh] bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div className="flex items-center justify-between px-6 py-4 border-b dark:border-gray-800">
-              <h3 className="font-bold text-gray-900 dark:text-white">Viewing: {selectedPdf}</h3>
+              <h3 className="font-bold text-gray-900 dark:text-white">{__('brochures.overlay.viewing')} {selectedPdf}</h3>
               <button
                 onClick={() => setSelectedPdf(null)}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"

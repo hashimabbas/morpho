@@ -61,7 +61,7 @@ class ContactController extends Controller
 
         ContactMessage::create($validatedData);
 
-        return back()->with('success', 'Thank you! Your message has been received.');
+        return back()->with('success', __('contact.flash'));
     }
 
     /**

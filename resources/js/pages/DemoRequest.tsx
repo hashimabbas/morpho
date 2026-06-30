@@ -1,6 +1,7 @@
 import { Head, usePage } from '@inertiajs/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { useTranslation } from '@/hooks/useTranslation';
 
 import type { PageProps } from '@/types';
 import DemoRequestHeader from './components/DemoRequestHeader';
@@ -8,10 +9,11 @@ import DemoRequestForm from './components/DemoRequestForm';
 
 export default function DemoRequest() {
     const { flash } = usePage<PageProps>().props;
+    const { __ } = useTranslation();
 
     return (
         <>
-            <Head title="Demo Request - Morpho" />
+            <Head title={__('demo_request.page_title')} />
             <Navbar />
             <main className="relative overflow-hidden">
                 {/* Header Section */}
@@ -32,11 +34,10 @@ export default function DemoRequest() {
                         {/* Section Heading */}
                         <div className="mb-12 text-center opacity-100 transition-all duration-700 ease-in-out starting:translate-y-4 starting:opacity-0">
                             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                                Request Your Personalized Demo
+                                {__('demo_request.form.title')}
                             </h2>
                             <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                                Fill in the details below, and our team will reach out to schedule your demo session
-                                at a time that works best for you.
+                                {__('demo_request.form.description')}
                             </p>
                         </div>
 

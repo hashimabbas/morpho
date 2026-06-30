@@ -28,6 +28,12 @@ interface PricingPlan {
     is_popular: boolean;
     sort_order: number;
     is_visible: boolean;
+    name_ar: string | null;
+    description_ar: string | null;
+    features_ar: string[] | null;
+    cta_ar: string | null;
+    price_label_ar: string | null;
+    price_period_ar: string | null;
     created_at: string;
 }
 
@@ -83,17 +89,18 @@ export default function PricingPlans({ pricingPlans }: Props) {
                     </CardHeader>
                     <CardContent>
                         <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Plan</TableHead>
-                                    <TableHead>Price</TableHead>
-                                    <TableHead className="hidden md:table-cell">CTA</TableHead>
-                                    <TableHead>Order</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className="hidden sm:table-cell">Created</TableHead>
-                                    <TableHead><span className="sr-only">Actions</span></TableHead>
-                                </TableRow>
-                            </TableHeader>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Plan (EN)</TableHead>
+                                        <TableHead>Plan (AR)</TableHead>
+                                        <TableHead>Price</TableHead>
+                                        <TableHead className="hidden md:table-cell">CTA</TableHead>
+                                        <TableHead>Order</TableHead>
+                                        <TableHead>Status</TableHead>
+                                        <TableHead className="hidden sm:table-cell">Created</TableHead>
+                                        <TableHead><span className="sr-only">Actions</span></TableHead>
+                                    </TableRow>
+                                </TableHeader>
                             <TableBody>
                                 {pricingPlans.data.length > 0 ? (
                                     pricingPlans.data.map((plan) => (
@@ -104,6 +111,7 @@ export default function PricingPlans({ pricingPlans }: Props) {
                                                     {plan.is_popular && <Star className="h-4 w-4 text-amber-500 fill-amber-500" />}
                                                 </div>
                                             </TableCell>
+                                            <TableCell className="font-arabic" dir="rtl">{plan.name_ar || <span className="text-muted-foreground italic">—</span>}</TableCell>
                                             <TableCell>
                                                 {plan.price_label}
                                                 <span className="text-muted-foreground text-sm">{plan.price_period}</span>

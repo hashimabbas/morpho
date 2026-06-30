@@ -24,6 +24,7 @@ type PricingPlan = {
 type PricingComparisonFeature = {
     id: number;
     feature_name: string;
+    feature_name_ar: string | null;
     plan_mappings: Record<string, boolean>;
     sort_order: number;
     created_at: string;
@@ -82,21 +83,23 @@ export default function PricingComparisonFeatures({ comparisonFeatures, plans }:
                     </CardHeader>
                     <CardContent>
                         <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Feature</TableHead>
-                                    {plans.map(plan => (
-                                        <TableHead key={plan.handle} className="text-center">{plan.name}</TableHead>
-                                    ))}
-                                    <TableHead>Order</TableHead>
-                                    <TableHead><span className="sr-only">Actions</span></TableHead>
-                                </TableRow>
-                            </TableHeader>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Feature (EN)</TableHead>
+                                        <TableHead>Feature (AR)</TableHead>
+                                        {plans.map(plan => (
+                                            <TableHead key={plan.handle} className="text-center">{plan.name}</TableHead>
+                                        ))}
+                                        <TableHead>Order</TableHead>
+                                        <TableHead><span className="sr-only">Actions</span></TableHead>
+                                    </TableRow>
+                                </TableHeader>
                             <TableBody>
                                 {comparisonFeatures.data.length > 0 ? (
                                     comparisonFeatures.data.map((feature) => (
                                         <TableRow key={feature.id}>
                                             <TableCell className="font-medium">{feature.feature_name}</TableCell>
+                                            <TableCell className="font-arabic" dir="rtl">{feature.feature_name_ar || <span className="text-muted-foreground italic">—</span>}</TableCell>
                                             {plans.map(plan => (
                                                 <TableCell key={plan.handle} className="text-center">
                                                     {feature.plan_mappings[plan.handle] ? (

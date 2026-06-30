@@ -16,6 +16,11 @@ class DatabaseSeeder extends Seeder
             TargetEntitySeeder::class,
             PricingPlanSeeder::class,
             SettingSeeder::class,
+            CoreValueSeeder::class,
+            TeamMemberSeeder::class,
+            BrochureSeeder::class,
+            ContactInfoSeeder::class,
+            SocialLinkSeeder::class,
         ]);
     }
 }

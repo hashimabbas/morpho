@@ -25,6 +25,12 @@ class UpdatePricingPlanRequest extends FormRequest
             'is_popular' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_visible' => ['nullable', 'boolean'],
+            'name_ar' => ['nullable', 'string', 'max:255'],
+            'description_ar' => ['nullable', 'string'],
+            'features_ar' => ['nullable', 'json'],
+            'cta_ar' => ['nullable', 'string', 'max:50'],
+            'price_label_ar' => ['nullable', 'string', 'max:50'],
+            'price_period_ar' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

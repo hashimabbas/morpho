@@ -1,54 +1,27 @@
 import React from 'react';
-import { FileText, Download, Eye, ArrowRight } from 'lucide-react';
+import { Download, Eye, ArrowRight } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
-const pdfs = [
-  {
-    id: 1,
-    name: 'Cold Chain Logistics',
-    file: '1.pdf',
-    description: 'Precision temperature and humidity tracking for sensitive goods.',
-    image: '/images/solutions/cold.png'
-  },
-  {
-    id: 2,
-    name: 'Agriculture IoT',
-    file: '2.pdf',
-    description: 'Smart sensors for soil and crop health optimization.',
-    image: '/images/Agriculture-1.png'
-  },
-  {
-    id: 3,
-    name: 'Warehouse Monitoring',
-    file: '5.pdf',
-    description: 'Smart solutions for monitoring warehouses and supply chains.',
-    image: '/images/solutions/warehousing.png'
-  },
-  {
-    id: 4,
-    name: 'Livestock Tracking',
-    file: '3.pdf',
-    description: 'Real-time health and location monitoring for livestock.',
-    image: '/images/Livestock-1.png'
-  },
-  {
-    id: 5,
-    name: 'Maritime Security',
-    file: '4.pdf',
-    description: 'Advanced security and tracking for maritime assets.',
-    image: '/images/Marine-1.png'
-  },
-];
+interface BrochureItem {
+  id: number;
+  name: string;
+  file: string;
+  description: string;
+  image_url: string | null;
+}
 
 interface PdfListProps {
   onSelect: (file: string) => void;
+  brochures: BrochureItem[];
 }
 
-const PdfList = ({ onSelect }: PdfListProps) => {
+const PdfList = ({ onSelect, brochures }: PdfListProps) => {
+  const { __ } = useTranslation();
   return (
     <section className="py-20 bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {pdfs.map((pdf) => (
+          {brochures.map((pdf) => (
             <div
               key={pdf.id}
               className="group relative bg-white dark:bg-[#0F172A] rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
@@ -56,7 +29,7 @@ const PdfList = ({ onSelect }: PdfListProps) => {
               {/* Card Image */}
               <div className="aspect-[16/10] overflow-hidden relative">
                 <img
-                  src={pdf.image}
+                  src={pdf.image_url || ''}
                   alt={pdf.name}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   onError={(e) => {
@@ -65,7 +38,7 @@ const PdfList = ({ onSelect }: PdfListProps) => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
                   <span className="text-white font-bold inline-flex items-center gap-2">
-                    Open Brochure <ArrowRight className="w-4 h-4" />
+                    {__('brochures.card.open_brochure')} <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
               </div>
@@ -85,7 +58,7 @@ const PdfList = ({ onSelect }: PdfListProps) => {
                     className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-morpho text-white rounded-lg font-semibold transition-all hover:bg-morpho-dark active:scale-95 shadow-lg shadow-morpho/20"
                   >
                     <Eye className="w-4 h-4" />
-                    View
+                    {__('brochures.card.view')}
                   </button>
                   <a
                     href={`/pdf/${pdf.file}`}

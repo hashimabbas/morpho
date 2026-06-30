@@ -11,6 +11,11 @@ use App\Http\Controllers\Dashboard\PricingComparisonFeatureController;
 use App\Http\Controllers\Dashboard\TargetEntityController;
 use App\Http\Controllers\Dashboard\PartnerController;
 use App\Http\Controllers\Dashboard\SiteSettingController;
+use App\Http\Controllers\Dashboard\CoreValueController;
+use App\Http\Controllers\Dashboard\TeamMemberController;
+use App\Http\Controllers\Dashboard\BrochureController;
+use App\Http\Controllers\Dashboard\ContactInfoController;
+use App\Http\Controllers\Dashboard\SocialLinkController;
 use App\Http\Controllers\DashboardController; // Make sure this is imported
 use App\Http\Controllers\DemoRequestController;
 use App\Http\Controllers\PricingInquiryController;
@@ -44,11 +49,47 @@ Route::get('/linkstorage', function () {
 });
 
 Route::get('/about', function () {
-    return Inertia::render('About');
+    $locale = app()->getLocale();
+    $coreValues = \App\Models\CoreValue::orderBy('sort_order')->get()->map(fn ($cv) => [
+        'id' => $cv->id,
+        'icon' => $cv->icon,
+        'title' => $locale === 'ar' && $cv->title_ar ? $cv->title_ar : $cv->title,
+        'description' => $locale === 'ar' && $cv->description_ar ? $cv->description_ar : $cv->description,
+    ]);
+    $teamMembers = \App\Models\TeamMember::orderBy('sort_order')->get()->map(fn ($tm) => [
+        'id' => $tm->id,
+        'name' => $locale === 'ar' && $tm->name_ar ? $tm->name_ar : $tm->name,
+        'role' => $locale === 'ar' && $tm->role_ar ? $tm->role_ar : $tm->role,
+        'description' => $locale === 'ar' && $tm->description_ar ? $tm->description_ar : $tm->description,
+        'image_url' => $tm->image_url,
+    ]);
+    return Inertia::render('About', [
+        'coreValues' => $coreValues,
+        'teamMembers' => $teamMembers,
+    ]);
 })->name('about');
 
 Route::get('/contact', function () {
-    return Inertia::render('Contact');
+    $locale = app()->getLocale();
+    $contactInfos = \App\Models\ContactInfo::orderBy('sort_order')->get()->map(fn ($ci) => [
+        'id' => $ci->id,
+        'type' => $ci->type,
+        'label' => $locale === 'ar' && $ci->label_ar ? $ci->label_ar : $ci->label,
+        'value' => $locale === 'ar' && $ci->value_ar ? $ci->value_ar : $ci->value,
+        'icon' => $ci->icon,
+        'href' => $ci->href,
+    ]);
+    $socialLinks = \App\Models\SocialLink::where('is_active', true)->orderBy('sort_order')->get()->map(fn ($sl) => [
+        'id' => $sl->id,
+        'platform' => $sl->platform,
+        'url' => $sl->url,
+        'icon' => $sl->icon,
+        'label' => $locale === 'ar' && $sl->label_ar ? $sl->label_ar : $sl->label,
+    ]);
+    return Inertia::render('Contact', [
+        'contactInfos' => $contactInfos,
+        'socialLinks' => $socialLinks,
+    ]);
 })->name('contact');
 
 Route::get('/demo_request', function () {
@@ -76,8 +117,27 @@ Route::get('/terms-of-service', function () {
 
 Route::get('/solutions/{slug}', [SolutionController::class, 'show'])->name('solutions.detail');
 
+Route::get('/api/brochures', function () {
+    $locale = app()->getLocale();
+    return App\Models\Brochure::orderBy('sort_order')->get()->map(fn ($b) => [
+        'id' => $b->id,
+        'name' => $locale === 'ar' && $b->name_ar ? $b->name_ar : $b->name,
+        'description' => $locale === 'ar' && $b->description_ar ? $b->description_ar : $b->description,
+        'image_url' => $b->image_url,
+        'file' => $b->file,
+    ]);
+});
+
 Route::get('/brochures', function () {
-    return Inertia::render('Brochures');
+    $locale = app()->getLocale();
+    $brochures = App\Models\Brochure::orderBy('sort_order')->get()->map(fn ($b) => [
+        'id' => $b->id,
+        'name' => $locale === 'ar' && $b->name_ar ? $b->name_ar : $b->name,
+        'description' => $locale === 'ar' && $b->description_ar ? $b->description_ar : $b->description,
+        'image_url' => $b->image_url,
+        'file' => $b->file,
+    ]);
+    return Inertia::render('Brochures', ['brochures' => $brochures]);
 })->name('brochures');
 
 Route::get('/entities', function () {
@@ -133,7 +193,61 @@ Route::get('/api/target-entities', function () {
 });
 
 Route::get('/api/pricing-plans', function () {
-    return \App\Models\PricingPlan::where('is_visible', true)->orderBy('sort_order')->get();
+    $locale = app()->getLocale();
+    return \App\Models\PricingPlan::where('is_visible', true)->orderBy('sort_order')->get()->map(fn ($p) => [
+        'id' => $p->id,
+        'name' => $locale === 'ar' && $p->name_ar ? $p->name_ar : $p->name,
+        'handle' => $p->handle,
+        'price_label' => $locale === 'ar' && $p->price_label_ar ? $p->price_label_ar : $p->price_label,
+        'price_period' => $locale === 'ar' && $p->price_period_ar ? $p->price_period_ar : $p->price_period,
+        'description' => $locale === 'ar' && $p->description_ar ? $p->description_ar : $p->description,
+        'features' => $locale === 'ar' && $p->features_ar ? $p->features_ar : $p->features,
+        'cta' => $locale === 'ar' && $p->cta_ar ? $p->cta_ar : $p->cta,
+        'is_popular' => $p->is_popular,
+        'sort_order' => $p->sort_order,
+        'is_visible' => $p->is_visible,
+    ]);
+});
+
+Route::get('/api/core-values', function () {
+    $locale = app()->getLocale();
+    return \App\Models\CoreValue::orderBy('sort_order')->get()->map(fn ($cv) => [
+        'id' => $cv->id,
+        'icon' => $cv->icon,
+        'title' => $locale === 'ar' && $cv->title_ar ? $cv->title_ar : $cv->title,
+        'description' => $locale === 'ar' && $cv->description_ar ? $cv->description_ar : $cv->description,
+    ]);
+});
+
+Route::get('/api/team-members', function () {
+    $locale = app()->getLocale();
+    return \App\Models\TeamMember::orderBy('sort_order')->get()->map(fn ($tm) => [
+        'id' => $tm->id,
+        'name' => $locale === 'ar' && $tm->name_ar ? $tm->name_ar : $tm->name,
+        'role' => $locale === 'ar' && $tm->role_ar ? $tm->role_ar : $tm->role,
+        'description' => $locale === 'ar' && $tm->description_ar ? $tm->description_ar : $tm->description,
+        'image_url' => $tm->image_url,
+    ]);
+});
+
+Route::get('/api/contact-data', function () {
+    $locale = app()->getLocale();
+    $contactInfos = \App\Models\ContactInfo::orderBy('sort_order')->get()->map(fn ($ci) => [
+        'id' => $ci->id,
+        'type' => $ci->type,
+        'label' => $locale === 'ar' && $ci->label_ar ? $ci->label_ar : $ci->label,
+        'value' => $locale === 'ar' && $ci->value_ar ? $ci->value_ar : $ci->value,
+        'icon' => $ci->icon,
+        'href' => $ci->href,
+    ]);
+    $socialLinks = \App\Models\SocialLink::where('is_active', true)->orderBy('sort_order')->get()->map(fn ($sl) => [
+        'id' => $sl->id,
+        'platform' => $sl->platform,
+        'url' => $sl->url,
+        'icon' => $sl->icon,
+        'label' => $locale === 'ar' && $sl->label_ar ? $sl->label_ar : $sl->label,
+    ]);
+    return response()->json(['contactInfos' => $contactInfos, 'socialLinks' => $socialLinks]);
 });
 
 Route::get('/api/settings', function () {
@@ -141,7 +255,13 @@ Route::get('/api/settings', function () {
 });
 
 Route::get('/api/pricing-comparison-features', function () {
-    return \App\Models\PricingComparisonFeature::orderBy('sort_order')->get();
+    $locale = app()->getLocale();
+    return \App\Models\PricingComparisonFeature::orderBy('sort_order')->get()->map(fn ($f) => [
+        'id' => $f->id,
+        'feature_name' => $locale === 'ar' && $f->feature_name_ar ? $f->feature_name_ar : $f->feature_name,
+        'plan_mappings' => $f->plan_mappings,
+        'sort_order' => $f->sort_order,
+    ]);
 });
 
 
@@ -158,6 +278,11 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
     Route::resource('core-purposes', CorePurposeController::class)->except(['create', 'show', 'edit']);
     Route::resource('ecosystems', EcosystemController::class)->except(['create', 'show', 'edit']);
     Route::resource('target-entities', TargetEntityController::class)->except(['create', 'show', 'edit']);
+    Route::resource('core-values', CoreValueController::class)->except(['create', 'show', 'edit']);
+    Route::resource('team-members', TeamMemberController::class)->except(['create', 'show', 'edit']);
+    Route::resource('brochures', BrochureController::class)->except(['create', 'show', 'edit']);
+    Route::resource('contact-infos', ContactInfoController::class)->except(['create', 'show', 'edit']);
+    Route::resource('social-links', SocialLinkController::class)->except(['create', 'show', 'edit']);
     Route::get('/messages', [ContactController::class, 'index'])->name('messages');
     Route::get('/messages/all', [ContactController::class, 'getAllMessages'])->name('messages.all');
     Route::post('/messages/{contactMessage}/mark-as-read', [ContactController::class, 'markAsRead'])->name('messages.markAsRead');

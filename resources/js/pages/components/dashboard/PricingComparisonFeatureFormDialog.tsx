@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -16,6 +16,7 @@ type PricingPlan = {
 type PricingComparisonFeature = {
     id: number;
     feature_name: string;
+    feature_name_ar: string | null;
     plan_mappings: Record<string, boolean>;
     sort_order: number;
 };
@@ -28,9 +29,12 @@ interface Props {
 }
 
 export default function PricingComparisonFeatureFormDialog({ isOpen, onClose, comparisonFeature, plans }: Props) {
+    const [langTab, setLangTab] = useState<'en' | 'ar'>('en');
+
     const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
         _method: 'POST',
         feature_name: '',
+        feature_name_ar: '',
         plan_mappings: {} as Record<string, boolean>,
         sort_order: 0,
     });
@@ -42,6 +46,7 @@ export default function PricingComparisonFeatureFormDialog({ isOpen, onClose, co
             setData({
                 _method: 'PATCH',
                 feature_name: comparisonFeature.feature_name || '',
+                feature_name_ar: comparisonFeature.feature_name_ar || '',
                 plan_mappings: comparisonFeature.plan_mappings || {},
                 sort_order: comparisonFeature.sort_order || 0,
             });
@@ -53,6 +58,7 @@ export default function PricingComparisonFeatureFormDialog({ isOpen, onClose, co
             setData({
                 _method: 'POST',
                 feature_name: '',
+                feature_name_ar: '',
                 plan_mappings: defaultMappings,
                 sort_order: 0,
             });
@@ -97,13 +103,39 @@ export default function PricingComparisonFeatureFormDialog({ isOpen, onClose, co
                         {isEditing ? 'Update the comparison feature details.' : 'Add a new feature for the comparison table.'}
                     </DialogDescription>
                 </DialogHeader>
+
+                <div className="flex gap-2 border-b pb-2 mb-4">
+                    <button
+                        type="button"
+                        onClick={() => setLangTab('en')}
+                        className={`px-4 py-2 text-sm font-medium rounded-t transition ${langTab === 'en' ? 'border-b-2 border-morpho text-morpho' : 'text-muted-foreground'}`}
+                    >
+                        English
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setLangTab('ar')}
+                        className={`px-4 py-2 text-sm font-medium rounded-t transition ${langTab === 'ar' ? 'border-b-2 border-morpho text-morpho' : 'text-muted-foreground'}`}
+                    >
+                        العربية
+                    </button>
+                </div>
+
                 <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 py-4 px-1">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="feature_name" className="text-right">Feature Name</Label>
-                            <Input id="feature_name" value={data.feature_name} onChange={e => setData('feature_name', e.target.value)} className="col-span-3" />
-                            <InputError message={errors.feature_name} className="col-span-4 col-start-2" />
-                        </div>
+                        {langTab === 'en' ? (
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="feature_name" className="text-right">Feature Name (English)</Label>
+                                <Input id="feature_name" value={data.feature_name} onChange={e => setData('feature_name', e.target.value)} className="col-span-3" />
+                                <InputError message={errors.feature_name} className="col-span-4 col-start-2" />
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="feature_name_ar" className="text-right">اسم الميزة (عربي)</Label>
+                                <Input id="feature_name_ar" value={data.feature_name_ar} onChange={e => setData('feature_name_ar', e.target.value)} className="col-span-3 font-arabic" dir="rtl" />
+                                <InputError message={errors.feature_name_ar} className="col-span-4 col-start-2" />
+                            </div>
+                        )}
 
                         <div className="grid grid-cols-4 items-start gap-4">
                             <Label className="text-right pt-1">Available In</Label>

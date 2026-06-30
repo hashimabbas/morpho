@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,6 +11,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useTranslation } from '@/hooks/useTranslation';
 import { useEffect, useState } from "react";
 import {
     CheckCircle,
@@ -34,9 +35,10 @@ import {
     Handshake,
     BarChart3,
     ArrowRight,
-    ChevronRight
+    ArrowLeft,
 } from "lucide-react";
 
+import type { PageProps } from '@/types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
 
@@ -95,6 +97,9 @@ const SelectableCard = ({
 };
 
 export default function DemoRequestForm({ successMessage }: Props) {
+    const { __ } = useTranslation();
+    const { locale } = usePage<PageProps>().props;
+    const isRtl = locale === 'ar';
     const [showDialog, setShowDialog] = useState(false);
     const [dialogTitle, setDialogTitle] = useState("");
     const [dialogDescription, setDialogDescription] = useState("");
@@ -120,14 +125,14 @@ export default function DemoRequestForm({ successMessage }: Props) {
         e.preventDefault();
         post(route('demo.store'), {
             onSuccess: () => {
-                setDialogTitle("Success!");
-                setDialogDescription(successMessage ?? "Your demo request has been submitted successfully. Our team will contact you shortly.");
+                setDialogTitle(__('demo_request.dialog.success_title'));
+                setDialogDescription(successMessage ?? __('demo_request.dialog.success_description'));
                 setIsSuccess(true);
                 setShowDialog(true);
                 reset();
             },
             onError: (errors) => {
-                setDialogTitle("Something went wrong");
+                setDialogTitle(__('demo_request.dialog.error_title'));
                 setDialogDescription(Object.values(errors).join("\n"));
                 setIsSuccess(false);
                 setShowDialog(true);
@@ -166,7 +171,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
                                     isSuccess ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"
                                 )}
                             >
-                                Continue
+                                {__('demo_request.dialog.continue')}
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </div>
@@ -180,13 +185,13 @@ export default function DemoRequestForm({ successMessage }: Props) {
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-morpho text-xs font-bold text-white uppercase tracking-wider">
                             01
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">Basic Information</h3>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{__('demo_request.form.section_1_title')}</h3>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="group space-y-2">
                             <Label htmlFor="full_name" className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                                Full Name
+                                {__('demo_request.form.full_name_label')}
                             </Label>
                             <div className="relative">
                                 <User className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-morpho" />
@@ -195,7 +200,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
                                     value={data.full_name}
                                     onChange={(e) => setData('full_name', e.target.value)}
                                     required
-                                    placeholder="John Doe"
+                                    placeholder={__('demo_request.form.full_name_placeholder')}
                                     className="pl-11 h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-morpho/20 dark:border-gray-800 dark:bg-gray-900/50 dark:focus:bg-gray-900"
                                 />
                             </div>
@@ -204,7 +209,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
 
                         <div className="group space-y-2">
                             <Label htmlFor="company_name" className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                                Company Name
+                                {__('demo_request.form.company_name_label')}
                             </Label>
                             <div className="relative">
                                 <Building2 className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-morpho" />
@@ -213,7 +218,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
                                     value={data.company_name}
                                     onChange={(e) => setData('company_name', e.target.value)}
                                     required
-                                    placeholder="Morpho Tech"
+                                    placeholder={__('demo_request.form.company_name_placeholder')}
                                     className="pl-11 h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-morpho/20 dark:border-gray-800 dark:bg-gray-900/50 dark:focus:bg-gray-900"
                                 />
                             </div>
@@ -222,7 +227,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
 
                         <div className="group space-y-2">
                             <Label htmlFor="email" className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                                Email Address
+                                {__('demo_request.form.email_label')}
                             </Label>
                             <div className="relative">
                                 <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-morpho" />
@@ -232,7 +237,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
                                     required
-                                    placeholder="you@company.com"
+                                    placeholder={__('demo_request.form.email_placeholder')}
                                     className="pl-11 h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-morpho/20 dark:border-gray-800 dark:bg-gray-900/50 dark:focus:bg-gray-900"
                                 />
                             </div>
@@ -241,7 +246,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
 
                         <div className="group space-y-2">
                             <Label htmlFor="phone" className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                                Phone Number
+                                {__('demo_request.form.phone_label')}
                             </Label>
                             <div className="relative">
                                 <Phone className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-morpho" />
@@ -251,7 +256,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
                                     value={data.phone}
                                     onChange={(e) => setData('phone', e.target.value)}
                                     required
-                                    placeholder="+968 1234 5678"
+                                    placeholder={__('demo_request.form.phone_placeholder')}
                                     className="pl-11 h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-morpho/20 dark:border-gray-800 dark:bg-gray-900/50 dark:focus:bg-gray-900"
                                 />
                             </div>
@@ -266,38 +271,38 @@ export default function DemoRequestForm({ successMessage }: Props) {
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-morpho text-xs font-bold text-white uppercase tracking-wider">
                             02
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">Industry Details</h3>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{__('demo_request.form.section_2_title')}</h3>
                     </div>
 
                     <div className="space-y-8">
                         <div className="space-y-4">
-                            <Label className="text-sm font-bold text-gray-700 dark:text-gray-300">Logistics Sector</Label>
+                            <Label className="text-sm font-bold text-gray-700 dark:text-gray-300">{__('demo_request.form.logistics_sector_label')}</Label>
                             <RadioGroup
                                 value={data.logistics_sector}
                                 onValueChange={(val) => setData('logistics_sector', val)}
                                 className="grid grid-cols-2 gap-4 md:grid-cols-5"
                             >
-                                <SelectableCard icon={Stethoscope} label="Medical" value="medical" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                                <SelectableCard icon={Factory} label="Industrial" value="industrial" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                                <SelectableCard icon={Ship} label="Food & Cold" value="food" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                                <SelectableCard icon={Sprout} label="Agricultural" value="agricultural" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                                <SelectableCard icon={Box} label="Other" value="other" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
+                                <SelectableCard icon={Stethoscope} label={__('demo_request.form.sector_medical')} value="medical" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
+                                <SelectableCard icon={Factory} label={__('demo_request.form.sector_industrial')} value="industrial" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
+                                <SelectableCard icon={Ship} label={__('demo_request.form.sector_food')} value="food" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
+                                <SelectableCard icon={Sprout} label={__('demo_request.form.sector_agricultural')} value="agricultural" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
+                                <SelectableCard icon={Box} label={__('demo_request.form.sector_other')} value="other" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
                             </RadioGroup>
                             {errors.logistics_sector && <p className="text-sm text-red-500">{errors.logistics_sector}</p>}
                         </div>
 
                         <div className="space-y-4">
-                            <Label className="text-sm font-bold text-gray-700 dark:text-gray-300">Required Solution</Label>
+                            <Label className="text-sm font-bold text-gray-700 dark:text-gray-300">{__('demo_request.form.required_solution_label')}</Label>
                             <RadioGroup
                                 value={data.solution_type}
                                 onValueChange={(val) => setData('solution_type', val)}
                                 className="grid grid-cols-2 gap-4 md:grid-cols-5"
                             >
-                                <SelectableCard icon={Cpu} label="IoT Device" value="iot-device" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                                <SelectableCard icon={Globe} label="Tracking" value="shipment-platform" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                                <SelectableCard icon={Warehouse} label="WMS" value="wms" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                                <SelectableCard icon={Truck} label="TMS" value="tms" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                                <SelectableCard icon={Zap} label="API" value="api" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
+                                <SelectableCard icon={Cpu} label={__('demo_request.form.solution_iot')} value="iot-device" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
+                                <SelectableCard icon={Globe} label={__('demo_request.form.solution_tracking')} value="shipment-platform" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
+                                <SelectableCard icon={Warehouse} label={__('demo_request.form.solution_wms')} value="wms" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
+                                <SelectableCard icon={Truck} label={__('demo_request.form.solution_tms')} value="tms" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
+                                <SelectableCard icon={Zap} label={__('demo_request.form.solution_api')} value="api" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
                             </RadioGroup>
                             {errors.solution_type && <p className="text-sm text-red-500">{errors.solution_type}</p>}
                         </div>
@@ -310,7 +315,7 @@ export default function DemoRequestForm({ successMessage }: Props) {
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-morpho text-xs font-bold text-white uppercase tracking-wider">
                             03
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">Demo Objectives</h3>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{__('demo_request.form.section_3_title')}</h3>
                     </div>
 
                     <div className="space-y-4">
@@ -319,10 +324,10 @@ export default function DemoRequestForm({ successMessage }: Props) {
                             onValueChange={(val) => setData('demo_goal', val)}
                             className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
                         >
-                            <SelectableCard icon={PlayCircle} label="Try Solution" value="trial" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
-                            <SelectableCard icon={ClipboardCheck} label="Evaluate" value="evaluation" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
-                            <SelectableCard icon={Handshake} label="Partnership" value="partnership" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
-                            <SelectableCard icon={BarChart3} label="Comparison" value="comparison" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
+                            <SelectableCard icon={PlayCircle} label={__('demo_request.form.goal_trial')} value="trial" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
+                            <SelectableCard icon={ClipboardCheck} label={__('demo_request.form.goal_evaluation')} value="evaluation" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
+                            <SelectableCard icon={Handshake} label={__('demo_request.form.goal_partnership')} value="partnership" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
+                            <SelectableCard icon={BarChart3} label={__('demo_request.form.goal_comparison')} value="comparison" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
                         </RadioGroup>
                         {errors.demo_goal && <p className="text-sm text-red-500">{errors.demo_goal}</p>}
                     </div>
@@ -338,12 +343,16 @@ export default function DemoRequestForm({ successMessage }: Props) {
                         {processing ? (
                             <div className="flex items-center gap-3">
                                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                                Submitting...
+                                {__('demo_request.form.submitting_text')}
                             </div>
                         ) : (
                             <div className="flex items-center justify-center gap-2">
-                                Submit Request
-                                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                {__('demo_request.form.submit_text')}
+                                {isRtl ? (
+                                    <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
+                                ) : (
+                                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                )}
                             </div>
                         )}
                     </Button>

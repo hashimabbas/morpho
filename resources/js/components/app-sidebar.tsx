@@ -6,7 +6,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Contact, Cpu, Handshake, LayoutGrid, Mail, Presentation, Sparkles, Target, Crosshair, DollarSign, MessageSquare, Settings } from 'lucide-react';
+import { Contact, Cpu, Handshake, LayoutGrid, Mail, Presentation, Sparkles, Target, Crosshair, DollarSign, MessageSquare, Settings, Users, Heart, FileText, Phone, Share2 } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -51,6 +51,16 @@ const mainNavItems: NavItem[] = [
         icon: Cpu,
     },
     {
+        title: 'Core Values',
+        href: route('dashboard.core-values.index'),
+        icon: Heart,
+    },
+    {
+        title: 'Team Members',
+        href: route('dashboard.team-members.index'),
+        icon: Users,
+    },
+    {
         title: 'Target Entities',
         href: route('dashboard.target-entities.index'),
         icon: Crosshair,
@@ -64,6 +74,21 @@ const mainNavItems: NavItem[] = [
         title: 'Pricing Inquiries',
         href: route('dashboard.pricing-inquiries.index'),
         icon: MessageSquare,
+    },
+    {
+        title: 'Brochures',
+        href: route('dashboard.brochures.index'),
+        icon: FileText,
+    },
+    {
+        title: 'Contact Infos',
+        href: route('dashboard.contact-infos.index'),
+        icon: Phone,
+    },
+    {
+        title: 'Social Links',
+        href: route('dashboard.social-links.index'),
+        icon: Share2,
     },
     {
         title: 'Site Settings',

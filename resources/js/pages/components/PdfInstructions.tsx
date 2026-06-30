@@ -1,7 +1,9 @@
 import React from 'react';
-import { Info, MousePointer2, Download, Eye } from 'lucide-react';
+import { Info, Download, Eye } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const PdfInstructions = () => {
+  const { __ } = useTranslation();
   return (
     <section className="py-12 bg-gray-50/50 dark:bg-gray-900/50 border-y border-gray-100 dark:border-gray-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -9,7 +11,7 @@ const PdfInstructions = () => {
           <div className="flex-1">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-morpho/10 text-morpho text-sm font-bold uppercase tracking-wider mb-4">
               <Info className="w-4 h-4" />
-              How to use
+              {__('brochures.instructions.badge')}
             </div>
 
           </div>
@@ -20,8 +22,8 @@ const PdfInstructions = () => {
                 <Eye className="w-5 h-5 text-morpho" />
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 dark:text-white mb-1">Instant View</h4>
-                <p className="text-sm text-gray-500">Click "View" to open the PDF directly in our interactive viewer.</p>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-1">{__('brochures.instructions.step_1_title')}</h4>
+                <p className="text-sm text-gray-500">{__('brochures.instructions.step_1_desc')}</p>
               </div>
             </div>
 
@@ -30,8 +32,8 @@ const PdfInstructions = () => {
                 <Download className="w-5 h-5 text-morpho" />
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 dark:text-white mb-1">Offline Access</h4>
-                <p className="text-sm text-gray-500">Use the download icon to save a copy for offline reading.</p>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-1">{__('brochures.instructions.step_2_title')}</h4>
+                <p className="text-sm text-gray-500">{__('brochures.instructions.step_2_desc')}</p>
               </div>
             </div>
           </div>
