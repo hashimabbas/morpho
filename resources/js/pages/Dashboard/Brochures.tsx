@@ -147,11 +147,14 @@ export default function Brochures({ brochures }: Props) {
                 </Card>
             </div>
 
-            <BrochureFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                brochure={editingItem}
-            />
+            {isFormOpen && (
+                <BrochureFormDialog
+                    key={editingItem?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    brochure={editingItem}
+                />
+            )}
         </AppLayout>
     );
 }

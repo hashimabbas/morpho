@@ -1,11 +1,12 @@
 import { useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import InputError from './input-error';
+import { Trash2, Upload } from 'lucide-react';
 
 type Brochure = {
     id: number;
@@ -26,6 +27,10 @@ interface Props {
 
 export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props) {
     const [langTab, setLangTab] = useState<'en' | 'ar'>('en');
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [pdfFile, setPdfFile] = useState<File | null>(null);
+    const imageInputRef = useRef<HTMLInputElement>(null);
+    const pdfInputRef = useRef<HTMLInputElement>(null);
 
     const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
         _method: 'POST' as string,
@@ -33,7 +38,9 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
         description: '',
         name_ar: '',
         description_ar: '',
+        image_upload: null as File | null,
         image_url: '',
+        file_upload: null as File | null,
         file: '',
         sort_order: 0,
     });
@@ -41,8 +48,14 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
     const isEditing = !!brochure;
 
     useEffect(() => {
+        return () => { document.body.style.pointerEvents = ''; };
+    }, []);
+
+    useEffect(() => {
         if (isOpen) {
             clearErrors();
+            setImageFile(null);
+            setPdfFile(null);
             if (brochure) {
                 setData({
                     _method: 'PUT' as string,
@@ -50,7 +63,9 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
                     description: brochure.description,
                     name_ar: brochure.name_ar || '',
                     description_ar: brochure.description_ar || '',
+                    image_upload: null,
                     image_url: brochure.image_url || '',
+                    file_upload: null,
                     file: brochure.file || '',
                     sort_order: brochure.sort_order,
                 });
@@ -61,7 +76,9 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
                     description: '',
                     name_ar: '',
                     description_ar: '',
+                    image_upload: null,
                     image_url: '',
+                    file_upload: null,
                     file: '',
                     sort_order: 0,
                 });
@@ -75,7 +92,9 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
         const routeParams = isEditing ? { brochure: brochure!.id } : {};
         post(route(routeName, routeParams), {
             preserveScroll: true,
+            forceFormData: true,
             onSuccess: () => {
+                document.body.style.pointerEvents = '';
                 reset();
                 onClose();
             },
@@ -85,11 +104,34 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
     const handleClose = () => {
         reset();
         clearErrors();
+        document.body.style.pointerEvents = '';
         onClose();
     };
 
+    const handleImageSelect = (file: File | null) => {
+        setImageFile(file);
+        setData('image_upload', file);
+        if (file) {
+            setData('image_url', '');
+        }
+    };
+
+    const handlePdfSelect = (file: File | null) => {
+        setPdfFile(file);
+        setData('file_upload', file);
+        if (file) {
+            setData('file', '');
+        }
+    };
+
+    const imagePreview = imageFile
+        ? URL.createObjectURL(imageFile)
+        : (data.image_url || null);
+
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Brochure' : 'Create Brochure'}</DialogTitle>
@@ -113,7 +155,7 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
                     {langTab === 'en' ? (
                         <>
                             <div>
@@ -125,21 +167,6 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
                                 <Label htmlFor="description">Description (English)</Label>
                                 <Textarea id="description" value={data.description} onChange={e => setData('description', e.target.value)} rows={3} />
                                 <InputError message={errors.description} />
-                            </div>
-                            <div>
-                                <Label htmlFor="image_url">Image URL</Label>
-                                <Input id="image_url" value={data.image_url} onChange={e => setData('image_url', e.target.value)} placeholder="/images/solutions/cold.png" />
-                                <InputError message={errors.image_url} />
-                            </div>
-                            <div>
-                                <Label htmlFor="file">PDF File</Label>
-                                <Input id="file" value={data.file} onChange={e => setData('file', e.target.value)} placeholder="1.pdf" />
-                                <InputError message={errors.file} />
-                            </div>
-                            <div>
-                                <Label htmlFor="sort_order">Sort Order</Label>
-                                <Input id="sort_order" type="number" value={data.sort_order} onChange={e => setData('sort_order', Number(e.target.value))} />
-                                <InputError message={errors.sort_order} />
                             </div>
                         </>
                     ) : (
@@ -156,6 +183,86 @@ export default function BrochureFormDialog({ isOpen, onClose, brochure }: Props)
                             </div>
                         </>
                     )}
+
+                    <div>
+                        <Label>Image</Label>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <Label className="text-xs text-muted-foreground">Upload image</Label>
+                                <div className="flex items-center gap-2">
+                                    <Input
+                                        ref={imageInputRef}
+                                        type="file"
+                                        accept="image/png,image/jpg,image/jpeg,image/webp,image/svg+xml"
+                                        onChange={e => handleImageSelect(e.target.files?.[0] || null)}
+                                        className="flex-1"
+                                    />
+                                    {imageFile && (
+                                        <Button type="button" variant="ghost" size="sm" onClick={() => { handleImageSelect(null); if (imageInputRef.current) imageInputRef.current.value = ''; }}>
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
+                            <div>
+                                <Label className="text-xs text-muted-foreground">Or enter image URL</Label>
+                                <Input
+                                    value={data.image_url}
+                                    onChange={e => setData('image_url', e.target.value)}
+                                    placeholder="/images/brochures/..."
+                                    disabled={!!imageFile}
+                                />
+                            </div>
+                        </div>
+                        {imagePreview && (
+                            <img src={imagePreview} alt="Preview" className="mt-2 h-16 w-auto object-contain rounded border" />
+                        )}
+                        <InputError message={errors.image_url || errors.image_upload} />
+                    </div>
+
+                    <div>
+                        <Label>PDF File</Label>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <Label className="text-xs text-muted-foreground">Upload PDF</Label>
+                                <div className="flex items-center gap-2">
+                                    <Input
+                                        ref={pdfInputRef}
+                                        type="file"
+                                        accept=".pdf,application/pdf"
+                                        onChange={e => handlePdfSelect(e.target.files?.[0] || null)}
+                                        className="flex-1"
+                                    />
+                                    {pdfFile && (
+                                        <Button type="button" variant="ghost" size="sm" onClick={() => { handlePdfSelect(null); if (pdfInputRef.current) pdfInputRef.current.value = ''; }}>
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
+                            <div>
+                                <Label className="text-xs text-muted-foreground">Or enter PDF path</Label>
+                                <Input
+                                    value={data.file}
+                                    onChange={e => setData('file', e.target.value)}
+                                    placeholder="/files/brochures/..."
+                                    disabled={!!pdfFile}
+                                />
+                            </div>
+                        </div>
+                        {(pdfFile || data.file) && (
+                            <p className="mt-1 text-xs text-muted-foreground">
+                                📄 {pdfFile ? pdfFile.name : data.file}
+                            </p>
+                        )}
+                        <InputError message={errors.file || errors.file_upload} />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="sort_order">Sort Order</Label>
+                        <Input id="sort_order" type="number" value={data.sort_order} onChange={e => setData('sort_order', Number(e.target.value))} />
+                        <InputError message={errors.sort_order} />
+                    </div>
 
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={handleClose}>Cancel</Button>

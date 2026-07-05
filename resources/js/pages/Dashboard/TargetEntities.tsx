@@ -157,11 +157,14 @@ export default function TargetEntities({ targetEntities }: Props) {
                 </Card>
             </div>
 
-            <TargetEntityFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                targetEntity={editingEntity}
-            />
+            {isFormOpen && (
+                <TargetEntityFormDialog
+                    key={editingEntity?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    targetEntity={editingEntity}
+                />
+            )}
         </AppLayout>
     );
 }

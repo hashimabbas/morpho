@@ -161,11 +161,14 @@ export default function PricingPlans({ pricingPlans }: Props) {
                 </Card>
             </div>
 
-            <PricingPlanFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                pricingPlan={editingPlan}
-            />
+            {isFormOpen && (
+                <PricingPlanFormDialog
+                    key={editingPlan?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    pricingPlan={editingPlan}
+                />
+            )}
         </AppLayout>
     );
 }

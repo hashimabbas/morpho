@@ -170,11 +170,14 @@ export default function Ecosystems({ ecosystems }: Props) {
                 </Card>
             </div>
 
-            <EcosystemFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                ecosystem={editingItem}
-            />
+            {isFormOpen && (
+                <EcosystemFormDialog
+                    key={editingItem?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    ecosystem={editingItem}
+                />
+            )}
         </AppLayout>
     );
 }

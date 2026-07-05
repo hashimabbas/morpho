@@ -75,7 +75,10 @@ export default function PricingComparisonFeatureFormDialog({ isOpen, onClose, co
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const options = {
-            onSuccess: () => onClose(),
+            onSuccess: () => {
+                document.body.style.pointerEvents = '';
+                onClose();
+            },
             preserveScroll: true,
         };
 
@@ -90,12 +93,15 @@ export default function PricingComparisonFeatureFormDialog({ isOpen, onClose, co
         if (!processing) {
             clearErrors();
             reset();
+            document.body.style.pointerEvents = '';
             onClose();
         }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Comparison Feature' : 'New Comparison Feature'}</DialogTitle>

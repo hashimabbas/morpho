@@ -51,6 +51,10 @@ export default function Messages(props: Props) {
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [isExporting, setIsExporting] = useState(false);
 
+    useEffect(() => {
+        return () => { document.body.style.pointerEvents = ''; };
+    }, []);
+
     // Reset selections if the underlying data changes
     useEffect(() => {
         setSelectedIds([]);
@@ -74,6 +78,7 @@ export default function Messages(props: Props) {
         router.post(route('dashboard.messages.convertToContact', messageId), {}, { preserveScroll: true });
     };
     const closeMessageDialog = () => {
+        document.body.style.pointerEvents = '';
         setIsMessageDialogOpen(false);
         setSelectedMessage(null);
     };
@@ -204,30 +209,32 @@ export default function Messages(props: Props) {
                 </div>
             </div>
 
-            <Dialog open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen}>
-                <DialogContent className="sm:max-w-[700px]">
-                    <DialogHeader>
-                        <DialogTitle>Message from {selectedMessage?.name}</DialogTitle>
-                        <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
-                            Received on {selectedMessage?.created_at ? format(new Date(selectedMessage.created_at), 'EEEE, MMM dd, yyyy HH:mm') : ''}
-                        </DialogDescription>
-                    </DialogHeader>
-                    {selectedMessage && (<div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="senderName" className="text-right">From:</Label>
-                            <span id="senderName" className="col-span-3 font-medium">{selectedMessage.name} &lt;{selectedMessage.email}&gt;</span>
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="messageSubject" className="text-right">Subject:</Label>
-                            <span id="messageSubject" className="col-span-3 font-medium">{selectedMessage.subject}</span>
-                        </div>
-                        <div className="grid grid-cols-4 items-start gap-4 mt-2">
-                            <Label htmlFor="messageContent" className="text-right pt-2">Message:</Label>
-                            <div id="messageContent" className="col-span-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 max-h-[300px] overflow-y-auto whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-200">{selectedMessage.message}</div>
-                        </div>
-                    </div>)}
-                </DialogContent>
-            </Dialog>
+            {isMessageDialogOpen && (
+                <Dialog open={true} onOpenChange={(open) => { if (!open) closeMessageDialog(); }}>
+                    <DialogContent className="sm:max-w-[700px]">
+                        <DialogHeader>
+                            <DialogTitle>Message from {selectedMessage?.name}</DialogTitle>
+                            <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
+                                Received on {selectedMessage?.created_at ? format(new Date(selectedMessage.created_at), 'EEEE, MMM dd, yyyy HH:mm') : ''}
+                            </DialogDescription>
+                        </DialogHeader>
+                        {selectedMessage && (<div className="grid gap-4 py-4">
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="senderName" className="text-right">From:</Label>
+                                <span id="senderName" className="col-span-3 font-medium">{selectedMessage.name} &lt;{selectedMessage.email}&gt;</span>
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="messageSubject" className="text-right">Subject:</Label>
+                                <span id="messageSubject" className="col-span-3 font-medium">{selectedMessage.subject}</span>
+                            </div>
+                            <div className="grid grid-cols-4 items-start gap-4 mt-2">
+                                <Label htmlFor="messageContent" className="text-right pt-2">Message:</Label>
+                                <div id="messageContent" className="col-span-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 max-h-[300px] overflow-y-auto whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-200">{selectedMessage.message}</div>
+                            </div>
+                        </div>)}
+                    </DialogContent>
+                </Dialog>
+            )}
         </AppLayout>
     );
 }

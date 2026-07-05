@@ -6,14 +6,19 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Contact, Cpu, Handshake, LayoutGrid, Mail, Presentation, Sparkles, Target, Crosshair, DollarSign, MessageSquare, Settings, Users, Heart, FileText, Phone, Share2 } from 'lucide-react';
+import { Contact, Cpu, Handshake, LayoutGrid, Mail, Presentation, Sparkles, Target, Crosshair, DollarSign, MessageSquare, Settings, Users, Heart, FileText, Phone, Share2, Image as ImageIcon, Globe } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: route('dashboard.index'),
-        icon: LayoutGrid, // Icon for Dashboard
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Hero Section',
+        href: route('dashboard.hero.edit'),
+        icon: Globe,
     },
     {
         title: 'Messages',
@@ -89,6 +94,11 @@ const mainNavItems: NavItem[] = [
         title: 'Social Links',
         href: route('dashboard.social-links.index'),
         icon: Share2,
+    },
+    {
+        title: 'Portfolios',
+        href: route('dashboard.portfolios.index'),
+        icon: ImageIcon,
     },
     {
         title: 'Site Settings',

@@ -21,13 +21,49 @@ class BrochureController extends Controller
 
     public function store(StoreBrochureRequest $request)
     {
-        Brochure::create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image_upload')) {
+            $file = $request->file('image_upload');
+            $filename = 'images/brochures/' . $file->hashName();
+            $file->move(public_path('images/brochures'), $filename);
+            $data['image_url'] = '/' . $filename;
+        }
+        unset($data['image_upload']);
+
+        if ($request->hasFile('file_upload')) {
+            $file = $request->file('file_upload');
+            $filename = 'files/brochures/' . $file->hashName();
+            $file->move(public_path('files/brochures'), $filename);
+            $data['file'] = '/' . $filename;
+        }
+        unset($data['file_upload']);
+
+        Brochure::create($data);
         return back()->with('success', 'Brochure created successfully.');
     }
 
     public function update(UpdateBrochureRequest $request, Brochure $brochure)
     {
-        $brochure->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image_upload')) {
+            $file = $request->file('image_upload');
+            $filename = 'images/brochures/' . $file->hashName();
+            $file->move(public_path('images/brochures'), $filename);
+            $data['image_url'] = '/' . $filename;
+        }
+        unset($data['image_upload']);
+
+        if ($request->hasFile('file_upload')) {
+            $file = $request->file('file_upload');
+            $filename = 'files/brochures/' . $file->hashName();
+            $file->move(public_path('files/brochures'), $filename);
+            $data['file'] = '/' . $filename;
+        }
+        unset($data['file_upload']);
+
+        $brochure->update($data);
         return back()->with('success', 'Brochure updated successfully.');
     }
 

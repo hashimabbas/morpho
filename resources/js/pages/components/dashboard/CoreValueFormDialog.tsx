@@ -40,6 +40,10 @@ export default function CoreValueFormDialog({ isOpen, onClose, coreValue }: Prop
     const isEditing = !!coreValue;
 
     useEffect(() => {
+        return () => { document.body.style.pointerEvents = ''; };
+    }, []);
+
+    useEffect(() => {
         if (isOpen) {
             clearErrors();
             if (coreValue) {
@@ -73,6 +77,7 @@ export default function CoreValueFormDialog({ isOpen, onClose, coreValue }: Prop
         post(route(routeName, routeParams), {
             preserveScroll: true,
             onSuccess: () => {
+                document.body.style.pointerEvents = '';
                 reset();
                 onClose();
             },
@@ -82,13 +87,16 @@ export default function CoreValueFormDialog({ isOpen, onClose, coreValue }: Prop
     const handleClose = () => {
         reset();
         clearErrors();
+        document.body.style.pointerEvents = '';
         onClose();
     };
 
     const SelectedIcon = getIcon(data.icon);
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Core Value' : 'Create Core Value'}</DialogTitle>

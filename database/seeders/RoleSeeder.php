@@ -41,6 +41,10 @@ class RoleSeeder extends Seeder
             'create ecosystems',
             'edit ecosystems',
             'delete ecosystems',
+            'view portfolios',
+            'create portfolios',
+            'edit portfolios',
+            'delete portfolios',
         ];
 
         foreach ($permissions as $permission) {

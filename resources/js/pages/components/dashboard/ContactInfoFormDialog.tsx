@@ -66,7 +66,7 @@ export default function ContactInfoFormDialog({ isOpen, onClose, contactInfo }: 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const payload = { ...data, icon: handleIconChange(data.type) };
-        const options = { onSuccess: () => { onClose(); }, preserveScroll: true };
+        const options = { onSuccess: () => { document.body.style.pointerEvents = ''; onClose(); }, preserveScroll: true };
         if (isEditing) {
             patch(route('dashboard.contact-infos.update', contactInfo.id), { ...options, data: payload });
         } else {
@@ -75,11 +75,13 @@ export default function ContactInfoFormDialog({ isOpen, onClose, contactInfo }: 
     };
 
     const handleClose = () => {
-        if (!processing) { clearErrors(); reset(); onClose(); }
+        if (!processing) { clearErrors(); reset(); document.body.style.pointerEvents = ''; onClose(); }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Contact Info' : 'Create Contact Info'}</DialogTitle>

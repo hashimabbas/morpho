@@ -218,12 +218,15 @@ export default function PricingInquiries({ inquiries, plans, filters }: Props) {
                 </Card>
             </div>
 
-            <PricingInquiryFormDialog
-                isOpen={isFormOpen}
-                onClose={handleCloseForm}
-                inquiry={viewingInquiry}
-                plans={plans}
-            />
+            {isFormOpen && (
+                <PricingInquiryFormDialog
+                    key={viewingInquiry?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={handleCloseForm}
+                    inquiry={viewingInquiry}
+                    plans={plans}
+                />
+            )}
         </AppLayout>
     );
 }

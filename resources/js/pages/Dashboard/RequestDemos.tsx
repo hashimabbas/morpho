@@ -70,6 +70,10 @@ export default function RequestDemos(props: Props) {
     const [isExporting, setIsExporting] = useState(false);
 
     useEffect(() => {
+        return () => { document.body.style.pointerEvents = ''; };
+    }, []);
+
+    useEffect(() => {
         setSelectedIds([]);
     }, [requests.total]);
 
@@ -84,6 +88,7 @@ export default function RequestDemos(props: Props) {
     };
 
     const closeDialog = () => {
+        document.body.style.pointerEvents = '';
         setIsDialogOpen(false);
         setSelectedDemo(null);
     };
@@ -238,80 +243,82 @@ export default function RequestDemos(props: Props) {
                 </div>
             </div>
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="sm:max-w-[700px]">
-                    <DialogHeader>
-                        <DialogTitle>Demo Request from {selectedDemo?.full_name}</DialogTitle>
-                        <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
-                            Received on{' '}
-                            {selectedDemo?.created_at ? format(new Date(selectedDemo.created_at), 'EEEE, MMM dd, yyyy HH:mm') : ''}
-                        </DialogDescription>
-                    </DialogHeader>
-                    {selectedDemo && (
-                        <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="fullName" className="text-right">
-                                    Full Name:
-                                </Label>
-                                <span id="fullName" className="col-span-3 font-medium">
-                                    {selectedDemo.full_name}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="company" className="text-right">
-                                    Company:
-                                </Label>
-                                <span id="company" className="col-span-3 font-medium">
-                                    {selectedDemo.company_name}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="email" className="text-right">
-                                    Email:
-                                </Label>
-                                <span id="email" className="col-span-3 font-medium">
-                                    {selectedDemo.email}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="phone" className="text-right">
-                                    Phone:
-                                </Label>
-                                <span id="phone" className="col-span-3 font-medium">
-                                    {selectedDemo.phone}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="sector" className="text-right">
-                                    Sector:
-                                </Label>
-                                <span id="sector" className="col-span-3 font-medium">
-                                    {selectedDemo.logistics_sector}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="solution" className="text-right">
-                                    Solution:
-                                </Label>
-                                <span id="solution" className="col-span-3 font-medium">
-                                    {selectedDemo.solution_type}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-start gap-4 mt-2">
-                                <Label htmlFor="goal" className="text-right pt-2">
-                                    Goal:
-                                </Label>
-                                <div
-                                    id="goal"
-                                    className="col-span-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 max-h-[300px] overflow-y-auto whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-200"
-                                >
-                                    {selectedDemo.demo_goal}
+            {isDialogOpen && (
+                <Dialog open={true} onOpenChange={(open) => { if (!open) closeDialog(); }}>
+                    <DialogContent className="sm:max-w-[700px]">
+                        <DialogHeader>
+                            <DialogTitle>Demo Request from {selectedDemo?.full_name}</DialogTitle>
+                            <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
+                                Received on{' '}
+                                {selectedDemo?.created_at ? format(new Date(selectedDemo.created_at), 'EEEE, MMM dd, yyyy HH:mm') : ''}
+                            </DialogDescription>
+                        </DialogHeader>
+                        {selectedDemo && (
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="fullName" className="text-right">
+                                        Full Name:
+                                    </Label>
+                                    <span id="fullName" className="col-span-3 font-medium">
+                                        {selectedDemo.full_name}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="company" className="text-right">
+                                        Company:
+                                    </Label>
+                                    <span id="company" className="col-span-3 font-medium">
+                                        {selectedDemo.company_name}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="email" className="text-right">
+                                        Email:
+                                    </Label>
+                                    <span id="email" className="col-span-3 font-medium">
+                                        {selectedDemo.email}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="phone" className="text-right">
+                                        Phone:
+                                    </Label>
+                                    <span id="phone" className="col-span-3 font-medium">
+                                        {selectedDemo.phone}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="sector" className="text-right">
+                                        Sector:
+                                    </Label>
+                                    <span id="sector" className="col-span-3 font-medium">
+                                        {selectedDemo.logistics_sector}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="solution" className="text-right">
+                                        Solution:
+                                    </Label>
+                                    <span id="solution" className="col-span-3 font-medium">
+                                        {selectedDemo.solution_type}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-start gap-4 mt-2">
+                                    <Label htmlFor="goal" className="text-right pt-2">
+                                        Goal:
+                                    </Label>
+                                    <div
+                                        id="goal"
+                                        className="col-span-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 max-h-[300px] overflow-y-auto whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-200"
+                                    >
+                                        {selectedDemo.demo_goal}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
-                </DialogContent>
-            </Dialog>
+                        )}
+                    </DialogContent>
+                </Dialog>
+            )}
         </AppLayout>
     );
 }

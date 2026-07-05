@@ -17,9 +17,11 @@ use App\Http\Controllers\Dashboard\BrochureController;
 use App\Http\Controllers\Dashboard\ContactInfoController;
 use App\Http\Controllers\Dashboard\SocialLinkController;
 use App\Http\Controllers\DashboardController; // Make sure this is imported
+use App\Http\Controllers\Dashboard\PortfolioController;
 use App\Http\Controllers\DemoRequestController;
 use App\Http\Controllers\PricingInquiryController;
 use App\Http\Controllers\SolutionController;
+use App\Models\Portfolio;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -145,6 +147,31 @@ Route::get('/entities', function () {
 })->name('entities');
 
 // Public API
+Route::get('/api/hero', function () {
+    $locale = app()->getLocale();
+    $hero = \App\Models\HeroSection::first();
+    if (!$hero) {
+        return response()->json(null);
+    }
+    return [
+        'subtitle' => $locale === 'ar' && $hero->subtitle_ar ? $hero->subtitle_ar : $hero->subtitle,
+        'heading' => $locale === 'ar' && $hero->heading_ar ? $hero->heading_ar : $hero->heading,
+        'description' => $locale === 'ar' && $hero->description_ar ? $hero->description_ar : $hero->description,
+        'feature_1' => $locale === 'ar' && $hero->feature_1_ar ? $hero->feature_1_ar : $hero->feature_1,
+        'feature_2' => $locale === 'ar' && $hero->feature_2_ar ? $hero->feature_2_ar : $hero->feature_2,
+        'feature_2_desc' => $locale === 'ar' && $hero->feature_2_desc_ar ? $hero->feature_2_desc_ar : $hero->feature_2_desc,
+        'cta_text' => $locale === 'ar' && $hero->cta_text_ar ? $hero->cta_text_ar : $hero->cta_text,
+        'explore_text' => $locale === 'ar' && $hero->explore_text_ar ? $hero->explore_text_ar : $hero->explore_text,
+        'images' => $hero->images ? array_map(function ($img) use ($locale) {
+            return [
+                'src' => $img['src'],
+                'alt' => $locale === 'ar' && isset($img['alt_ar']) ? $img['alt_ar'] : $img['alt'],
+            ];
+        }, $hero->images) : [],
+        'is_active' => $hero->is_active,
+    ];
+});
+
 Route::get('/api/partners', function () {
     return \App\Models\Partner::orderBy('sort_order')->orderBy('name')->get(['id', 'name', 'role', 'logo']);
 });
@@ -250,6 +277,45 @@ Route::get('/api/contact-data', function () {
     return response()->json(['contactInfos' => $contactInfos, 'socialLinks' => $socialLinks]);
 });
 
+Route::get('/portfolio', function () {
+    $locale = app()->getLocale();
+    $portfolios = Portfolio::withCount('images')
+        ->where('is_visible', true)
+        ->orderBy('sort_order')
+        ->get()
+        ->map(fn ($p) => [
+            'id' => $p->id,
+            'title' => $locale === 'ar' && $p->title_ar ? $p->title_ar : $p->title,
+            'slug' => $p->slug,
+            'date' => $p->date?->format('Y-m-d'),
+            'description' => $locale === 'ar' && $p->description_ar ? $p->description_ar : $p->description,
+            'cover_image' => $p->cover_image,
+            'images_count' => $p->images_count,
+        ]);
+    return Inertia::render('Portfolios', ['portfolios' => $portfolios]);
+})->name('portfolio.index');
+
+Route::get('/portfolio/{slug}', function ($slug) {
+    $locale = app()->getLocale();
+    $portfolio = Portfolio::where('slug', $slug)
+        ->where('is_visible', true)
+        ->with(['images' => fn ($q) => $q->orderBy('sort_order')])
+        ->firstOrFail();
+    return Inertia::render('PortfolioDetail', [
+        'portfolio' => [
+            'id' => $portfolio->id,
+            'title' => $locale === 'ar' && $portfolio->title_ar ? $portfolio->title_ar : $portfolio->title,
+            'date' => $portfolio->date?->format('Y-m-d'),
+            'description' => $locale === 'ar' && $portfolio->description_ar ? $portfolio->description_ar : $portfolio->description,
+            'images' => $portfolio->images->map(fn ($img) => [
+                'id' => $img->id,
+                'image' => $img->image,
+                'is_cover' => $img->is_cover,
+            ]),
+        ],
+    ]);
+})->name('portfolio.detail');
+
 Route::get('/api/settings', function () {
     return \App\Models\Setting::pluck('value', 'key');
 });
@@ -283,6 +349,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
     Route::resource('brochures', BrochureController::class)->except(['create', 'show', 'edit']);
     Route::resource('contact-infos', ContactInfoController::class)->except(['create', 'show', 'edit']);
     Route::resource('social-links', SocialLinkController::class)->except(['create', 'show', 'edit']);
+    Route::resource('portfolios', PortfolioController::class)->except(['create', 'show', 'edit']);
     Route::get('/messages', [ContactController::class, 'index'])->name('messages');
     Route::get('/messages/all', [ContactController::class, 'getAllMessages'])->name('messages.all');
     Route::post('/messages/{contactMessage}/mark-as-read', [ContactController::class, 'markAsRead'])->name('messages.markAsRead');
@@ -308,6 +375,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
     Route::delete('/pricing-inquiries/{pricingInquiry}', [PricingInquiryController::class, 'destroy'])
         ->name('pricing-inquiries.destroy');
+
+    Route::get('/hero', [\App\Http\Controllers\Dashboard\HeroSectionController::class, 'edit'])->name('hero.edit');
+    Route::match(['post', 'patch'], '/hero', [\App\Http\Controllers\Dashboard\HeroSectionController::class, 'update'])->name('hero.update');
 
     Route::get('/settings', [SiteSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SiteSettingController::class, 'update'])->name('settings.update');

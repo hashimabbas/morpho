@@ -94,43 +94,8 @@ export default function PricingInquiryDialog({ isOpen, onClose, planName, planHa
 
     return (
         <>
-            <AlertDialog open={showResultDialog} onOpenChange={setShowResultDialog}>
-                <AlertDialogContent className="rounded-2xl border-none p-0 overflow-hidden bg-white dark:bg-gray-900">
-                    <div className={cn(
-                        "h-2 w-full",
-                        isSuccess ? "bg-green-500" : "bg-red-500"
-                    )} />
-                    <div className="p-8 text-center">
-                        <div className={cn(
-                            "mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full",
-                            isSuccess ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" : "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
-                        )}>
-                            {isSuccess ? <CheckCircle className="h-8 w-8" /> : <XCircle className="h-8 w-8" />}
-                        </div>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle className="text-2xl font-bold text-gray-900 dark:text-white">
-                                {dialogTitle}
-                            </AlertDialogTitle>
-                            <AlertDialogDescription className="mt-4 text-lg text-gray-600 dark:text-gray-400 whitespace-pre-line">
-                                {dialogDescription}
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter className="mt-8">
-                            <AlertDialogAction
-                                onClick={() => setShowResultDialog(false)}
-                                className={cn(
-                                    "w-full rounded-xl py-6 text-base font-bold text-white transition-all hover:scale-[1.02]",
-                                    isSuccess ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"
-                                )}
-                            >
-                                {__('pricing.inquiry.continue')}
-                            </AlertDialogAction>
-                        </AlertDialogFooter>
-                    </div>
-                </AlertDialogContent>
-            </AlertDialog>
-
-            <Dialog open={isOpen} onOpenChange={handleDialogClose}>
+            {isOpen && (
+                <Dialog open={true} onOpenChange={handleDialogClose}>
                 <DialogContent className="sm:max-w-[500px] rounded-2xl">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold">
@@ -245,6 +210,43 @@ export default function PricingInquiryDialog({ isOpen, onClose, planName, planHa
                     </form>
                 </DialogContent>
             </Dialog>
+            )}
+
+            <AlertDialog open={showResultDialog} onOpenChange={setShowResultDialog}>
+                <AlertDialogContent className="rounded-2xl border-none p-0 overflow-hidden bg-white dark:bg-gray-900">
+                    <div className={cn(
+                        "h-2 w-full",
+                        isSuccess ? "bg-green-500" : "bg-red-500"
+                    )} />
+                    <div className="p-8 text-center">
+                        <div className={cn(
+                            "mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full",
+                            isSuccess ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" : "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+                        )}>
+                            {isSuccess ? <CheckCircle className="h-8 w-8" /> : <XCircle className="h-8 w-8" />}
+                        </div>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle className="text-2xl font-bold text-gray-900 dark:text-white">
+                                {dialogTitle}
+                            </AlertDialogTitle>
+                            <AlertDialogDescription className="mt-4 text-lg text-gray-600 dark:text-gray-400 whitespace-pre-line">
+                                {dialogDescription}
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter className="mt-8">
+                            <AlertDialogAction
+                                onClick={() => setShowResultDialog(false)}
+                                className={cn(
+                                    "w-full rounded-xl py-6 text-base font-bold text-white transition-all hover:scale-[1.02]",
+                                    isSuccess ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"
+                                )}
+                            >
+                                {__('pricing.inquiry.continue')}
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </div>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 }

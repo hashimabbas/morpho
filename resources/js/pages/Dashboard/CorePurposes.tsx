@@ -161,11 +161,14 @@ export default function CorePurposes({ corePurposes }: Props) {
                 </Card>
             </div>
 
-            <CorePurposeFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                corePurpose={editingItem}
-            />
+            {isFormOpen && (
+                <CorePurposeFormDialog
+                    key={editingItem?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    corePurpose={editingItem}
+                />
+            )}
         </AppLayout>
     );
 }

@@ -10,6 +10,7 @@ return [
         'pricing' => 'الباقات',
         'demo_request' => 'طلب تجربة',
         'contact_us' => 'اتصل بنا',
+        'portfolio' => 'معرض الأعمال',
         'ecosystem' => 'النظام البيئي الذكي لمورفو',
         'our_solutions' => 'حلولنا',
         'login' => 'تسجيل الدخول',
@@ -19,6 +20,7 @@ return [
         'logout' => 'تسجيل الخروج',
         'toggle_theme' => 'تبديل السمة',
         'open_menu' => 'فتح القائمة الرئيسية',
+        'close_menu' => 'إغلاق القائمة الرئيسية',
         'open_user_menu' => 'فتح قائمة المستخدم',
     ],
     'footer' => [

@@ -62,7 +62,7 @@ export default function SocialLinkFormDialog({ isOpen, onClose, socialLink }: Pr
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const options = { onSuccess: () => { onClose(); }, preserveScroll: true };
+        const options = { onSuccess: () => { document.body.style.pointerEvents = ''; onClose(); }, preserveScroll: true };
         if (isEditing) {
             patch(route('dashboard.social-links.update', socialLink.id), { ...options, data });
         } else {
@@ -71,11 +71,13 @@ export default function SocialLinkFormDialog({ isOpen, onClose, socialLink }: Pr
     };
 
     const handleClose = () => {
-        if (!processing) { clearErrors(); reset(); onClose(); }
+        if (!processing) { clearErrors(); reset(); document.body.style.pointerEvents = ''; onClose(); }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Social Link' : 'Create Social Link'}</DialogTitle>

@@ -154,11 +154,14 @@ export default function Highlights({ highlights }: Props) {
                 </Card>
             </div>
 
-            <HighlightFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                highlight={editingHighlight}
-            />
+            {isFormOpen && (
+                <HighlightFormDialog
+                    key={editingHighlight?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    highlight={editingHighlight}
+                />
+            )}
         </AppLayout>
     );
 }

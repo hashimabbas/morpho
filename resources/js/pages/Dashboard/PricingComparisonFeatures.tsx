@@ -143,12 +143,15 @@ export default function PricingComparisonFeatures({ comparisonFeatures, plans }:
                 </Card>
             </div>
 
-            <PricingComparisonFeatureFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                comparisonFeature={editingFeature}
-                plans={plans}
-            />
+            {isFormOpen && (
+                <PricingComparisonFeatureFormDialog
+                    key={editingFeature?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    comparisonFeature={editingFeature}
+                    plans={plans}
+                />
+            )}
         </AppLayout>
     );
 }

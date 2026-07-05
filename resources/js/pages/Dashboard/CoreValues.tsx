@@ -144,11 +144,14 @@ export default function CoreValues({ coreValues }: Props) {
                 </Card>
             </div>
 
-            <CoreValueFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                coreValue={editingItem}
-            />
+            {isFormOpen && (
+                <CoreValueFormDialog
+                    key={editingItem?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    coreValue={editingItem}
+                />
+            )}
         </AppLayout>
     );
 }

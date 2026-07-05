@@ -98,7 +98,10 @@ export default function TargetEntityFormDialog({ isOpen, onClose, targetEntity }
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const options = {
-            onSuccess: () => onClose(),
+            onSuccess: () => {
+                document.body.style.pointerEvents = '';
+                onClose();
+            },
             preserveScroll: true,
         };
 
@@ -113,12 +116,15 @@ export default function TargetEntityFormDialog({ isOpen, onClose, targetEntity }
         if (!processing) {
             clearErrors();
             reset();
+            document.body.style.pointerEvents = '';
             onClose();
         }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Target Entity' : 'Create New Target Entity'}</DialogTitle>

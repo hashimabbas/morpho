@@ -32,6 +32,10 @@ export default function PartnerFormDialog({ isOpen, onClose, partner }: Props) {
     const isEditing = !!partner;
 
     useEffect(() => {
+        return () => { document.body.style.pointerEvents = ''; };
+    }, []);
+
+    useEffect(() => {
         if (isOpen && isEditing && partner) {
             setData({
                 _method: 'PATCH',
@@ -54,7 +58,10 @@ export default function PartnerFormDialog({ isOpen, onClose, partner }: Props) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const options = {
-            onSuccess: () => onClose(),
+            onSuccess: () => {
+                document.body.style.pointerEvents = '';
+                onClose();
+            },
             preserveScroll: true,
         };
 
@@ -69,12 +76,15 @@ export default function PartnerFormDialog({ isOpen, onClose, partner }: Props) {
         if (!processing) {
             clearErrors();
             reset();
+            document.body.style.pointerEvents = '';
             onClose();
         }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Partner' : 'Create New Partner'}</DialogTitle>

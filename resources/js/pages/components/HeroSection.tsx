@@ -4,26 +4,62 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import EmblaCarouselFade from 'embla-carousel-fade';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useEffect, useState } from 'react';
 
 type ImageType = {
     src: string;
     alt: string;
 };
 
-const images: ImageType[] = [
-    { src: '/images/solutions/cold.png', alt: 'Cold Chain Solutions' },
-    { src: '/images/warehouse-1.png', alt: 'Warehouse Monitoring' },
-    { src: '/images/Agriculture-1.png', alt: 'Smart Agriculture' },
-    { src: '/images/Livestock-2.png', alt: 'Livestock Monitoring' },
-    { src: '/images/Marine-1.png', alt: 'Marine & Fisheries' },
-];
+type HeroData = {
+    subtitle: string;
+    heading: string;
+    description: string;
+    feature_1: string;
+    feature_2: string;
+    feature_2_desc: string;
+    cta_text: string;
+    explore_text: string;
+    images: ImageType[];
+    is_active: boolean;
+};
+
+const defaultHero: HeroData = {
+    subtitle: 'Welcome to Morpho',
+    heading: 'Innovative <span class="text-morpho">Cold Chain</span> &amp; Environmental Control Solutions',
+    description: 'Empowering industries with advanced cold chain monitoring, smart agriculture, and environmental control systems across the Middle East and Africa.',
+    feature_1: 'Comprehensive Environmental Control',
+    feature_2: 'Data-Driven Insights',
+    feature_2_desc: 'Real-time monitoring and analytics for informed decision-making.',
+    cta_text: 'Request a Demo',
+    explore_text: 'Explore Brochures',
+    images: [
+        { src: '/images/solutions/cold.png', alt: 'Cold Chain Solutions' },
+        { src: '/images/warehouse-1.png', alt: 'Warehouse Monitoring' },
+        { src: '/images/Agriculture-1.png', alt: 'Smart Agriculture' },
+        { src: '/images/Livestock-2.png', alt: 'Livestock Monitoring' },
+        { src: '/images/Marine-1.png', alt: 'Marine & Fisheries' },
+    ],
+    is_active: true,
+};
 
 export default function HeroSection(): JSX.Element {
     const { __, isRtl } = useTranslation();
+    const [hero, setHero] = useState<HeroData | null>(null);
+
+    useEffect(() => {
+        fetch('/api/hero')
+            .then(res => res.json())
+            .then(data => setHero(data))
+            .catch(() => setHero(defaultHero));
+    }, []);
+
     const [emblaRef] = useEmblaCarousel(
         { loop: true },
         [Autoplay({ delay: 5000, stopOnInteraction: false }), EmblaCarouselFade()]
     );
+
+    const content = hero || defaultHero;
 
     return (
         <section className="relative min-h-[600px] overflow-hidden py-20 lg:py-32 bg-[#F8FAFC] dark:bg-[#030712]">
@@ -46,16 +82,16 @@ export default function HeroSection(): JSX.Element {
                     <div className="relative">
                         <div className="animate-in fade-in slide-in-from-left-4 duration-1000">
                             <h2 className="text-xl font-bold tracking-widest uppercase text-morpho mb-4">
-                                {__('homepage.hero.subtitle')}
+                                {content.subtitle}
                             </h2>
 
                             <h1
                                 className="text-4xl font-extrabold sm:text-5xl lg:text-6xl leading-[1.1] tracking-tight text-morpho dark:text-white mb-8"
-                                dangerouslySetInnerHTML={{ __html: __('homepage.hero.heading') }}
+                                dangerouslySetInnerHTML={{ __html: content.heading }}
                             />
 
                             <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-xl leading-relaxed">
-                                {__('homepage.hero.description')}
+                                {content.description}
                             </p>
                         </div>
 
@@ -66,7 +102,7 @@ export default function HeroSection(): JSX.Element {
                                 </div>
                                 <div>
                                     <h4 className="text-lg font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-1">
-                                        {__('homepage.hero.feature_1')}
+                                        {content.feature_1}
                                     </h4>
                                 </div>
                             </div>
@@ -77,10 +113,10 @@ export default function HeroSection(): JSX.Element {
                                 </div>
                                 <div>
                                     <h4 className="text-lg font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-1">
-                                        {__('homepage.hero.feature_2')}
+                                        {content.feature_2}
                                     </h4>
                                     <p className="text-gray-500 dark:text-gray-500 font-medium">
-                                        {__('homepage.hero.feature_2_desc')}
+                                        {content.feature_2_desc}
                                     </p>
                                 </div>
                             </div>
@@ -91,7 +127,7 @@ export default function HeroSection(): JSX.Element {
                                 href={route('demo_request')}
                                 className="inline-flex items-center justify-center rounded-lg bg-morpho px-8 py-4 text-base font-bold text-white shadow-lg transition-all hover:bg-morpho-dark hover:translate-y-[-2px] active:translate-y-0"
                             >
-                                {__('homepage.hero.cta')}
+                                {content.cta_text}
                                 {isRtl ? (
                                     <ChevronRight className="ms-2 w-5 h-5 rotate-180" />
                                 ) : (
@@ -103,17 +139,16 @@ export default function HeroSection(): JSX.Element {
                                 href="/brochures"
                                 className="inline-flex items-center justify-center rounded-lg border-2 border-gray-200 dark:border-gray-800 px-8 py-4 text-base font-bold text-gray-900 dark:text-white transition-all hover:bg-gray-50 dark:hover:bg-gray-900"
                             >
-                                {__('homepage.hero.explore')}
+                                {content.explore_text}
                             </Link>
                         </div>
                     </div>
 
                     <div className="relative animate-in fade-in zoom-in duration-1000 delay-200">
                         <div className="absolute -inset-1 bg-gradient-to-tr from-morpho/20 to-transparent rounded-[2rem] blur-xl opacity-50" />
-
                         <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-2xl ring-1 ring-gray-200 dark:ring-gray-800" ref={emblaRef} dir="ltr">
                             <div className="flex">
-                                {images.map((image, index) => (
+                                {content.images.map((image, index) => (
                                     <div className="min-w-0 shrink-0 grow-0 basis-full relative group" key={index}>
                                         <div className="aspect-[4/3] sm:aspect-[16/10] overflow-hidden">
                                             <img

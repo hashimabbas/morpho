@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             BrochureSeeder::class,
             ContactInfoSeeder::class,
             SocialLinkSeeder::class,
+            PortfolioSeeder::class,
         ]);
     }
 }

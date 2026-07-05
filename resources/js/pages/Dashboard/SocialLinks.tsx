@@ -104,11 +104,14 @@ export default function SocialLinks({ socialLinks }: { socialLinks: SocialLink[]
                     </table>
                 </div>
             </div>
-            <SocialLinkFormDialog
-                isOpen={dialogOpen}
-                onClose={() => setDialogOpen(false)}
-                socialLink={editingSocialLink}
-            />
+            {dialogOpen && (
+                <SocialLinkFormDialog
+                    key={editingSocialLink?.id ?? 'new'}
+                    isOpen={dialogOpen}
+                    onClose={() => setDialogOpen(false)}
+                    socialLink={editingSocialLink}
+                />
+            )}
         </AppLayout>
     );
 }

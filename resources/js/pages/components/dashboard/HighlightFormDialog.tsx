@@ -73,7 +73,10 @@ export default function HighlightFormDialog({ isOpen, onClose, highlight }: Prop
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const options = {
-            onSuccess: () => onClose(),
+            onSuccess: () => {
+                document.body.style.pointerEvents = '';
+                onClose();
+            },
             preserveScroll: true,
         };
 
@@ -88,14 +91,17 @@ export default function HighlightFormDialog({ isOpen, onClose, highlight }: Prop
         if (!processing) {
             clearErrors();
             reset();
+            document.body.style.pointerEvents = '';
             onClose();
         }
     };
 
     const PreviewIcon = getIcon(data.icon);
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Highlight' : 'Create New Highlight'}</DialogTitle>

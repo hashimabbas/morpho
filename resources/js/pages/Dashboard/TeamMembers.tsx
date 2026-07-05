@@ -148,11 +148,14 @@ export default function TeamMembers({ teamMembers }: Props) {
                 </Card>
             </div>
 
-            <TeamMemberFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                teamMember={editingItem}
-            />
+            {isFormOpen && (
+                <TeamMemberFormDialog
+                    key={editingItem?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    teamMember={editingItem}
+                />
+            )}
         </AppLayout>
     );
 }

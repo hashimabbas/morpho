@@ -49,6 +49,10 @@ export default function ContactFormDialog({ isOpen, onClose, contact, users }: P
     const isEditing = !!contact;
 
     useEffect(() => {
+        return () => { document.body.style.pointerEvents = ''; };
+    }, []);
+
+    useEffect(() => {
         if (isOpen && isEditing) {
             setData({
                 first_name: contact.first_name || '',
@@ -68,6 +72,7 @@ export default function ContactFormDialog({ isOpen, onClose, contact, users }: P
         e.preventDefault();
         const options = {
             onSuccess: () => {
+                document.body.style.pointerEvents = '';
                 onClose();
             },
             preserveScroll: true,
@@ -84,12 +89,15 @@ export default function ContactFormDialog({ isOpen, onClose, contact, users }: P
         if (!processing) {
             clearErrors();
             reset();
+            document.body.style.pointerEvents = '';
             onClose();
         }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Contact' : 'Create New Contact'}</DialogTitle>

@@ -48,6 +48,10 @@ export default function CorePurposeFormDialog({ isOpen, onClose, corePurpose }: 
     const isEditing = !!corePurpose;
 
     useEffect(() => {
+        return () => { document.body.style.pointerEvents = ''; };
+    }, []);
+
+    useEffect(() => {
         if (isOpen && isEditing && corePurpose) {
             setData({
                 _method: 'PATCH',
@@ -83,7 +87,10 @@ export default function CorePurposeFormDialog({ isOpen, onClose, corePurpose }: 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const options = {
-            onSuccess: () => onClose(),
+            onSuccess: () => {
+                document.body.style.pointerEvents = '';
+                onClose();
+            },
             preserveScroll: true,
         };
 
@@ -98,12 +105,15 @@ export default function CorePurposeFormDialog({ isOpen, onClose, corePurpose }: 
         if (!processing) {
             clearErrors();
             reset();
+            document.body.style.pointerEvents = '';
             onClose();
         }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Core Purpose' : 'Create New Core Purpose'}</DialogTitle>

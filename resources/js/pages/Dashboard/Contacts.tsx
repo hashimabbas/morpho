@@ -160,12 +160,15 @@ export default function Contacts({ contacts, users }: Props) {
                 </Card>
             </div>
 
-            <ContactFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                contact={editingContact}
-                users={users}
-            />
+            {isFormOpen && (
+                <ContactFormDialog
+                    key={editingContact?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    contact={editingContact}
+                    users={users}
+                />
+            )}
         </AppLayout>
     );
 }

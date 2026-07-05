@@ -136,11 +136,14 @@ export default function Partners({ partners }: Props) {
                 </Card>
             </div>
 
-            <PartnerFormDialog
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                partner={editingPartner}
-            />
+            {isFormOpen && (
+                <PartnerFormDialog
+                    key={editingPartner?.id ?? 'new'}
+                    isOpen={isFormOpen}
+                    onClose={() => { requestAnimationFrame(() => { document.body.style.pointerEvents = ''; }); setIsFormOpen(false); }}
+                    partner={editingPartner}
+                />
+            )}
         </AppLayout>
     );
 }

@@ -149,12 +149,18 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
         setTimeout(() => {
             if (isEditing && ecosystem) {
                 post(route('dashboard.ecosystems.update', ecosystem.id), {
-                    onSuccess: () => onClose(),
+                    onSuccess: () => {
+                        document.body.style.pointerEvents = '';
+                        onClose();
+                    },
                     preserveScroll: true,
                 });
             } else {
                 post(route('dashboard.ecosystems.store'), {
-                    onSuccess: () => onClose(),
+                    onSuccess: () => {
+                        document.body.style.pointerEvents = '';
+                        onClose();
+                    },
                     preserveScroll: true,
                 });
             }
@@ -165,6 +171,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
         if (!processing) {
             clearErrors();
             reset();
+            document.body.style.pointerEvents = '';
             onClose();
         }
     };
@@ -199,8 +206,10 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
 
     const PreviewIcon = getIcon(data.icon);
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Ecosystem' : 'Create New Ecosystem'}</DialogTitle>

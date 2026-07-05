@@ -10,6 +10,7 @@ return [
         'pricing' => 'Pricing',
         'demo_request' => 'Demo Request',
         'contact_us' => 'Contact Us',
+        'portfolio' => 'Our Portfolio',
         'ecosystem' => 'Morpho Smart Ecosystem',
         'our_solutions' => 'Our Solutions',
         'login' => 'Log in',
@@ -19,6 +20,7 @@ return [
         'logout' => 'Log Out',
         'toggle_theme' => 'Toggle theme',
         'open_menu' => 'Open main menu',
+        'close_menu' => 'Close main menu',
         'open_user_menu' => 'Open user menu',
     ],
     'footer' => [

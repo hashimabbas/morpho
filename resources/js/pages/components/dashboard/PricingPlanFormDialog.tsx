@@ -106,7 +106,10 @@ export default function PricingPlanFormDialog({ isOpen, onClose, pricingPlan }: 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const options = {
-            onSuccess: () => onClose(),
+            onSuccess: () => {
+                document.body.style.pointerEvents = '';
+                onClose();
+            },
             preserveScroll: true,
         };
 
@@ -121,12 +124,15 @@ export default function PricingPlanFormDialog({ isOpen, onClose, pricingPlan }: 
         if (!processing) {
             clearErrors();
             reset();
+            document.body.style.pointerEvents = '';
             onClose();
         }
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Pricing Plan' : 'Create New Pricing Plan'}</DialogTitle>

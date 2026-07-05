@@ -103,11 +103,14 @@ export default function ContactInfos({ contactInfos }: { contactInfos: ContactIn
                     </table>
                 </div>
             </div>
-            <ContactInfoFormDialog
-                isOpen={dialogOpen}
-                onClose={() => setDialogOpen(false)}
-                contactInfo={editingContactInfo}
-            />
+            {dialogOpen && (
+                <ContactInfoFormDialog
+                    key={editingContactInfo?.id ?? 'new'}
+                    isOpen={dialogOpen}
+                    onClose={() => setDialogOpen(false)}
+                    contactInfo={editingContactInfo}
+                />
+            )}
         </AppLayout>
     );
 }

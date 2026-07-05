@@ -43,6 +43,10 @@ export default function TeamMemberFormDialog({ isOpen, onClose, teamMember }: Pr
     const isEditing = !!teamMember;
 
     useEffect(() => {
+        return () => { document.body.style.pointerEvents = ''; };
+    }, []);
+
+    useEffect(() => {
         if (isOpen) {
             clearErrors();
             if (teamMember) {
@@ -80,6 +84,7 @@ export default function TeamMemberFormDialog({ isOpen, onClose, teamMember }: Pr
         post(route(routeName, routeParams), {
             preserveScroll: true,
             onSuccess: () => {
+                document.body.style.pointerEvents = '';
                 reset();
                 onClose();
             },
@@ -89,11 +94,14 @@ export default function TeamMemberFormDialog({ isOpen, onClose, teamMember }: Pr
     const handleClose = () => {
         reset();
         clearErrors();
+        document.body.style.pointerEvents = '';
         onClose();
     };
 
+    if (!isOpen) return null;
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
+        <Dialog open={true} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? 'Edit Team Member' : 'Create Team Member'}</DialogTitle>
