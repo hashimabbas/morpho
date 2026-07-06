@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Trash2 } from 'lucide-react';
 import InputError from './input-error';
 import { availableIcons, getIcon } from '@/lib/icons';
 import ContentSectionBuilder from './ContentSectionBuilder';
@@ -48,6 +49,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
         title: '',
         description: '',
         image: '',
+        image_upload: null as File | null,
         href: '',
         features: [''] as string[],
         features_ar: [''] as string[],
@@ -63,12 +65,15 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
 
     const [contentError, setContentError] = useState('');
     const [dialogKey, setDialogKey] = useState(0);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const imageInputRef = useRef<HTMLInputElement>(null);
 
     const isEditing = !!ecosystem;
 
     useEffect(() => {
         if (!isOpen) return;
         setDialogKey(k => k + 1);
+        setImageFile(null);
         if (isEditing && ecosystem) {
             setData({
                 _method: 'PATCH',
@@ -78,6 +83,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
                 title: ecosystem.title || '',
                 description: ecosystem.description || '',
                 image: ecosystem.image || '',
+                image_upload: null,
                 href: ecosystem.href || '',
                 features: ecosystem.features.length ? ecosystem.features : [''],
                 features_ar: ecosystem.features_ar?.length ? ecosystem.features_ar : [''],
@@ -100,6 +106,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
                 title: '',
                 description: '',
                 image: '',
+                image_upload: null,
                 href: '',
                 features: [''],
                 features_ar: [''],
@@ -131,7 +138,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
             }
         }
 
-        setData('content', parsedContent);
+        setData('content', parsedContent ?? []);
 
         let parsedContentAr: any = null;
         if (data.content_ar && typeof data.content_ar === 'string' && data.content_ar.trim()) {
@@ -144,7 +151,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
             }
         }
 
-        setData('content_ar', parsedContentAr);
+        setData('content_ar', parsedContentAr ?? []);
 
         setTimeout(() => {
             if (isEditing && ecosystem) {
@@ -154,6 +161,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
                         onClose();
                     },
                     preserveScroll: true,
+                    forceFormData: true,
                 });
             } else {
                 post(route('dashboard.ecosystems.store'), {
@@ -162,6 +170,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
                         onClose();
                     },
                     preserveScroll: true,
+                    forceFormData: true,
                 });
             }
         }, 50);
@@ -204,6 +213,18 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
         setData('features_ar', updated);
     };
 
+    const handleImageSelect = (file: File | null) => {
+        setImageFile(file);
+        setData('image_upload', file);
+        if (file) {
+            setData('image', '');
+        }
+    };
+
+    const imagePreview = imageFile
+        ? URL.createObjectURL(imageFile)
+        : (data.image || null);
+
     const PreviewIcon = getIcon(data.icon);
 
     if (!isOpen) return null;
@@ -217,7 +238,7 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
                         {isEditing ? 'Update this ecosystem card.' : 'Add a new ecosystem card to the section.'}
                     </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="type" className="text-right">Type</Label>
@@ -360,43 +381,75 @@ export default function EcosystemFormDialog({ isOpen, onClose, ecosystem }: Prop
                         </>
                     )}
 
+                    <div className="grid grid-cols-4 gap-4">
+                        <Label className="text-right pt-2">Image</Label>
+                        <div className="col-span-3 space-y-3">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <Label className="text-xs text-muted-foreground">Upload image</Label>
+                                    <div className="flex items-center gap-2">
+                                        <Input
+                                            ref={imageInputRef}
+                                            type="file"
+                                            accept="image/png,image/jpg,image/jpeg,image/webp,image/svg+xml"
+                                            onChange={e => handleImageSelect(e.target.files?.[0] || null)}
+                                            className="flex-1"
+                                        />
+                                        {imageFile && (
+                                            <Button type="button" variant="ghost" size="sm" onClick={() => { handleImageSelect(null); if (imageInputRef.current) imageInputRef.current.value = ''; }}>
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
+                                <div>
+                                    <Label className="text-xs text-muted-foreground">Or enter image URL</Label>
+                                    <Input
+                                        value={data.image}
+                                        onChange={e => setData('image', e.target.value)}
+                                        placeholder="/images/ecosystems/..."
+                                        disabled={!!imageFile}
+                                    />
+                                </div>
+                            </div>
+                            {imagePreview && (
+                                <img src={imagePreview} alt="Preview" className="h-16 w-auto object-contain rounded border" />
+                            )}
+                            <InputError message={errors.image || errors.image_upload} />
+                        </div>
+                    </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="image" className="text-right">Image path</Label>
-                            <Input id="image" value={data.image} onChange={e => setData('image', e.target.value)} className="col-span-3" placeholder="/images/products.png" />
-                            <InputError message={errors.image} className="col-span-4 col-start-2" />
+                        <Label htmlFor="href" className="text-right">Link</Label>
+                        <Input id="href" value={data.href} onChange={e => setData('href', e.target.value)} className="col-span-3" placeholder="/solutions/cold-chain" />
+                        <InputError message={errors.href} className="col-span-4 col-start-2" />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="sort_order" className="text-right">Order</Label>
+                        <Input id="sort_order" type="number" value={data.sort_order} onChange={e => setData('sort_order', Number(e.target.value))} className="col-span-3" />
+                        <InputError message={errors.sort_order} className="col-span-4 col-start-2" />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="is_visible" className="text-right">Visible</Label>
+                        <div className="col-span-3 flex items-center gap-2">
+                            <Checkbox id="is_visible" checked={data.is_visible} onCheckedChange={checked => setData('is_visible', checked === true)} />
+                            <span className="text-sm text-muted-foreground">Show on public site</span>
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="href" className="text-right">Link</Label>
-                            <Input id="href" value={data.href} onChange={e => setData('href', e.target.value)} className="col-span-3" placeholder="/solutions/cold-chain" />
-                            <InputError message={errors.href} className="col-span-4 col-start-2" />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="sort_order" className="text-right">Order</Label>
-                            <Input id="sort_order" type="number" value={data.sort_order} onChange={e => setData('sort_order', Number(e.target.value))} className="col-span-3" />
-                            <InputError message={errors.sort_order} className="col-span-4 col-start-2" />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="is_visible" className="text-right">Visible</Label>
-                            <div className="col-span-3 flex items-center gap-2">
-                                <Checkbox id="is_visible" checked={data.is_visible} onCheckedChange={checked => setData('is_visible', checked === true)} />
-                                <span className="text-sm text-muted-foreground">Show on public site</span>
-                            </div>
-                            <InputError message={errors.is_visible} className="col-span-4 col-start-2" />
-                        </div>
+                        <InputError message={errors.is_visible} className="col-span-4 col-start-2" />
+                    </div>
 
-                        <div className="grid grid-cols-4 gap-4">
-                            <Label className="text-right pt-2">Content</Label>
-                            <div className="col-span-3">
-                                <ContentSectionBuilder
-                                    key={dialogKey}
-                                    value={data.content}
-                                    onChange={v => { setData('content', v); setContentError(''); }}
-                                    onError={setContentError}
-                                />
-                                {contentError && <p className="text-sm text-red-600 mt-1">{contentError}</p>}
-                            </div>
-                            <InputError message={errors.content} className="col-span-4 col-start-2" />
+                    <div className="grid grid-cols-4 gap-4">
+                        <Label className="text-right pt-2">Content</Label>
+                        <div className="col-span-3">
+                            <ContentSectionBuilder
+                                key={dialogKey}
+                                value={data.content}
+                                onChange={v => { setData('content', v); setContentError(''); }}
+                                onError={setContentError}
+                            />
+                            {contentError && <p className="text-sm text-red-600 mt-1">{contentError}</p>}
                         </div>
+                        <InputError message={errors.content} className="col-span-4 col-start-2" />
+                    </div>
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="ghost" onClick={handleClose}>Cancel</Button>

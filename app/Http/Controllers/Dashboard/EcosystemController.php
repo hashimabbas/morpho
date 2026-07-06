@@ -22,14 +22,34 @@ class EcosystemController extends Controller
 
     public function store(StoreEcosystemRequest $request)
     {
-        Ecosystem::create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image_upload')) {
+            $file = $request->file('image_upload');
+            $filename = 'images/ecosystems/' . $file->hashName();
+            $file->move(public_path('images/ecosystems'), $filename);
+            $data['image'] = '/' . $filename;
+        }
+        unset($data['image_upload']);
+
+        Ecosystem::create($data);
 
         return back()->with('success', 'Ecosystem created successfully.');
     }
 
     public function update(UpdateEcosystemRequest $request, Ecosystem $ecosystem)
     {
-        $ecosystem->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image_upload')) {
+            $file = $request->file('image_upload');
+            $filename = 'images/ecosystems/' . $file->hashName();
+            $file->move(public_path('images/ecosystems'), $filename);
+            $data['image'] = '/' . $filename;
+        }
+        unset($data['image_upload']);
+
+        $ecosystem->update($data);
 
         return back()->with('success', 'Ecosystem updated successfully.');
     }

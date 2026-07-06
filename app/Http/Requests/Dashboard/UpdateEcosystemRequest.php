@@ -20,6 +20,7 @@ class UpdateEcosystemRequest extends FormRequest
             'icon' => ['required', 'string', 'max:50'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
+            'image_upload' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp,svg', 'max:5120'],
             'image' => ['nullable', 'string', 'max:255'],
             'href' => ['nullable', 'string', 'max:255'],
             'features' => ['required', 'array'],

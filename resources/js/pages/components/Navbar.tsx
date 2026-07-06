@@ -15,7 +15,7 @@ import {
     Waves,
     X,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 
 import {
     DropdownMenu,
@@ -62,26 +62,114 @@ const ecosystemItems = [
     },
 ];
 
+const NAV_HEIGHT = 64;
+const NAV_HEIGHT_SCROLLED = 56;
+
 function NavLinkItem({ href, label, active }: { href: string; label: string; active: boolean }) {
     return (
         <Link
             href={href}
             className={cn(
-                'relative inline-flex items-center px-1 py-0.5 text-sm font-medium transition-colors duration-200',
+                'relative inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900',
                 active
                     ? 'text-morpho dark:text-morpho'
-                    : 'text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200',
+                    : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100/60 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800/40',
             )}
         >
             {label}
-            <span
+            {active && (
+                <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-morpho dark:bg-morpho" />
+            )}
+        </Link>
+    );
+}
+
+function EcosystemDropdownTrigger({
+    label,
+    isActive,
+    isOpen,
+    ...props
+}: {
+    label: string;
+    isActive: boolean;
+    isOpen: boolean;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+    return (
+        <button
+            {...props}
+            className={cn(
+                'group relative inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900',
+                isActive
+                    ? 'text-morpho dark:text-morpho'
+                    : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100/60 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800/40',
+            )}
+        >
+            {label}
+            <ChevronDown
                 className={cn(
-                    'absolute -bottom-1 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full transition-all duration-200',
-                    active
-                        ? 'bg-morpho dark:bg-morpho'
-                        : 'bg-transparent group-hover/nav:bg-gray-300 dark:group-hover/nav:bg-gray-600',
+                    'h-3.5 w-3.5 transition-transform duration-200',
+                    isOpen && 'rotate-180',
                 )}
             />
+            {isActive && (
+                <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-morpho dark:bg-morpho" />
+            )}
+        </button>
+    );
+}
+
+function ThemeToggle({ theme, onToggle, label }: { theme: string; onToggle: () => void; label: string }) {
+    return (
+        <button
+            onClick={onToggle}
+            className={cn(
+                'relative rounded-full p-2 text-gray-500 transition-all duration-200',
+                'hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900',
+            )}
+            aria-label={label}
+        >
+            <Sun className={cn(
+                'h-[18px] w-[18px] transition-all duration-300',
+                theme === 'dark' ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100',
+            )} />
+            <Moon className={cn(
+                'absolute inset-0 m-auto h-[18px] w-[18px] transition-all duration-300',
+                theme === 'dark' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0',
+            )} />
+        </button>
+    );
+}
+
+function MobileNavItem({
+    href,
+    label,
+    active,
+    onClick,
+    delay,
+}: {
+    href: string;
+    label: string;
+    active: boolean;
+    onClick: () => void;
+    delay: number;
+}) {
+    return (
+        <Link
+            href={href}
+            onClick={onClick}
+            className={cn(
+                'flex items-center rounded-xl px-4 py-3 text-base font-medium transition-all duration-200',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho',
+                active
+                    ? 'bg-morpho/10 text-morpho dark:bg-morpho/[0.12] dark:text-morpho'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200',
+            )}
+            style={{ animationDelay: `${delay}ms` }}
+        >
+            {label}
         </Link>
     );
 }
@@ -95,6 +183,14 @@ export default function Navbar() {
     const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
     const [scrolled, setScrolled] = useState(false);
     const [mobileMounted, setMobileMounted] = useState(false);
+    const [ecosystemOpen, setEcosystemOpen] = useState(false);
+    const mobileToggleRef = useRef<HTMLButtonElement>(null);
+    const drawerCloseRef = useRef<HTMLButtonElement>(null);
+    const prefersReducedMotion = useRef(false);
+
+    useEffect(() => {
+        prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }, []);
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -106,7 +202,16 @@ export default function Navbar() {
     }, [theme]);
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 10);
+        let ticking = false;
+        const onScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    setScrolled(window.scrollY > 10);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
@@ -114,10 +219,18 @@ export default function Navbar() {
     useEffect(() => {
         if (isMobileMenuOpen) {
             document.body.style.overflow = 'hidden';
-            requestAnimationFrame(() => setMobileMounted(true));
+            requestAnimationFrame(() => {
+                setMobileMounted(true);
+                requestAnimationFrame(() => {
+                    drawerCloseRef.current?.focus();
+                });
+            });
         } else {
             document.body.style.overflow = '';
             setMobileMounted(false);
+            requestAnimationFrame(() => {
+                mobileToggleRef.current?.focus();
+            });
         }
         return () => { document.body.style.overflow = ''; };
     }, [isMobileMenuOpen]);
@@ -132,7 +245,19 @@ export default function Navbar() {
         return () => document.removeEventListener('keydown', handleEscape);
     }, [isMobileMenuOpen]);
 
-    const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    useEffect(() => {
+        if (!isMobileMenuOpen) return;
+        const handleFocus = (e: FocusEvent) => {
+            const drawer = document.getElementById('mobile-drawer');
+            if (drawer && !drawer.contains(e.target as Node)) {
+                drawerCloseRef.current?.focus();
+            }
+        };
+        document.addEventListener('focusin', handleFocus);
+        return () => document.removeEventListener('focusin', handleFocus);
+    }, [isMobileMenuOpen]);
+
+    const toggleTheme = useCallback(() => setTheme(prev => prev === 'light' ? 'dark' : 'light'), []);
 
     const navLinks = [
         { href: '/', label: __('nav.home') },
@@ -145,61 +270,60 @@ export default function Navbar() {
         { href: '/contact', label: __('nav.contact_us') },
     ];
 
-    const isActive = (href: string) => {
+    const isActive = useCallback((href: string) => {
         if (href === '/') return url === '/';
         return url.startsWith(href);
-    };
+    }, [url]);
+
+    const closeMobile = useCallback(() => {
+        setIsMobileMenuOpen(false);
+        setIsMobileEcosystemOpen(false);
+    }, []);
+
+    const openMobile = useCallback(() => {
+        setIsMobileMenuOpen(true);
+    }, []);
+
+    const navHeight = scrolled ? NAV_HEIGHT_SCROLLED : NAV_HEIGHT;
+    const animDuration = prefersReducedMotion.current ? 0 : undefined;
 
     return (
         <header
             className={cn(
-                'sticky top-0 z-50 transition-all duration-300',
+                'sticky top-0 z-50 transition-all duration-300 ease-out',
+                'bg-white/80 dark:bg-[#0a0a0a]/80',
                 scrolled
-                    ? 'bg-white/75 dark:bg-[#161615]/75 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.05)] dark:shadow-[0_1px_0_rgba(255,255,255,0.05)]'
-                    : 'bg-white dark:bg-[#161615]',
+                    ? 'shadow-[0_1px_2px_rgba(0,0,0,0.04)] backdrop-blur-xl dark:shadow-[0_1px_2px_rgba(255,255,255,0.03)]'
+                    : 'shadow-none',
             )}
+            style={{ height: navHeight, transitionDuration: animDuration ? `${animDuration}ms` : undefined }}
         >
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 items-center justify-between">
-                    {/* Left: Logo + Desktop Nav */}
-                    <div className="flex items-center gap-1 sm:gap-6 lg:gap-10">
-                        <Link href="/" className="flex shrink-0 items-center py-1">
+            <div className="mx-auto h-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="flex h-full items-center justify-between">
+                    <div className="flex items-center gap-1 sm:gap-2 lg:gap-8">
+                        <Link
+                            href="/"
+                            className="flex shrink-0 items-center py-1 transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho rounded-lg"
+                            aria-label="Morpho Home"
+                        >
                             <img
                                 src="/new_logo_transp.png"
                                 alt="Morpho Logo"
-                                className="h-11 w-auto sm:h-12"
+                                className="h-[44px] w-auto sm:h-[48px] transition-all duration-300"
+                                style={{ height: scrolled ? 36 : undefined }}
                             />
                         </Link>
 
-                        {/* Desktop Navigation */}
-                        <nav className="hidden sm:flex sm:items-center sm:gap-1" aria-label="Main navigation">
-                            {/* Home */}
-                            <div className="group/nav">
-                                <NavLinkItem href="/" label={__('nav.home')} active={isActive('/')} />
-                            </div>
+                        <nav className="hidden sm:flex sm:items-center sm:gap-0.5" aria-label="Main navigation">
+                            <NavLinkItem href="/" label={__('nav.home')} active={isActive('/')} />
 
-                            {/* Ecosystem Dropdown */}
-                            <DropdownMenu>
+                            <DropdownMenu open={ecosystemOpen} onOpenChange={setEcosystemOpen}>
                                 <DropdownMenuTrigger asChild>
-                                    <button
-                                        className={cn(
-                                            'group/nav relative inline-flex items-center gap-1 px-1 py-0.5 text-sm font-medium transition-colors duration-200',
-                                            url.startsWith('/solutions')
-                                                ? 'text-morpho dark:text-morpho'
-                                                : 'text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200',
-                                        )}
-                                    >
-                                        {__('nav.ecosystem')}
-                                        <ChevronDown className="h-3.5 w-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                                        <span
-                                            className={cn(
-                                                'absolute -bottom-1 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full transition-all duration-200',
-                                                url.startsWith('/solutions')
-                                                    ? 'bg-morpho dark:bg-morpho'
-                                                    : 'bg-transparent',
-                                            )}
-                                        />
-                                    </button>
+                                    <EcosystemDropdownTrigger
+                                        label={__('nav.ecosystem')}
+                                        isActive={url.startsWith('/solutions')}
+                                        isOpen={ecosystemOpen}
+                                    />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent
                                     align={isRtl ? 'end' : 'start'}
@@ -233,32 +357,27 @@ export default function Navbar() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
 
-                            {/* Remaining nav links */}
                             {navLinks.filter(link => link.href !== '/').map((link) => (
-                                <div key={link.href} className="group/nav">
-                                    <NavLinkItem href={link.href} label={link.label} active={isActive(link.href)} />
-                                </div>
+                                <NavLinkItem key={link.href} href={link.href} label={link.label} active={isActive(link.href)} />
                             ))}
                         </nav>
                     </div>
 
-                    {/* Right: Actions */}
-                    <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="flex items-center gap-1 sm:gap-1.5">
                         <div className="hidden sm:flex sm:items-center sm:gap-1">
                             <LanguageSwitcher />
-                            <button
-                                onClick={toggleTheme}
-                                className="relative rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-                                aria-label={__('nav.toggle_theme')}
-                            >
-                                <Sun className="h-5 w-5 rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />
-                                <Moon className="absolute inset-0 h-5 w-5 rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100" />
-                            </button>
+                            <ThemeToggle theme={theme} onToggle={toggleTheme} label={__('nav.toggle_theme')} />
 
                             {auth.user ? (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <button className="flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-morpho focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+                                        <button
+                                            className={cn(
+                                                'flex rounded-full text-sm transition-all duration-200',
+                                                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900',
+                                                'hover:ring-2 hover:ring-morpho/30 hover:ring-offset-2 dark:hover:ring-offset-gray-900',
+                                            )}
+                                        >
                                             <span className="sr-only">{__('nav.open_user_menu')}</span>
                                             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-morpho to-morpho-dark font-semibold text-white shadow-sm">
                                                 {auth.user.name.charAt(0).toUpperCase()}
@@ -290,29 +409,32 @@ export default function Navbar() {
                             ) : (
                                 <Link
                                     href={route('login')}
-                                    className="rounded-lg bg-morpho px-4 py-2 text-sm font-medium text-white transition-all hover:bg-morpho-dark focus:outline-none focus:ring-2 focus:ring-morpho focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                                    className={cn(
+                                        'rounded-xl bg-morpho px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200',
+                                        'hover:bg-morpho-dark hover:shadow-md hover:shadow-morpho/20',
+                                        'active:scale-[0.97]',
+                                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900',
+                                    )}
                                 >
                                     {__('nav.login')}
                                 </Link>
                             )}
                         </div>
 
-                        {/* Mobile: Icons */}
-                        <div className="flex items-center gap-1 sm:hidden">
+                        <div className="flex items-center gap-0.5 sm:hidden">
                             <LanguageSwitcher />
+                            <ThemeToggle theme={theme} onToggle={toggleTheme} label={__('nav.toggle_theme')} />
                             <button
-                                onClick={toggleTheme}
-                                className="relative rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-                                aria-label={__('nav.toggle_theme')}
-                            >
-                                <Sun className="h-5 w-5 rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />
-                                <Moon className="absolute inset-0 h-5 w-5 rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100" />
-                            </button>
-                            <button
-                                onClick={() => setIsMobileMenuOpen(true)}
-                                className="inline-flex items-center justify-center rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                                ref={mobileToggleRef}
+                                onClick={openMobile}
+                                className={cn(
+                                    'inline-flex items-center justify-center rounded-xl p-2.5 text-gray-500 transition-all duration-200',
+                                    'hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800',
+                                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho',
+                                )}
                                 aria-label={__('nav.open_menu')}
                                 aria-expanded={isMobileMenuOpen}
+                                aria-controls="mobile-drawer"
                             >
                                 <Menu className="h-5 w-5" />
                             </button>
@@ -321,43 +443,49 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
-                <div className="fixed inset-0 z-50 sm:hidden">
-                    {/* Backdrop */}
+                <div
+                    className="fixed inset-0 z-50 sm:hidden"
+                    style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+                >
                     <div
-                        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={cn(
+                            'absolute inset-0 bg-black/50 transition-opacity duration-300',
+                            mobileMounted ? 'opacity-100' : 'opacity-0',
+                        )}
+                        style={prefersReducedMotion.current ? { transition: 'none' } : undefined}
+                        onClick={closeMobile}
                         aria-hidden="true"
                     />
 
-                    {/* Drawer */}
                     <div
+                        id="mobile-drawer"
                         className={cn(
-                            'absolute top-0 bottom-0 flex w-full max-w-sm flex-col bg-white dark:bg-[#161615] shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+                            'absolute top-0 bottom-0 flex w-full max-w-sm flex-col bg-white dark:bg-[#0a0a0a] shadow-2xl transition-transform duration-300 ease-out',
                             isRtl ? 'left-0' : 'right-0',
-                            mobileMounted
-                                ? 'translate-x-0'
-                                : isRtl
-                                  ? 'translate-x-full'
-                                  : '-translate-x-full',
+                            mobileMounted ? 'translate-x-0' : isRtl ? 'translate-x-full' : '-translate-x-full',
                         )}
+                        style={prefersReducedMotion.current ? { transition: 'none' } : undefined}
                         role="dialog"
                         aria-modal="true"
-                        aria-label={__('nav.open_menu')}
+                        aria-label={__('nav.mobile_menu')}
                     >
-                        {/* Drawer Header */}
-                        <div className="flex items-center justify-between border-b border-gray-100 px-4 py-4 dark:border-gray-800">
-                            <Link href="/" className="flex shrink-0 items-center" onClick={() => setIsMobileMenuOpen(false)}>
+                        <div className="flex items-center justify-between border-b border-gray-100 px-4 py-4 dark:border-gray-800/60">
+                            <Link href="/" onClick={closeMobile} className="transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho rounded-lg">
                                 <img
                                     src="/new_logo_transp.png"
                                     alt="Morpho Logo"
-                                    className="h-10 w-auto"
+                                    className="h-[42px] w-auto"
                                 />
                             </Link>
                             <button
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                                ref={drawerCloseRef}
+                                onClick={closeMobile}
+                                className={cn(
+                                    'rounded-xl p-2.5 text-gray-500 transition-all duration-200',
+                                    'hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800',
+                                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho',
+                                )}
                                 aria-label={__('nav.close_menu')}
                                 autoFocus
                             >
@@ -365,32 +493,25 @@ export default function Navbar() {
                             </button>
                         </div>
 
-                        {/* Drawer Navigation */}
-                        <nav className="flex-1 overflow-y-auto px-4 py-6" aria-label="Mobile navigation">
+                        <nav className="flex-1 overflow-y-auto overscroll-contain px-4 py-6" aria-label="Mobile navigation">
                             <div className="space-y-1">
-                                {/* Home */}
-                                <Link
+                                <MobileNavItem
                                     href="/"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className={cn(
-                                        'flex items-center rounded-lg px-4 py-3 text-base font-medium transition-colors',
-                                        isActive('/')
-                                            ? 'bg-morpho-light/50 text-morpho dark:bg-morpho/10 dark:text-morpho'
-                                            : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900',
-                                    )}
-                                >
-                                    {__('nav.home')}
-                                </Link>
+                                    label={__('nav.home')}
+                                    active={isActive('/')}
+                                    onClick={closeMobile}
+                                    delay={0}
+                                />
 
-                                {/* Ecosystem Accordion */}
                                 <div>
                                     <button
                                         onClick={() => setIsMobileEcosystemOpen(!isMobileEcosystemOpen)}
                                         className={cn(
-                                            'flex w-full items-center justify-between rounded-lg px-4 py-3 text-base font-medium transition-colors',
+                                            'flex w-full items-center justify-between rounded-xl px-4 py-3 text-base font-medium transition-all duration-200',
+                                            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho',
                                             url.startsWith('/solutions')
-                                                ? 'bg-morpho-light/50 text-morpho dark:bg-morpho/10 dark:text-morpho'
-                                                : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900',
+                                                ? 'bg-morpho/10 text-morpho dark:bg-morpho/[0.12] dark:text-morpho'
+                                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200',
                                         )}
                                         aria-expanded={isMobileEcosystemOpen}
                                     >
@@ -404,19 +525,23 @@ export default function Navbar() {
                                     </button>
                                     <div
                                         className={cn(
-                                            'overflow-hidden transition-all duration-200',
+                                            'overflow-hidden transition-all duration-200 ease-out',
                                             isMobileEcosystemOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0',
                                         )}
                                     >
-                                        <div className={cn('space-y-1 py-1', isRtl ? 'pr-4' : 'pl-4')}>
+                                        <div className={cn('space-y-0.5 py-1.5', isRtl ? 'pr-4' : 'pl-4')}>
                                             {ecosystemItems.map((item) => (
                                                 <Link
                                                     key={item.href}
                                                     href={item.href}
-                                                    onClick={() => setIsMobileMenuOpen(false)}
-                                                    className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-300"
+                                                    onClick={closeMobile}
+                                                    className={cn(
+                                                        'flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200',
+                                                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho',
+                                                        'text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-300',
+                                                    )}
                                                 >
-                                                    <item.icon className="h-4 w-4 text-morpho" />
+                                                    <item.icon className="h-4 w-4 text-morpho shrink-0" />
                                                     {__(item.labelKey)}
                                                 </Link>
                                             ))}
@@ -424,31 +549,24 @@ export default function Navbar() {
                                     </div>
                                 </div>
 
-                                {/* Remaining nav links */}
-                                {navLinks.filter(link => link.href !== '/').map((link) => (
-                                    <Link
+                                {navLinks.filter(link => link.href !== '/').map((link, index) => (
+                                    <MobileNavItem
                                         key={link.href}
                                         href={link.href}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className={cn(
-                                            'flex items-center rounded-lg px-4 py-3 text-base font-medium transition-colors',
-                                            isActive(link.href)
-                                                ? 'bg-morpho-light/50 text-morpho dark:bg-morpho/10 dark:text-morpho'
-                                                : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900',
-                                        )}
-                                    >
-                                        {link.label}
-                                    </Link>
+                                        label={link.label}
+                                        active={isActive(link.href)}
+                                        onClick={closeMobile}
+                                        delay={(index + 1) * 30}
+                                    />
                                 ))}
                             </div>
                         </nav>
 
-                        {/* Drawer Footer */}
-                        <div className="border-t border-gray-100 px-4 py-4 dark:border-gray-800">
+                        <div className="border-t border-gray-100 px-4 py-4 dark:border-gray-800/60" style={{ paddingBottom: 'env(safe-area-inset-bottom, 16px)' }}>
                             {auth.user ? (
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3 px-2">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-morpho to-morpho-dark font-semibold text-white shadow-sm">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-morpho to-morpho-dark font-semibold text-white shadow-sm shrink-0">
                                             {auth.user.name.charAt(0).toUpperCase()}
                                         </div>
                                         <div className="min-w-0 flex-1">
@@ -460,30 +578,30 @@ export default function Navbar() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="space-y-1">
+                                    <div className="space-y-0.5">
                                         <Link
                                             href={route('profile.edit')}
-                                            onClick={() => setIsMobileMenuOpen(false)}
-                                            className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900"
+                                            onClick={closeMobile}
+                                            className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho"
                                         >
-                                            <User className="h-4 w-4" />
+                                            <User className="h-4 w-4 shrink-0" />
                                             {__('nav.profile')}
                                         </Link>
                                         <Link
                                             href="#"
-                                            className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900"
+                                            className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho"
                                         >
-                                            <Settings className="h-4 w-4" />
+                                            <Settings className="h-4 w-4 shrink-0" />
                                             {__('nav.settings')}
                                         </Link>
                                         <Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
-                                            onClick={() => setIsMobileMenuOpen(false)}
-                                            className="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900"
+                                            onClick={closeMobile}
+                                            className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho"
                                         >
-                                            <LogOut className="h-4 w-4" />
+                                            <LogOut className="h-4 w-4 shrink-0" />
                                             {__('nav.logout')}
                                         </Link>
                                     </div>
@@ -491,8 +609,13 @@ export default function Navbar() {
                             ) : (
                                 <Link
                                     href={route('login')}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="flex w-full items-center justify-center rounded-lg bg-morpho px-4 py-3 text-sm font-medium text-white transition-all hover:bg-morpho-dark"
+                                    onClick={closeMobile}
+                                    className={cn(
+                                        'flex w-full items-center justify-center rounded-xl bg-morpho px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200',
+                                        'hover:bg-morpho-dark hover:shadow-md hover:shadow-morpho/20',
+                                        'active:scale-[0.98]',
+                                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-morpho focus-visible:ring-offset-2',
+                                    )}
                                 >
                                     {__('nav.login')}
                                 </Link>

@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PlusCircle, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
+import { PlusCircle, Trash2, ChevronUp, ChevronDown, Upload } from 'lucide-react';
 import { availableIcons, getIcon } from '@/lib/icons';
 
 type ContentHero = {
@@ -54,6 +54,7 @@ interface Props {
     value: string;
     onChange: (value: string) => void;
     onError: (error: string) => void;
+    onFileSelect?: (path: string, file: File) => void;
 }
 
 const sectionTypes = [
@@ -71,7 +72,61 @@ const sectionTypes = [
     { value: 'decision-support', label: 'Decision Support' },
 ];
 
-function HeroEditor({ hero, onChange }: { hero: ContentHero; onChange: (h: ContentHero) => void }) {
+function ImageField({ value, onChange, label, onFileSelect, path }: {
+    value?: string;
+    onChange: (val: string) => void;
+    label: string;
+    onFileSelect?: (path: string, file: File) => void;
+    path: string;
+}) {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [preview, setPreview] = useState<string | null>(null);
+
+    const handleFile = (file: File | null) => {
+        if (file) {
+            const blobUrl = URL.createObjectURL(file);
+            setPreview(blobUrl);
+            const placeholder = `__UPLOAD__${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+            onChange(placeholder);
+            onFileSelect?.(placeholder, file);
+        } else {
+            setPreview(null);
+            if (inputRef.current) inputRef.current.value = '';
+        }
+    };
+
+    const displaySrc = preview || value || '';
+
+    return (
+        <div className="space-y-1.5">
+            <Label className="text-xs">{label}</Label>
+            <div className="flex items-center gap-2">
+                {onFileSelect && (
+                    <div className="relative">
+                        <Input
+                            ref={inputRef}
+                            type="file"
+                            accept="image/png,image/jpg,image/jpeg,image/webp,image/svg+xml"
+                            className="w-36 text-xs h-8"
+                            onChange={e => handleFile(e.target.files?.[0] || null)}
+                        />
+                    </div>
+                )}
+                <Input
+                    value={value || ''}
+                    onChange={e => { onChange(e.target.value); setPreview(null); }}
+                    placeholder="/images/example.png"
+                    className="h-8 text-xs flex-1"
+                />
+            </div>
+            {displaySrc && (
+                <img src={displaySrc} alt="" className="h-16 w-auto object-contain rounded border" />
+            )}
+        </div>
+    );
+}
+
+function HeroEditor({ hero, onChange, onFileSelect }: { hero: ContentHero; onChange: (h: ContentHero) => void; onFileSelect?: Props['onFileSelect'] }) {
     const [expanded, setExpanded] = useState(true);
 
     const update = (key: string, val: any) => onChange({ ...hero, [key]: val });
@@ -131,10 +186,13 @@ function HeroEditor({ hero, onChange }: { hero: ContentHero; onChange: (h: Conte
                                 </Select>
                             </div>
                         </div>
-                        <div>
-                            <Label>Image (single)</Label>
-                            <Input value={hero.image || ''} onChange={e => update('image', e.target.value)} placeholder="/images/hero.png" />
-                        </div>
+                        <ImageField
+                            value={hero.image}
+                            onChange={v => update('image', v)}
+                            label="Hero Image"
+                            onFileSelect={onFileSelect}
+                            path="hero.image"
+                        />
                         <div>
                             <div className="flex items-center justify-between mb-2">
                                 <Label>Carousel Images</Label>
@@ -143,12 +201,53 @@ function HeroEditor({ hero, onChange }: { hero: ContentHero; onChange: (h: Conte
                                 </Button>
                             </div>
                             {(hero.images || []).map((img, idx) => (
-                                <div key={idx} className="flex gap-2 mb-2">
-                                    <Input value={img.src} onChange={e => updateImage(idx, 'src', e.target.value)} placeholder="Image URL" className="flex-1" />
-                                    <Input value={img.alt} onChange={e => updateImage(idx, 'alt', e.target.value)} placeholder="Alt text" className="flex-1" />
-                                    <Button type="button" variant="ghost" size="sm" onClick={() => removeImage(idx)}>
-                                        <Trash2 className="h-4 w-4 text-red-500" />
-                                    </Button>
+                                <div key={idx} className="flex flex-col gap-1 mb-2 p-2 border rounded">
+                                    <div className="flex gap-2 items-start">
+                                        <div className="flex-1 space-y-1">
+                                            {onFileSelect ? (
+                                                <div className="flex gap-1">
+                                                    <Input
+                                                        type="file"
+                                                        accept="image/png,image/jpg,image/jpeg,image/webp,image/svg+xml"
+                                                        className="w-36 text-xs h-8"
+                                                        onChange={e => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) {
+                                                                const placeholder = `__UPLOAD__${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+                                                                onFileSelect(placeholder, file);
+                                                                updateImage(idx, 'src', placeholder);
+                                                            }
+                                                        }}
+                                                    />
+                                                    <Input
+                                                        value={img.src}
+                                                        onChange={e => updateImage(idx, 'src', e.target.value)}
+                                                        placeholder="Image URL"
+                                                        className="text-xs h-8 flex-1"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <Input
+                                                    value={img.src}
+                                                    onChange={e => updateImage(idx, 'src', e.target.value)}
+                                                    placeholder="Image URL"
+                                                    className="text-xs h-8"
+                                                />
+                                            )}
+                                            <Input
+                                                value={img.alt}
+                                                onChange={e => updateImage(idx, 'alt', e.target.value)}
+                                                placeholder="Alt text"
+                                                className="text-xs h-8"
+                                            />
+                                        </div>
+                                        <Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0 shrink-0" onClick={() => removeImage(idx)}>
+                                            <Trash2 className="h-3 w-3 text-red-500" />
+                                        </Button>
+                                    </div>
+                                    {img.src && (
+                                        <img src={img.src.startsWith('__UPLOAD__') ? URL.createObjectURL(new File([], '')) : img.src} alt="" className="h-12 w-auto object-contain rounded border" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -306,7 +405,7 @@ function StatsEditor({ stats, onChange }: { stats: ContentStat[]; onChange: (s: 
     );
 }
 
-function SectionEditor({ section, index, onUpdate, onDelete, onMoveUp, onMoveDown, isFirst, isLast }: {
+function SectionEditor({ section, index, onUpdate, onDelete, onMoveUp, onMoveDown, isFirst, isLast, onFileSelect }: {
     section: ContentSection;
     index: number;
     onUpdate: (s: ContentSection) => void;
@@ -315,6 +414,7 @@ function SectionEditor({ section, index, onUpdate, onDelete, onMoveUp, onMoveDow
     onMoveDown: () => void;
     isFirst: boolean;
     isLast: boolean;
+    onFileSelect?: Props['onFileSelect'];
 }) {
     const [expanded, setExpanded] = useState(true);
 
@@ -368,10 +468,13 @@ function SectionEditor({ section, index, onUpdate, onDelete, onMoveUp, onMoveDow
                             <Label>Description</Label>
                             <Textarea value={section.description || ''} onChange={e => update('description', e.target.value)} rows={2} />
                         </div>
-                        <div>
-                            <Label>Image</Label>
-                            <Input value={section.image || ''} onChange={e => update('image', e.target.value)} placeholder="/images/solution.png" />
-                        </div>
+                        <ImageField
+                            value={section.image}
+                            onChange={v => update('image', v)}
+                            label="Image"
+                            onFileSelect={onFileSelect}
+                            path={`sections[${index}].image`}
+                        />
                         {section.type === 'security' && (
                             <div>
                                 <Label>Subtitle (right panel title)</Label>
@@ -420,10 +523,13 @@ function SectionEditor({ section, index, onUpdate, onDelete, onMoveUp, onMoveDow
                             <Label>Description</Label>
                             <Textarea value={section.description || ''} onChange={e => update('description', e.target.value)} rows={2} />
                         </div>
-                        <div>
-                            <Label>Image</Label>
-                            <Input value={section.image || ''} onChange={e => update('image', e.target.value)} placeholder="/images/overview.png" />
-                        </div>
+                        <ImageField
+                            value={section.image}
+                            onChange={v => update('image', v)}
+                            label="Image"
+                            onFileSelect={onFileSelect}
+                            path={`sections[${index}].image`}
+                        />
                         <div>
                             <Label>Stats</Label>
                             <StatsEditor stats={section.stats || []} onChange={v => update('stats', v)} />
@@ -498,7 +604,7 @@ function SectionEditor({ section, index, onUpdate, onDelete, onMoveUp, onMoveDow
     );
 }
 
-export default function ContentSectionBuilder({ value, onChange, onError }: Props) {
+export default function ContentSectionBuilder({ value, onChange, onError, onFileSelect }: Props) {
     const [content, setContent] = useState<Content>({});
     const [initialized, setInitialized] = useState(false);
 
@@ -568,7 +674,7 @@ export default function ContentSectionBuilder({ value, onChange, onError }: Prop
 
     return (
         <div className="space-y-4">
-            <HeroEditor hero={content.hero || {}} onChange={handleHeroChange} />
+            <HeroEditor hero={content.hero || {}} onChange={handleHeroChange} onFileSelect={onFileSelect} />
 
             <div className="border rounded-lg p-4 space-y-4">
                 <div className="flex items-center justify-between">
@@ -603,6 +709,7 @@ export default function ContentSectionBuilder({ value, onChange, onError }: Prop
                         onMoveDown={() => moveSection(index, 'down')}
                         isFirst={index === 0}
                         isLast={index === (content.sections || []).length - 1}
+                        onFileSelect={onFileSelect}
                     />
                 ))}
             </div>
