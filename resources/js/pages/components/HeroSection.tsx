@@ -44,7 +44,7 @@ const defaultHero: HeroData = {
 };
 
 export default function HeroSection(): JSX.Element {
-    const { __, isRtl } = useTranslation();
+    const { __, isRtl, locale } = useTranslation();
     const [hero, setHero] = useState<HeroData | null>(null);
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export default function HeroSection(): JSX.Element {
             .then(res => res.json())
             .then(data => setHero(data))
             .catch(() => setHero(defaultHero));
-    }, []);
+    }, [locale]);
 
     const [emblaRef] = useEmblaCarousel(
         { loop: true },
