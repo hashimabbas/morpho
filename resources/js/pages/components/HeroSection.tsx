@@ -49,8 +49,8 @@ export default function HeroSection(): JSX.Element {
 
     useEffect(() => {
         fetch('/api/hero')
-            .then(res => res.json())
-            .then(data => setHero(data))
+            .then(res => res.ok ? res.json() : null)
+            .then(data => setHero(data && Array.isArray(data.images) ? data : defaultHero))
             .catch(() => setHero(defaultHero));
     }, [locale]);
 

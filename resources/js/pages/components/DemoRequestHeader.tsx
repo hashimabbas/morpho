@@ -45,7 +45,10 @@ export default function DemoRequestHeader(): JSX.Element {
                                     {__('demo_request.hero.heading_2')}
                                 </span>
                             </h1>
-                            <p className="mt-6 max-w-xl text-lg text-gray-600 lg:mx-0 dark:text-gray-300">
+                            <p className="mt-6 max-w-xl text-lg font-semibold text-gray-900 lg:mx-0 dark:text-white">
+                                {__('demo_request.hero.subheading')}
+                            </p>
+                            <p className="mt-4 max-w-xl text-lg text-gray-600 lg:mx-0 dark:text-gray-300">
                                 {__('demo_request.hero.description')}
                             </p>
                         </div>

@@ -6,12 +6,13 @@ return [
     'hero' => [
         'heading_1' => 'Experience the Power of',
         'heading_2' => 'Morpho Supply Chain',
-        'description' => 'Request a personalized demo to see how our advanced logistics solutions can optimize your operations. Our team will contact you to schedule a convenient time for your demo session.',
-        'cta' => 'Request a Demo',
+        'subheading' => "Let's Start Building a Smarter Supply Chain Together",
+        'description' => "Whether you're looking to improve refrigerated transport, warehouse visibility, asset tracking, or industrial IoT monitoring, our specialists are ready to help. Fill out the form below and we'll contact you to discuss your requirements, arrange a consultation, or answer any questions about Morpho's smart supply chain solutions.",
+        'cta' => 'Get in Touch',
     ],
 
     'form' => [
-        'title' => 'Request Your Personalized Demo',
+        'title' => 'Schedule Your Personalized Consultation',
         'description' => 'Fill in the details below, and our team will reach out to schedule your demo session at a time that works best for you.',
 
         'section_1_title' => 'Basic Information',
@@ -38,7 +39,7 @@ return [
         'solution_tms' => 'TMS',
         'solution_api' => 'API',
 
-        'section_3_title' => 'Demo Objectives',
+        'section_3_title' => 'Objectives',
         'goal_trial' => 'Try Solution',
         'goal_evaluation' => 'Evaluate',
         'goal_partnership' => 'Partnership',
