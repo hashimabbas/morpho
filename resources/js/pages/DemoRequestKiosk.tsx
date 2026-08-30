@@ -1,4 +1,5 @@
-import { Head, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
@@ -9,17 +10,35 @@ export default function DemoRequestKiosk() {
     const { flash } = usePage<PageProps>().props;
     const { __ } = useTranslation();
 
+    // This kiosk page always renders in light mode, regardless of the visitor's
+    // system/site theme preference — it's meant to be scanned once via QR code.
+    useEffect(() => {
+        const root = document.documentElement;
+        root.classList.remove('dark');
+
+        const observer = new MutationObserver(() => {
+            if (root.classList.contains('dark')) {
+                root.classList.remove('dark');
+            }
+        });
+        observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <>
             <Head title={__('demo_request.page_title')} />
             <div className="min-h-screen bg-white dark:bg-gray-900">
                 {/* Minimal top bar: logo + language switcher only */}
                 <header className="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800 sm:px-6">
-                    <img
-                        src="/new_logo_transp.png"
-                        alt="Morpho"
-                        className="h-8 w-auto sm:h-9"
-                    />
+                    <Link href="/" className="transition-opacity hover:opacity-85">
+                        <img
+                            src="/new_logo_transp.png"
+                            alt="Morpho"
+                            className="h-8 w-auto sm:h-9"
+                        />
+                    </Link>
                     <LanguageSwitcher />
                 </header>
 

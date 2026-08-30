@@ -19,7 +19,7 @@ return [
         'full_name_label' => 'الاسم الكامل',
         'full_name_placeholder' => 'محمد أحمد',
         'company_name_label' => 'اسم الشركة',
-        'company_name_placeholder' => 'مورفو تيك',
+        'company_name_placeholder' => 'مورفو',
         'email_label' => 'البريد الإلكتروني',
         'email_placeholder' => 'you@company.com',
         'phone_label' => 'رقم الهاتف',

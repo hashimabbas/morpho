@@ -16,6 +16,12 @@ class SetLocale
             return $next($request);
         }
 
+        // Exhibition kiosk page always stays in Arabic, regardless of site language
+        if ($request->route()?->named('demo_request.kiosk')) {
+            app()->setLocale('ar');
+            return $next($request);
+        }
+
         $locale = $request->session()->get('locale', config('app.locale'));
 
         if (! in_array($locale, ['en', 'ar'])) {

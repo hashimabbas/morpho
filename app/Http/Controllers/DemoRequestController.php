@@ -49,9 +49,12 @@ class DemoRequestController extends Controller
             'company_name' => 'required|string|max:255',
             'email' => 'required|email',
             'phone' => 'required|string|max:50',
-            'logistics_sector' => 'required|string',
-            'solution_type' => 'required|string',
-            'demo_goal' => 'required|string',
+            'logistics_sector' => 'required|array|min:1',
+            'logistics_sector.*' => 'string',
+            'solution_type' => 'required|array|min:1',
+            'solution_type.*' => 'string',
+            'demo_goal' => 'required|array|min:1',
+            'demo_goal.*' => 'string',
         ]);
         // You can save it in the database
         RequestDemo::create($validated);

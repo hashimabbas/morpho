@@ -19,9 +19,9 @@ interface RequestDemo {
     company_name: string;
     email: string;
     phone: string;
-    logistics_sector: string;
-    solution_type: string;
-    demo_goal: string;
+    logistics_sector: string[];
+    solution_type: string[];
+    demo_goal: string[];
     created_at: string;
     updated_at: string;
     is_read: boolean;
@@ -119,9 +119,9 @@ export default function RequestDemos(props: Props) {
             'Company': demo.company_name,
             'Email': demo.email,
             'Phone': demo.phone,
-            'Sector': demo.logistics_sector,
-            'Solution': demo.solution_type,
-            'Goal': demo.demo_goal,
+            'Sector': demo.logistics_sector?.join(', '),
+            'Solution': demo.solution_type?.join(', '),
+            'Goal': demo.demo_goal?.join(', '),
             'Requested At': format(new Date(demo.created_at), 'yyyy-MM-dd HH:mm:ss')
         }));
 
@@ -202,7 +202,7 @@ export default function RequestDemos(props: Props) {
                                                 className={`mt-1 truncate text-sm ${demo.is_read ? 'text-gray-600 dark:text-gray-300' : 'text-gray-800 dark:text-gray-100'
                                                     }`}
                                             >
-                                                {demo.company_name} - {demo.solution_type}
+                                                {demo.company_name} - {demo.solution_type?.join(', ')}
                                             </p>
                                         </div>
                                     </div>
@@ -292,7 +292,7 @@ export default function RequestDemos(props: Props) {
                                         Sector:
                                     </Label>
                                     <span id="sector" className="col-span-3 font-medium">
-                                        {selectedDemo.logistics_sector}
+                                        {selectedDemo.logistics_sector?.join(', ')}
                                     </span>
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
@@ -300,7 +300,7 @@ export default function RequestDemos(props: Props) {
                                         Solution:
                                     </Label>
                                     <span id="solution" className="col-span-3 font-medium">
-                                        {selectedDemo.solution_type}
+                                        {selectedDemo.solution_type?.join(', ')}
                                     </span>
                                 </div>
                                 <div className="grid grid-cols-4 items-start gap-4 mt-2">
@@ -311,7 +311,7 @@ export default function RequestDemos(props: Props) {
                                         id="goal"
                                         className="col-span-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 max-h-[300px] overflow-y-auto whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-200"
                                     >
-                                        {selectedDemo.demo_goal}
+                                        {selectedDemo.demo_goal?.join(', ')}
                                     </div>
                                 </div>
                             </div>

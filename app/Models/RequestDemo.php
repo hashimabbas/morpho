@@ -18,4 +18,10 @@ class RequestDemo extends Model
         'solution_type',
         'demo_goal',
     ];
+
+    protected $casts = [
+        'logistics_sector' => 'array',
+        'solution_type' => 'array',
+        'demo_goal' => 'array',
+    ];
 }

@@ -39,32 +39,38 @@ import {
 } from "lucide-react";
 
 import type { PageProps } from '@/types';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
 
 interface Props {
     successMessage?: string;
 }
 
+function toggleValue(values: string[], value: string): string[] {
+    return values.includes(value)
+        ? values.filter((v) => v !== value)
+        : [...values, value];
+}
+
 const SelectableCard = ({
     icon: Icon,
     label,
     value,
-    selectedValue,
-    onSelect,
-    error
+    selectedValues,
+    onToggle,
 }: {
     icon: any;
     label: string;
     value: string;
-    selectedValue: string;
-    onSelect: (val: string) => void;
-    error?: string;
+    selectedValues: string[];
+    onToggle: (val: string) => void;
 }) => {
-    const isSelected = selectedValue === value;
+    const isSelected = selectedValues.includes(value);
     return (
-        <label
-            onClick={() => onSelect(value)}
+        <button
+            type="button"
+            role="checkbox"
+            aria-checked={isSelected}
+            onClick={() => onToggle(value)}
             className={cn(
                 "group relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 p-4 text-center transition-all duration-300",
                 isSelected
@@ -72,7 +78,6 @@ const SelectableCard = ({
                     : "border-gray-100 bg-white hover:border-morpho/30 hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-900/50 dark:hover:border-morpho/30"
             )}
         >
-            <RadioGroupItem value={value} className="sr-only" />
             <div className={cn(
                 "mb-3 flex h-10 w-10 items-center justify-center rounded-lg transition-colors duration-300",
                 isSelected
@@ -92,7 +97,7 @@ const SelectableCard = ({
                     <CheckCircle className="h-4 w-4 text-morpho" />
                 </div>
             )}
-        </label>
+        </button>
     );
 };
 
@@ -110,9 +115,9 @@ export default function DemoRequestForm({ successMessage }: Props) {
         company_name: '',
         email: '',
         phone: '',
-        logistics_sector: '',
-        solution_type: '',
-        demo_goal: '',
+        logistics_sector: [] as string[],
+        solution_type: [] as string[],
+        demo_goal: [] as string[],
     });
 
     useEffect(() => {
@@ -277,33 +282,25 @@ export default function DemoRequestForm({ successMessage }: Props) {
                     <div className="space-y-8">
                         <div className="space-y-4">
                             <Label className="text-sm font-bold text-gray-700 dark:text-gray-300">{__('demo_request.form.logistics_sector_label')}</Label>
-                            <RadioGroup
-                                value={data.logistics_sector}
-                                onValueChange={(val) => setData('logistics_sector', val)}
-                                className="grid grid-cols-2 gap-4 md:grid-cols-5"
-                            >
-                                <SelectableCard icon={Stethoscope} label={__('demo_request.form.sector_medical')} value="medical" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                                <SelectableCard icon={Factory} label={__('demo_request.form.sector_industrial')} value="industrial" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                                <SelectableCard icon={Ship} label={__('demo_request.form.sector_food')} value="food" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                                <SelectableCard icon={Sprout} label={__('demo_request.form.sector_agricultural')} value="agricultural" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                                <SelectableCard icon={Box} label={__('demo_request.form.sector_other')} value="other" selectedValue={data.logistics_sector} onSelect={(v) => setData('logistics_sector', v)} />
-                            </RadioGroup>
+                            <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+                                <SelectableCard icon={Stethoscope} label={__('demo_request.form.sector_medical')} value="medical" selectedValues={data.logistics_sector} onToggle={(v) => setData('logistics_sector', toggleValue(data.logistics_sector, v))} />
+                                <SelectableCard icon={Factory} label={__('demo_request.form.sector_industrial')} value="industrial" selectedValues={data.logistics_sector} onToggle={(v) => setData('logistics_sector', toggleValue(data.logistics_sector, v))} />
+                                <SelectableCard icon={Ship} label={__('demo_request.form.sector_food')} value="food" selectedValues={data.logistics_sector} onToggle={(v) => setData('logistics_sector', toggleValue(data.logistics_sector, v))} />
+                                <SelectableCard icon={Sprout} label={__('demo_request.form.sector_agricultural')} value="agricultural" selectedValues={data.logistics_sector} onToggle={(v) => setData('logistics_sector', toggleValue(data.logistics_sector, v))} />
+                                <SelectableCard icon={Box} label={__('demo_request.form.sector_other')} value="other" selectedValues={data.logistics_sector} onToggle={(v) => setData('logistics_sector', toggleValue(data.logistics_sector, v))} />
+                            </div>
                             {errors.logistics_sector && <p className="text-sm text-red-500">{errors.logistics_sector}</p>}
                         </div>
 
                         <div className="space-y-4">
                             <Label className="text-sm font-bold text-gray-700 dark:text-gray-300">{__('demo_request.form.required_solution_label')}</Label>
-                            <RadioGroup
-                                value={data.solution_type}
-                                onValueChange={(val) => setData('solution_type', val)}
-                                className="grid grid-cols-2 gap-4 md:grid-cols-5"
-                            >
-                                <SelectableCard icon={Cpu} label={__('demo_request.form.solution_iot')} value="iot-device" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                                <SelectableCard icon={Globe} label={__('demo_request.form.solution_tracking')} value="shipment-platform" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                                <SelectableCard icon={Warehouse} label={__('demo_request.form.solution_wms')} value="wms" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                                <SelectableCard icon={Truck} label={__('demo_request.form.solution_tms')} value="tms" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                                <SelectableCard icon={Zap} label={__('demo_request.form.solution_api')} value="api" selectedValue={data.solution_type} onSelect={(v) => setData('solution_type', v)} />
-                            </RadioGroup>
+                            <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+                                <SelectableCard icon={Cpu} label={__('demo_request.form.solution_iot')} value="iot-device" selectedValues={data.solution_type} onToggle={(v) => setData('solution_type', toggleValue(data.solution_type, v))} />
+                                <SelectableCard icon={Globe} label={__('demo_request.form.solution_tracking')} value="shipment-platform" selectedValues={data.solution_type} onToggle={(v) => setData('solution_type', toggleValue(data.solution_type, v))} />
+                                <SelectableCard icon={Warehouse} label={__('demo_request.form.solution_wms')} value="wms" selectedValues={data.solution_type} onToggle={(v) => setData('solution_type', toggleValue(data.solution_type, v))} />
+                                <SelectableCard icon={Truck} label={__('demo_request.form.solution_tms')} value="tms" selectedValues={data.solution_type} onToggle={(v) => setData('solution_type', toggleValue(data.solution_type, v))} />
+                                <SelectableCard icon={Zap} label={__('demo_request.form.solution_api')} value="api" selectedValues={data.solution_type} onToggle={(v) => setData('solution_type', toggleValue(data.solution_type, v))} />
+                            </div>
                             {errors.solution_type && <p className="text-sm text-red-500">{errors.solution_type}</p>}
                         </div>
                     </div>
@@ -319,16 +316,12 @@ export default function DemoRequestForm({ successMessage }: Props) {
                     </div>
 
                     <div className="space-y-4">
-                        <RadioGroup
-                            value={data.demo_goal}
-                            onValueChange={(val) => setData('demo_goal', val)}
-                            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
-                        >
-                            <SelectableCard icon={PlayCircle} label={__('demo_request.form.goal_trial')} value="trial" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
-                            <SelectableCard icon={ClipboardCheck} label={__('demo_request.form.goal_evaluation')} value="evaluation" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
-                            <SelectableCard icon={Handshake} label={__('demo_request.form.goal_partnership')} value="partnership" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
-                            <SelectableCard icon={BarChart3} label={__('demo_request.form.goal_comparison')} value="comparison" selectedValue={data.demo_goal} onSelect={(v) => setData('demo_goal', v)} />
-                        </RadioGroup>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                            <SelectableCard icon={PlayCircle} label={__('demo_request.form.goal_trial')} value="trial" selectedValues={data.demo_goal} onToggle={(v) => setData('demo_goal', toggleValue(data.demo_goal, v))} />
+                            <SelectableCard icon={ClipboardCheck} label={__('demo_request.form.goal_evaluation')} value="evaluation" selectedValues={data.demo_goal} onToggle={(v) => setData('demo_goal', toggleValue(data.demo_goal, v))} />
+                            <SelectableCard icon={Handshake} label={__('demo_request.form.goal_partnership')} value="partnership" selectedValues={data.demo_goal} onToggle={(v) => setData('demo_goal', toggleValue(data.demo_goal, v))} />
+                            <SelectableCard icon={BarChart3} label={__('demo_request.form.goal_comparison')} value="comparison" selectedValues={data.demo_goal} onToggle={(v) => setData('demo_goal', toggleValue(data.demo_goal, v))} />
+                        </div>
                         {errors.demo_goal && <p className="text-sm text-red-500">{errors.demo_goal}</p>}
                     </div>
                 </div>
