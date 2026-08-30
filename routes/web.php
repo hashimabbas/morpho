@@ -98,6 +98,10 @@ Route::get('/demo_request', function () {
     return Inertia::render('DemoRequest');
 })->name('demo_request');
 
+Route::get('/demo_request/kiosk', function () {
+    return Inertia::render('DemoRequestKiosk');
+})->name('demo_request.kiosk');
+
 Route::post('/demo-request', [DemoRequestController::class, 'store'])->name('demo.store');
 
 Route::post('/pricing-inquiry', [PricingInquiryController::class, 'store'])->name('pricing.inquiry.store');
